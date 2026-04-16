@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Who is Silver? | Silver Omen</title>
+  <link rel="stylesheet" href="assets/css/styles.css" />
+</head>
+<body>
+  <div id="root"></div>
+  <script src="assets/js/header.js"></script>
+  <script src="assets/js/footer.js"></script>
+  <script>
+    Header.render('#root', '');
+
+    var pressLinks = [
+      { name: 'Laurelanne Media', href: 'https://laurelanne.media/silver-omen-tells-his-coming-out-story-with-grace-on-rainbow-catharsis' },
+      { name: 'Pop Passion Blog', href: 'https://www.poppassionblog.com/post/ep-review-rainbow-catharsis-silver-omen' },
+      { name: 'B-Side Guys', href: 'https://bsideguys.com/2025/08/25/album-review-silver-omen-rainbow-catharsis-ep/' },
+      { name: 'Mystic Sons', href: 'https://www.mysticsons.com/article/silver-omen-rainbow-catharsis' },
+      { name: 'Dance Charts', href: 'https://www.dance-charts.de/2025081917032/silver-omen-rainbow-catharsis-ep' }
+    ];
+
+    var galleryImages = [
+      'Silver Omen Abstract Presspic.jpg',
+      'Silver Omen Dancing Presspic.jpg',
+      'Silver Omen Press Pic.jpeg',
+      'Silver Omen Projection Presspic.jpg',
+      'Silver Omen Singing Presspic.jpg',
+      'Silver Omen White Presspic.jpg'
+    ];
+
+    function buildPressLinks() {
+      return pressLinks.map(function (p) {
+        return (
+          '<a href="' + p.href + '" class="press-item" target="_blank" rel="noopener noreferrer">' +
+            '<span class="press-item-name">' + p.name + '</span>' +
+            '<span class="press-item-arrow">&rarr;</span>' +
+          '</a>'
+        );
+      }).join('');
+    }
+
+    function buildGallery() {
+      return galleryImages.map(function (img) {
+        return (
+          '<div class="press-gallery-item">' +
+            '<img src="assets/images/Gallery/' + img + '" alt="' + img.replace(/\.[^.]+$/, '') + '" loading="lazy" />' +
+          '</div>'
+        );
+      }).join('');
+    }
+
+    var page =
+      '<main class="about-page">' +
+
+        // Bio section
+        '<div class="about-page-inner">' +
+          '<div class="about-page-image">' +
+            '<img src="assets/images/Silver Omen Profile.png" alt="Silver Omen" />' +
+          '</div>' +
+          '<div class="about-page-text">' +
+            '<h1 class="about-page-title">Get to Know Silver Omen</h1>' +
+            '<p>\u201CSilver\u201D represents Argentina, named after the Latin word argentum, while \u201COmen\u201D symbolizes the duality of his themes \u2013 finding the good in the bad, and the bad in the good. Even at the end of the world, his approach leaves room to dance and shine.</p>' +
+            '<p>Silver Omen has been releasing music for over a year. In 2025, he launched his first EP <em>Rainbow Catharsis</em>, a deeply personal work reflecting his coming-out journey and exploring themes such as sexuality, self-image, and acceptance. The EP received positive feedback both in Germany and abroad.</p>' +
+            '<p>That same year, Silver participated in Eurovision Songwriting Camps in Berlin organized by The Woods (responsible for over 30 Eurovision and national selection entries), collaborating with renowned producers such as Carl-Henrik Wahl (Subwoolfer, Norway ESC 2022) and Jonas Jensen. He also recorded across London studios, further developing his sound into a modern blend of pop and house inspired by the highs and lows of Berlin\u2019s party scene.</p>' +
+          '</div>' +
+        '</div>' +
+
+        // Press section
+        '<div class="press-section">' +
+          '<div class="press-section-inner">' +
+            '<div class="section-label">Press</div>' +
+            '<h2 class="press-section-title">As Featured In</h2>' +
+            '<div class="press-links">' + buildPressLinks() + '</div>' +
+          '</div>' +
+        '</div>' +
+
+        // Gallery section
+        '<div class="press-gallery-section">' +
+          '<div class="press-gallery-inner">' +
+            '<div class="section-label">Gallery</div>' +
+            '<h2 class="press-gallery-title">Photos</h2>' +
+            '<div class="press-gallery-grid">' + buildGallery() + '</div>' +
+          '</div>' +
+        '</div>' +
+
+      '</main>';
+
+    document.getElementById('root').insertAdjacentHTML('beforeend', page);
+
+    Footer.render('#root', '');
+    Header.init();
+  </script>
+</body>
+</html>
