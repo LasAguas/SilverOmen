@@ -5,6 +5,97 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Contact | Silver Omen</title>
   <link rel="stylesheet" href="assets/css/styles.css" />
+  <style>
+    /* ===== Contact Page ===== */
+    .contact-page {
+      min-height: 100vh;
+      padding: 10rem 3rem 6rem;
+    }
+
+    .contact-page-inner {
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+
+    .contact-page-header {
+      margin-bottom: 4rem;
+    }
+
+    .contact-page-title {
+      font-family: 'Protagonist', sans-serif;
+      font-size: clamp(2rem, 4vw, 3.2rem);
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      line-height: 1.05;
+    }
+
+    .contact-list {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .contact-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 2rem 0;
+      border-bottom: 1px solid rgba(248, 248, 248, 0.08);
+      transition: padding-left 0.3s ease;
+    }
+
+    .contact-item:first-child {
+      border-top: 1px solid rgba(248, 248, 248, 0.08);
+    }
+
+    .contact-item:hover {
+      padding-left: 0.75rem;
+    }
+
+    .contact-item-left {
+      display: flex;
+      flex-direction: column;
+      gap: 0.4rem;
+    }
+
+    .contact-label {
+      font-family: 'Brans', sans-serif;
+      font-size: 0.7rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: #9d56da;
+    }
+
+    .contact-email {
+      font-family: 'Protagonist', sans-serif;
+      font-size: clamp(1.1rem, 2.5vw, 1.8rem);
+      letter-spacing: 0.04em;
+      color: rgba(248, 248, 248, 0.85);
+      transition: color 0.3s ease;
+    }
+
+    .contact-item:hover .contact-email {
+      color: #f8f8f8;
+    }
+
+    .contact-arrow {
+      font-size: 1.2rem;
+      color: #9d56da;
+      opacity: 0;
+      transform: translateX(-6px);
+      transition: opacity 0.3s ease, transform 0.3s ease;
+    }
+
+    .contact-item:hover .contact-arrow {
+      opacity: 1;
+      transform: translateX(0);
+    }
+
+    @media (max-width: 768px) {
+      .contact-page {
+        padding: 7rem 1.5rem 4rem;
+      }
+    }
+  </style>
 </head>
 <body>
   <div id="root"></div>
@@ -12,6 +103,40 @@
   <script src="assets/js/footer.js"></script>
   <script>
     Header.render('#root', '');
+
+    var contacts = [
+      { label: 'General',               email: 'hi@silveromen.com' },
+      { label: 'Marketing & Media',     email: 'contact@lasaguasproductions.com' }
+    ];
+
+    function buildContacts() {
+      return contacts.map(function (c) {
+        return (
+          '<a href="mailto:' + c.email + '" class="contact-item">' +
+            '<div class="contact-item-left">' +
+              '<span class="contact-label">' + c.label + '</span>' +
+              '<span class="contact-email">' + c.email + '</span>' +
+            '</div>' +
+            '<span class="contact-arrow">&rarr;</span>' +
+          '</a>'
+        );
+      }).join('');
+    }
+
+    var page =
+      '<main class="contact-page">' +
+        '<div class="contact-page-inner">' +
+          '<div class="contact-page-header">' +
+            '<h1 class="contact-page-title">Get in Touch</h1>' +
+          '</div>' +
+          '<div class="contact-list">' +
+            buildContacts() +
+          '</div>' +
+        '</div>' +
+      '</main>';
+
+    document.getElementById('root').insertAdjacentHTML('beforeend', page);
+
     Footer.render('#root', '');
     Header.init();
   </script>

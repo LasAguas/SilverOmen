@@ -5,6 +5,237 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Music | Silver Omen</title>
   <link rel="stylesheet" href="assets/css/styles.css" />
+  <style>
+    /* ===== Music Page ===== */
+    .music-page {
+      min-height: 100vh;
+      padding: 10rem 3rem 6rem;
+    }
+
+    .music-page-inner {
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+
+    .music-page-header {
+      margin-bottom: 4rem;
+    }
+
+    .music-page-title {
+      font-family: 'Protagonist', sans-serif;
+      font-size: clamp(2rem, 4vw, 3.2rem);
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      line-height: 1.05;
+    }
+
+    .releases-list {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .release-item {
+      display: grid;
+      grid-template-columns: 260px 1fr;
+      gap: 3rem;
+      align-items: start;
+      padding: 3rem 0;
+      border-bottom: 1px solid rgba(248, 248, 248, 0.08);
+    }
+
+    .release-item:first-child {
+      border-top: 1px solid rgba(248, 248, 248, 0.08);
+    }
+
+    .release-cover {
+      aspect-ratio: 1;
+      overflow: hidden;
+      border-radius: 4px;
+      background: rgba(248, 248, 248, 0.05);
+    }
+
+    .release-cover img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      transition: transform 0.5s ease;
+    }
+
+    .release-cover:hover img {
+      transform: scale(1.04);
+    }
+
+    .release-info {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding-top: 0.5rem;
+    }
+
+    .release-meta {
+      display: flex;
+      align-items: center;
+      gap: 0.85rem;
+      margin-bottom: 0.75rem;
+      flex-wrap: wrap;
+    }
+
+    .release-type {
+      font-family: 'Brans', sans-serif;
+      font-size: 0.68rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: #9d56da;
+      border: 1px solid rgba(157, 86, 218, 0.45);
+      padding: 0.2rem 0.6rem;
+      border-radius: 2px;
+    }
+
+    .release-date {
+      font-family: 'Brans', sans-serif;
+      font-size: 0.68rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: rgba(248, 248, 248, 0.38);
+    }
+
+    .release-name {
+      font-family: 'Protagonist', sans-serif;
+      font-size: clamp(1.8rem, 3vw, 2.8rem);
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      line-height: 1;
+      margin-bottom: 1rem;
+    }
+
+    .release-desc {
+      font-family: 'DIN Condensed', Georgia, sans-serif;
+      font-size: 1.05rem;
+      line-height: 1.75;
+      color: rgba(248, 248, 248, 0.62);
+      margin-bottom: 1.75rem;
+      max-width: 480px;
+    }
+
+    /* Listen button + dropdown */
+    .release-listen-wrap {
+      position: relative;
+      display: inline-block;
+    }
+
+    .release-listen-btn {
+      font-family: 'Brans', sans-serif;
+      font-size: 0.78rem;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: #f8f8f8;
+      background: transparent;
+      border: 1px solid rgba(248, 248, 248, 0.35);
+      padding: 0.7rem 1.4rem;
+      border-radius: 3px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 0.55rem;
+      transition: border-color 0.3s ease, color 0.3s ease;
+    }
+
+    .release-listen-btn:hover {
+      border-color: #9d56da;
+      color: #9d56da;
+    }
+
+    .release-listen-btn .btn-arrow {
+      display: inline-block;
+      transition: transform 0.3s ease;
+      font-size: 0.6rem;
+    }
+
+    .release-listen-btn.open .btn-arrow {
+      transform: rotate(180deg);
+    }
+
+    .release-coming-soon {
+      font-family: 'Brans', sans-serif;
+      font-size: 0.78rem;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: rgba(248, 248, 248, 0.35);
+      border: 1px solid rgba(248, 248, 248, 0.15);
+      padding: 0.7rem 1.4rem;
+      border-radius: 3px;
+      display: inline-block;
+    }
+
+    .release-platforms {
+      position: absolute;
+      top: calc(100% + 0.5rem);
+      left: 0;
+      background: rgba(1, 20, 55, 0.98);
+      backdrop-filter: blur(20px);
+      border: 1px solid rgba(248, 248, 248, 0.1);
+      border-radius: 6px;
+      padding: 0.4rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.15rem;
+      min-width: 190px;
+      opacity: 0;
+      visibility: hidden;
+      transform: translateY(-8px);
+      transition: opacity 0.25s ease, transform 0.25s ease, visibility 0.25s ease;
+      z-index: 10;
+    }
+
+    .release-platforms.open {
+      opacity: 1;
+      visibility: visible;
+      transform: translateY(0);
+    }
+
+    .platform-btn {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      padding: 0.6rem 0.8rem;
+      border-radius: 4px;
+      color: rgba(248, 248, 248, 0.72);
+      font-family: 'Brans', sans-serif;
+      font-size: 0.74rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      transition: background 0.2s ease, color 0.2s ease;
+      white-space: nowrap;
+    }
+
+    .platform-btn:hover {
+      background: rgba(157, 86, 218, 0.2);
+      color: #f8f8f8;
+    }
+
+    .platform-btn img {
+      width: 18px;
+      height: 18px;
+      object-fit: contain;
+      flex-shrink: 0;
+    }
+
+    @media (max-width: 768px) {
+      .music-page {
+        padding: 7rem 1.5rem 4rem;
+      }
+
+      .release-item {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+      }
+
+      .release-cover {
+        max-width: 240px;
+      }
+    }
+  </style>
 </head>
 <body>
   <div id="root"></div>
@@ -12,8 +243,160 @@
   <script src="assets/js/footer.js"></script>
   <script>
     Header.render('#root', '');
+
+    var platforms = [
+      { name: 'Spotify',       img: 'Spotify Logo.png',       href: '#' },
+      { name: 'Apple Music',   img: 'Apple Music Logo.png',   href: '#' },
+      { name: 'Tidal',         img: 'Tidal Logo.png',         href: '#' },
+      { name: 'Deezer',        img: 'Deezer Logo.png',        href: '#' },
+      { name: 'YouTube Music', img: 'YouTube Logo.png',       href: '#' }
+    ];
+
+    var releases = [
+      {
+        title: 'Prescription',
+        type: 'Single',
+        date: 'Coming Soon',
+        cover: 'Prescription Cover Art.jpg',
+        desc: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua, ut enim ad minim veniam.',
+        comingSoon: true
+      },
+      {
+        title: 'Obsession',
+        type: 'Single',
+        date: '20 March 2026',
+        cover: 'Obsession Cover Art.JPG',
+        desc: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua, ut enim ad minim veniam.',
+        comingSoon: false
+      },
+      {
+        title: 'Welcome to the Club',
+        type: 'Single',
+        date: '15 November 2025',
+        cover: 'Welcome to the Club Cover Art.webp',
+        desc: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua, ut enim ad minim veniam.',
+        comingSoon: false
+      },
+      {
+        title: 'Rainbow Catharsis',
+        type: 'EP',
+        date: '15 August 2025',
+        cover: 'Rainbow Catharsis Cover Art.webp',
+        desc: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua, ut enim ad minim veniam.',
+        comingSoon: false
+      },
+      {
+        title: 'Breaking Point',
+        type: 'Single',
+        date: '28 February 2025',
+        cover: 'Breaking Point Cover Art.webp',
+        desc: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua, ut enim ad minim veniam.',
+        comingSoon: false
+      }
+    ];
+
+    function buildPlatformButtons() {
+      return platforms.map(function (p) {
+        return (
+          '<a href="' + p.href + '" class="platform-btn" target="_blank" rel="noopener noreferrer">' +
+            '<img src="assets/images/Socials Logos/' + p.img + '" alt="' + p.name + '" />' +
+            p.name +
+          '</a>'
+        );
+      }).join('');
+    }
+
+    function buildListenButton(index) {
+      return (
+        '<div class="release-listen-wrap">' +
+          '<button class="release-listen-btn" data-idx="' + index + '" aria-expanded="false">' +
+            'Listen' +
+            '<span class="btn-arrow">&#9660;</span>' +
+          '</button>' +
+          '<div class="release-platforms" id="platforms-' + index + '">' +
+            buildPlatformButtons() +
+          '</div>' +
+        '</div>'
+      );
+    }
+
+    function buildReleases() {
+      return releases.map(function (r, i) {
+        var action = r.comingSoon
+          ? '<span class="release-coming-soon">Coming Soon</span>'
+          : buildListenButton(i);
+
+        return (
+          '<div class="release-item">' +
+            '<div class="release-cover">' +
+              '<img src="assets/images/Music/' + r.cover + '" alt="' + r.title + '" loading="lazy" />' +
+            '</div>' +
+            '<div class="release-info">' +
+              '<div class="release-meta">' +
+                '<span class="release-type">' + r.type + '</span>' +
+                '<span class="release-date">' + r.date + '</span>' +
+              '</div>' +
+              '<h2 class="release-name">' + r.title + '</h2>' +
+              '<p class="release-desc">' + r.desc + '</p>' +
+              action +
+            '</div>' +
+          '</div>'
+        );
+      }).join('');
+    }
+
+    var page =
+      '<main class="music-page">' +
+        '<div class="music-page-inner">' +
+          '<div class="music-page-header">' +
+            '<h1 class="music-page-title">Music</h1>' +
+          '</div>' +
+          '<div class="releases-list">' +
+            buildReleases() +
+          '</div>' +
+        '</div>' +
+      '</main>';
+
+    document.getElementById('root').insertAdjacentHTML('beforeend', page);
+
     Footer.render('#root', '');
     Header.init();
+
+    // Streaming dropdown logic
+    document.querySelectorAll('.release-listen-btn').forEach(function (btn) {
+      btn.addEventListener('click', function (e) {
+        e.stopPropagation();
+        var idx = btn.getAttribute('data-idx');
+        var dropdown = document.getElementById('platforms-' + idx);
+        var isOpen = dropdown.classList.contains('open');
+
+        // Close all open dropdowns
+        document.querySelectorAll('.release-platforms.open').forEach(function (d) {
+          d.classList.remove('open');
+        });
+        document.querySelectorAll('.release-listen-btn.open').forEach(function (b) {
+          b.classList.remove('open');
+          b.setAttribute('aria-expanded', 'false');
+        });
+
+        if (!isOpen) {
+          dropdown.classList.add('open');
+          btn.classList.add('open');
+          btn.setAttribute('aria-expanded', 'true');
+        }
+      });
+    });
+
+    // Close dropdowns when clicking outside
+    document.addEventListener('click', function () {
+      document.querySelectorAll('.release-platforms.open').forEach(function (d) {
+        d.classList.remove('open');
+      });
+      document.querySelectorAll('.release-listen-btn.open').forEach(function (b) {
+        b.classList.remove('open');
+        b.setAttribute('aria-expanded', 'false');
+      });
+    });
   </script>
 </body>
 </html>

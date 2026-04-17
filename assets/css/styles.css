@@ -16,8 +16,8 @@
 }
 
 @font-face {
-  font-family: 'Barbra';
-  src: url('../fonts/Barbra-Regular.otf') format('opentype');
+  font-family: 'DIN Condensed';
+  src: url('../fonts/DIN Condensed Bold.ttf') format('truetype');
   font-weight: normal;
   font-style: normal;
   font-display: swap;
@@ -38,7 +38,7 @@ html {
 }
 
 body {
-  font-family: 'Barbra', Georgia, serif;
+  font-family: 'DIN Condensed', Georgia, sans-serif;
   background-color: #011f52;
   color: #f8f8f8;
   overflow-x: hidden;
@@ -254,7 +254,7 @@ img {
 }
 
 .hero-subtitle {
-  font-family: 'Barbra', Georgia, serif;
+  font-family: 'DIN Condensed', Georgia, sans-serif;
   font-size: clamp(1rem, 2.5vw, 1.5rem);
   margin-top: 1.25rem;
   color: #f4e1cd;
@@ -452,7 +452,7 @@ img {
 }
 
 .about-page-text p {
-  font-family: 'Barbra', Georgia, serif;
+  font-family: 'DIN Condensed', Georgia, sans-serif;
   font-size: 1.1rem;
   line-height: 1.85;
   color: rgba(248, 248, 248, 0.75);
@@ -661,4 +661,5 @@ img {
   .press-gallery-grid {
     grid-template-columns: repeat(2, 1fr);
   }
+
 }

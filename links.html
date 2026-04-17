@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Silver Omen | Links</title>
+  <link rel="stylesheet" href="assets/css/styles.css" />
+  <style>
+    /* ===== Links Page ===== */
+    body {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      min-height: 100vh;
+      padding: 3.5rem 1.5rem 4rem;
+    }
+
+    .links-page {
+      width: 100%;
+      max-width: 420px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0;
+    }
+
+    /* Artist name */
+    .links-name {
+      font-family: 'Protagonist', sans-serif;
+      font-size: clamp(2rem, 8vw, 3rem);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      text-align: center;
+      margin-bottom: 1.75rem;
+    }
+
+    /* Cover art */
+    .links-cover {
+      width: 120px;
+      height: 120px;
+      border-radius: 8px;
+      overflow: hidden;
+      margin-bottom: 2.5rem;
+      flex-shrink: 0;
+    }
+
+    .links-cover img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    /* Link buttons */
+    .links-buttons {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      gap: 0.85rem;
+      margin-bottom: 3rem;
+    }
+
+    .links-btn {
+      display: block;
+      width: 100%;
+      padding: 1rem 1.5rem;
+      text-align: center;
+      font-family: 'Brans', sans-serif;
+      font-size: 0.82rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: #f8f8f8;
+      border: 1px solid rgba(248, 248, 248, 0.25);
+      border-radius: 4px;
+      background: rgba(248, 248, 248, 0.05);
+      transition: background 0.25s ease, border-color 0.25s ease, color 0.25s ease;
+    }
+
+    .links-btn:hover {
+      background: rgba(157, 86, 218, 0.18);
+      border-color: #9d56da;
+      color: #f8f8f8;
+    }
+
+    .links-btn.links-btn-primary {
+      background: #9d56da;
+      border-color: #9d56da;
+    }
+
+    .links-btn.links-btn-primary:hover {
+      background: #7a3fb8;
+      border-color: #7a3fb8;
+    }
+
+    /* Social icons */
+    .links-socials {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 1.25rem;
+      flex-wrap: wrap;
+    }
+
+    .links-social-link {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 32px;
+      height: 32px;
+      opacity: 0.6;
+      transition: opacity 0.25s ease, transform 0.25s ease;
+    }
+
+    .links-social-link:hover {
+      opacity: 1;
+      transform: scale(1.15);
+    }
+
+    .links-social-link img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      display: block;
+    }
+  </style>
+</head>
+<body>
+  <div class="links-page">
+
+    <span class="links-name">Silver Omen</span>
+
+    <div class="links-cover">
+      <img src="assets/images/Music/Obsession Cover Art.JPG" alt="Obsession" />
+    </div>
+
+    <div class="links-buttons">
+      <a href="#" class="links-btn links-btn-primary" target="_blank" rel="noopener noreferrer">
+        Listen to Obsession
+      </a>
+      <a href="#" class="links-btn" target="_blank" rel="noopener noreferrer">
+        Watch the Obsession Music Video
+      </a>
+      <a href="index.html" class="links-btn">
+        Sign Up to My Newsletter
+      </a>
+    </div>
+
+    <div class="links-socials">
+      <a href="https://open.spotify.com/artist/04PVbCwPl3UEsNnVJUZbUl" class="links-social-link" aria-label="Spotify" target="_blank" rel="noopener noreferrer">
+        <img src="assets/images/Socials Logos/Spotify Logo.png" alt="Spotify" />
+      </a>
+      <a href="https://music.apple.com/gb/artist/silver-omen/1820988833" class="links-social-link" aria-label="Apple Music" target="_blank" rel="noopener noreferrer">
+        <img src="assets/images/Socials Logos/Apple Music Logo.png" alt="Apple Music" />
+      </a>
+      <a href="https://www.youtube.com/@silveromen.mp4" class="links-social-link" aria-label="YouTube" target="_blank" rel="noopener noreferrer">
+        <img src="assets/images/Socials Logos/YouTube Logo.png" alt="YouTube" />
+      </a>
+      <a href="https://www.instagram.com/silver.omen" class="links-social-link" aria-label="Instagram" target="_blank" rel="noopener noreferrer">
+        <img src="assets/images/Socials Logos/Instagram Logo.png" alt="Instagram" />
+      </a>
+      <a href="https://www.facebook.com/silveromenmusic" class="links-social-link" aria-label="Facebook" target="_blank" rel="noopener noreferrer">
+        <img src="assets/images/Socials Logos/Facebook Logo.png" alt="Facebook" />
+      </a>
+      <a href="https://silveromen.bandcamp.com/track/welcome-to-the-club" class="links-social-link" aria-label="Bandcamp" target="_blank" rel="noopener noreferrer">
+        <img src="assets/images/Socials Logos/Bandcamp Logo.png" alt="Bandcamp" />
+      </a>
+      <a href="https://tidal.com/artist/57012046/u" class="links-social-link" aria-label="Tidal" target="_blank" rel="noopener noreferrer">
+        <img src="assets/images/Socials Logos/Tidal Logo.png" alt="Tidal" />
+      </a>
+      <a href="https://www.deezer.com/en/track/3849458051" class="links-social-link" aria-label="Deezer" target="_blank" rel="noopener noreferrer">
+        <img src="assets/images/Socials Logos/Deezer Logo.png" alt="Deezer" />
+      </a>
+    </div>
+
+  </div>
+</body>
+</html>
