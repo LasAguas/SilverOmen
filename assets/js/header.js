@@ -5,7 +5,6 @@
 var Header = (function () {
   var navLinks = [
     { href: 'about.html', text: 'Who is Silver' },
-    { href: 'booking.html', text: 'Booking' },
     { href: 'music.html', text: 'Music' },
     { href: 'contact.html', text: 'Contact' }
   ];

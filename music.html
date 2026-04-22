@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Music | Silver Omen</title>
   <link rel="stylesheet" href="assets/css/styles.css" />
+  <link rel="stylesheet" href="assets/css/theme-green.css" />
   <style>
     /* ===== Music Page ===== */
     .music-page {
@@ -244,12 +245,12 @@
   <script>
     Header.render('#root', '');
 
-    var platforms = [
-      { name: 'Spotify',       img: 'Spotify Logo.png',       href: '#' },
-      { name: 'Apple Music',   img: 'Apple Music Logo.png',   href: '#' },
-      { name: 'Tidal',         img: 'Tidal Logo.png',         href: '#' },
-      { name: 'Deezer',        img: 'Deezer Logo.png',        href: '#' },
-      { name: 'YouTube Music', img: 'YouTube Logo.png',       href: '#' }
+    var platformDefs = [
+      { name: 'Spotify',       img: 'Spotify Logo.png',       key: 'spotify' },
+      { name: 'Apple Music',   img: 'Apple Music Logo.png',   key: 'appleMusic' },
+      { name: 'Tidal',         img: 'Tidal Logo.png',         key: 'tidal' },
+      { name: 'Deezer',        img: 'Deezer Logo.png',        key: 'deezer' },
+      { name: 'YouTube Music', img: 'YouTube Logo.png',       key: 'youtubeMusic' }
     ];
 
     var releases = [
@@ -258,47 +259,82 @@
         type: 'Single',
         date: 'Coming Soon',
         cover: 'Prescription Cover Art.jpg',
-        desc: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua, ut enim ad minim veniam.',
-        comingSoon: true
+        desc: 'Prescription is another club banger about my relationship with clubbing and nightlife and how it serves as a release for mental health struggles.',
+        comingSoon: false,
+        links: {
+          spotify:     'https://open.spotify.com/album/0vC5X5USvoPubHB7KYfnYq',
+          appleMusic:  'https://music.apple.com/gb/album/prescription/1890070827?i=1890070829',
+          tidal:       'https://tidal.com/track/511734859/u',
+          deezer:      'https://link.deezer.com/s/3345se832NkDBL539BLDh',
+          youtubeMusic:'https://www.youtube.com/watch?v=0Dk4tu0wGFA&list=OLAK5uy_nEKrqI1-8rk7ndtmvEvKS1gi6JGzkNlyU'
+        }
       },
       {
         title: 'Obsession',
         type: 'Single',
         date: '20 March 2026',
         cover: 'Obsession Cover Art.JPG',
-        desc: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua, ut enim ad minim veniam.',
-        comingSoon: false
+        desc: 'obsession is a club-ready banger blending dance pop, tech house and piano house - a party anthem about our generation\u2019s OBSESSION to new, brighter and better things. We are a generating that cant stand still... fast love, fast life, fast dopamine.',
+        comingSoon: false,
+        links: {
+          spotify:     'https://open.spotify.com/track/6vybIbPeNxhSP911LX6DJc',
+          appleMusic:  'https://music.apple.com/gb/album/obsession-single/1879028635',
+          tidal:       'https://tidal.com/track/499782478/u',
+          deezer:      'https://link.deezer.com/s/3345tE1nCYmqlchi9c7Np',
+          youtubeMusic:'https://www.youtube.com/watch?v=G6SofR7eaJg&list=OLAK5uy_m421pdgf6o0F1MfI3ZTv4VR-Ch0gjqKVg'
+        }
       },
       {
         title: 'Welcome to the Club',
         type: 'Single',
-        date: '15 November 2025',
+        date: '15 November 2024',
         cover: 'Welcome to the Club Cover Art.webp',
-        desc: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua, ut enim ad minim veniam.',
-        comingSoon: false
+        desc: 'WELCOME TO THE CLUB was my first release the lead single of RAINBOW CATHARSIS - an EP about my coming out journey. This song tells the tale of a very poignant moment in my life: his 2-year straight relationship before assuming my sexuality, using the image of a club to play an analogy on being accepted and changing myself to belong somewhere I don\u2019t. Throughout the song, the listener will understand that the relationship depicted in the song can\u2019t go anywhere, and that I want to give my partner her heart back so we can both be finally free.',
+        comingSoon: false,
+        links: {
+          spotify:     'https://open.spotify.com/track/1HsTuvCr0weSkmukyHTYjp',
+          appleMusic:  'https://music.apple.com/gb/album/welcome-to-the-club/1821045577?i=1821045578',
+          tidal:       'https://tidal.com/track/393009637/u',
+          deezer:      'https://link.deezer.com/s/3345sYaQJN5rbvQ0I2YkJ',
+          youtubeMusic:'https://www.youtube.com/watch?v=cKOuUqBKP5g&list=OLAK5uy_m4tQ_uCe7g-t1Ko0e3OZNSw4bmUmgR1mQ'
+        }
       },
       {
         title: 'Rainbow Catharsis',
         type: 'EP',
         date: '15 August 2025',
         cover: 'Rainbow Catharsis Cover Art.webp',
-        desc: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua, ut enim ad minim veniam.',
-        comingSoon: false
+        desc: 'RAINBOW CATHARSIS is Silver\u2019s first EP, available on August 15th. It was produced over the course of a year in Berlin and London. The five songs included in the EP are a revisitation of different stages of the artist\u2019s coming out journey, blending different subgenres of pop such as electronic pop, pop rock and synthwave.',
+        comingSoon: false,
+        links: {
+          spotify:     'https://open.spotify.com/album/5KE3AaFks3D82lkcIOYfE0',
+          appleMusic:  'https://music.apple.com/gb/album/rainbow-catharsis-ep/1821045577',
+          tidal:       'https://tidal.com/album/442520268/u',
+          deezer:      'https://link.deezer.com/s/3345sIeBcxU6PuLeUwwcc',
+          youtubeMusic:'https://www.youtube.com/watch?v=cKOuUqBKP5g&list=OLAK5uy_ny53prujBFcPmjUtTrS-kOoIYAIeEEF4c'
+        }
       },
       {
         title: 'Breaking Point',
         type: 'Single',
         date: '28 February 2025',
         cover: 'Breaking Point Cover Art.webp',
-        desc: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua, ut enim ad minim veniam.',
-        comingSoon: false
+        desc: 'BREAKING POINT was Silver\u2019s second release, and the second track in his debut EP, RAINBOW CATHARSIS. This EP was a revisitation of the different stages in his coming out journey, blending different subgenres of pop such as electronic pop, pop rock and synthwave, with deep lyrics that invite the listener to discover more. ',
+        comingSoon: false,
+        links: {
+          spotify:     'https://open.spotify.com/track/0znz0NKueHbuI6zL8RAdUC',
+          appleMusic:  'https://music.apple.com/gb/album/breaking-point/1821045577?i=1821045579',
+          tidal:       'https://tidal.com/album/419053251/u',
+          deezer:      'https://link.deezer.com/s/3345ssfOgI4N4Er5sYSBr',
+          youtubeMusic:'https://www.youtube.com/watch?v=zxeqJdEPZcc&list=OLAK5uy_lxHqEfg0O8kOojEI9e8n8IjtgH1oBg0QE'
+        }
       }
     ];
 
-    function buildPlatformButtons() {
-      return platforms.map(function (p) {
+    function buildPlatformButtons(links) {
+      return platformDefs.map(function (p) {
         return (
-          '<a href="' + p.href + '" class="platform-btn" target="_blank" rel="noopener noreferrer">' +
+          '<a href="' + (links[p.key] || '#') + '" class="platform-btn" target="_blank" rel="noopener noreferrer">' +
             '<img src="assets/images/Socials Logos/' + p.img + '" alt="' + p.name + '" />' +
             p.name +
           '</a>'
@@ -306,7 +342,7 @@
       }).join('');
     }
 
-    function buildListenButton(index) {
+    function buildListenButton(index, links) {
       return (
         '<div class="release-listen-wrap">' +
           '<button class="release-listen-btn" data-idx="' + index + '" aria-expanded="false">' +
@@ -314,7 +350,7 @@
             '<span class="btn-arrow">&#9660;</span>' +
           '</button>' +
           '<div class="release-platforms" id="platforms-' + index + '">' +
-            buildPlatformButtons() +
+            buildPlatformButtons(links) +
           '</div>' +
         '</div>'
       );
@@ -324,7 +360,7 @@
       return releases.map(function (r, i) {
         var action = r.comingSoon
           ? '<span class="release-coming-soon">Coming Soon</span>'
-          : buildListenButton(i);
+          : buildListenButton(i, r.links);
 
         return (
           '<div class="release-item">' +

@@ -2,11 +2,17 @@ function render() {
   // Header + loader
   Header.render('#root', '');
 
-  // Hero + Mailchimp form
+  // Hero + Mailchimp form — randomly pick between two hero images on each load
+  var heroImages = [
+    'assets/images/Hero/silver-omen-prescription.jpg',
+    'assets/images/Hero/silver-omen-torso.jpg'
+  ];
+  var heroImage = heroImages[Math.floor(Math.random() * heroImages.length)];
+
   var hero =
     '<section class="hero" id="home">' +
       '<div class="hero-image-wrap">' +
-        '<img src="assets/images/Silver Omen Hero Section Image.jpg" alt="Silver Omen hero" class="hero-image" />' +
+        '<img src="' + heroImage + '" alt="Silver Omen hero" class="hero-image" />' +
         '<div class="hero-overlay"></div>' +
       '</div>' +
       '<div class="hero-content">' +
@@ -19,7 +25,7 @@ function render() {
             '<form action="https://silveromen.us6.list-manage.com/subscribe/post?u=7482966efbe5eb135b80f0bce&amp;id=e2326bd25c&amp;f_id=006be5e1f0" method="post" id="mc-embedded-subscribe-form" name="mc-embedded-subscribe-form" class="validate" target="_blank">' +
               '<div id="mc_embed_signup_scroll">' +
                 '<div class="mc-field-group">' +
-                  '<input type="email" name="EMAIL" class="required email" id="mce-EMAIL" required placeholder="Email Address *" />' +
+                  '<input type="email" name="EMAIL" class="required email" id="mce-EMAIL" required placeholder="Email Address" />' +
                 '</div>' +
                 '<div class="mc-field-group">' +
                   '<input type="text" name="FNAME" class="text" id="mce-FNAME" placeholder="First Name" />' +
