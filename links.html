@@ -120,6 +120,70 @@
       border-color: #7a3fb8;
     }
 
+    /* Expandable streaming panel */
+    .links-expand-btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      cursor: pointer;
+    }
+
+    .links-expand-btn .expand-arrow {
+      display: inline-block;
+      font-size: 0.6rem;
+      transition: transform 0.25s ease;
+      line-height: 1;
+    }
+
+    .links-expand-btn[aria-expanded="true"] .expand-arrow {
+      transform: rotate(180deg);
+    }
+
+    .links-sub-buttons {
+      display: none;
+      flex-direction: column;
+      gap: 0.6rem;
+      width: 100%;
+      margin-top: 0.6rem;
+      padding-left: 0.75rem;
+    }
+
+    .links-sub-buttons.open {
+      display: flex;
+    }
+
+    .links-sub-btn {
+      display: flex;
+      align-items: center;
+      gap: 0.65rem;
+      width: 100%;
+      padding: 0.7rem 1.25rem;
+      text-align: left;
+      font-family: 'Brans', sans-serif;
+      font-size: 0.78rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: #f8f8f8;
+      border: 1px solid rgba(248, 248, 248, 0.15);
+      border-radius: 4px;
+      background: rgba(248, 248, 248, 0.03);
+      transition: background 0.2s ease, border-color 0.2s ease;
+    }
+
+    .links-sub-btn:hover {
+      background: rgba(157, 86, 218, 0.14);
+      border-color: rgba(157, 86, 218, 0.5);
+      color: #f8f8f8;
+    }
+
+    .links-sub-btn img {
+      width: 18px;
+      height: 18px;
+      object-fit: contain;
+      flex-shrink: 0;
+    }
+
     /* Social icons */
     .links-socials {
       display: flex;
@@ -192,9 +256,35 @@
     <span class="links-name">Silver Omen</span>
 
 <div class="links-buttons">
-      <a href="https://open.spotify.com/album/0vC5X5USvoPubHB7KYfnYq" class="links-btn links-btn-primary" target="_blank" rel="noopener noreferrer">
-        Listen to Prescription
-      </a>
+      <button class="links-btn links-btn-primary links-expand-btn" aria-expanded="false" onclick="togglePrescription(this)">
+        Listen to Prescription <span class="expand-arrow">&#9660;</span>
+      </button>
+      <div class="links-sub-buttons" id="prescription-platforms">
+        <a href="https://open.spotify.com/album/0vC5X5USvoPubHB7KYfnYq" class="links-sub-btn" target="_blank" rel="noopener noreferrer">
+          <img src="assets/images/Socials Logos/Spotify Logo.png" alt="" /> Spotify
+        </a>
+        <a href="https://music.apple.com/us/album/prescription-single/1890070827" class="links-sub-btn" target="_blank" rel="noopener noreferrer">
+          <img src="assets/images/Socials Logos/Apple Music Logo.png" alt="" /> Apple Music
+        </a>
+        <a href="https://music.apple.com/us/album/prescription-single/1890070827" class="links-sub-btn" target="_blank" rel="noopener noreferrer">
+          <img src="assets/images/Socials Logos/Apple Music Logo.png" alt="" /> iTunes
+        </a>
+        <a href="https://tidal.com/album/511734858" class="links-sub-btn" target="_blank" rel="noopener noreferrer">
+          <img src="assets/images/Socials Logos/Tidal Logo.png" alt="" /> Tidal
+        </a>
+        <a href="https://www.deezer.com/de/album/951472511" class="links-sub-btn" target="_blank" rel="noopener noreferrer">
+          <img src="assets/images/Socials Logos/Deezer Logo.png" alt="" /> Deezer
+        </a>
+        <!-- <a href="https://music.amazon.com/albums/B0GVK8BJ8X?ref=dm_ff_amazonmusic_3p&tag=featurefm-20" class="links-sub-btn" target="_blank" rel="noopener noreferrer">
+          <span style="width:18px;height:18px;flex-shrink:0;display:inline-block"></span> Amazon Music
+        </a> -->
+        <a href="https://music.youtube.com/watch?v=0Dk4tu0wGFA" class="links-sub-btn" target="_blank" rel="noopener noreferrer">
+          <img src="assets/images/Socials Logos/YouTube Logo.png" alt="" /> YouTube Music
+        </a>
+        <a href="https://www.youtube.com/watch?v=0Dk4tu0wGFA" class="links-sub-btn" target="_blank" rel="noopener noreferrer">
+          <img src="assets/images/Socials Logos/YouTube Logo.png" alt="" /> YouTube
+        </a>
+      </div>
       <a href="https://www.youtube.com/watch?v=nyTF35kyBs4" class="links-btn" target="_blank" rel="noopener noreferrer">
         Inner Child Interview
       </a>
@@ -234,5 +324,13 @@
     </div>
 
   </div>
+  <script>
+    function togglePrescription(btn) {
+      var panel = document.getElementById('prescription-platforms');
+      var expanded = btn.getAttribute('aria-expanded') === 'true';
+      btn.setAttribute('aria-expanded', String(!expanded));
+      panel.classList.toggle('open', !expanded);
+    }
+  </script>
 </body>
 </html>
