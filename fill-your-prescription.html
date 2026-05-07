@@ -1,0 +1,926 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
+  <meta name="theme-color" content="#234b09" />
+  <title>Fill Your Prescription — Silver Omen</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html, body {
+      width: 100%;
+      height: 100%;
+      background: #0a1a04;
+      font-family: 'Courier New', monospace;
+      color: #fff;
+      overflow: hidden;
+      -webkit-tap-highlight-color: transparent;
+      user-select: none;
+      -webkit-user-select: none;
+      touch-action: manipulation;
+      overscroll-behavior: none;
+    }
+    #stage {
+      position: fixed;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background:
+        radial-gradient(ellipse at 50% 30%, #234b09 0%, #0a1a04 80%);
+    }
+    canvas {
+      display: block;
+      image-rendering: pixelated;
+      image-rendering: -moz-crisp-edges;
+      image-rendering: crisp-edges;
+      background: #0a1a04;
+      box-shadow: 0 0 40px rgba(76, 137, 38, 0.35);
+    }
+    .overlay {
+      position: fixed;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 20px;
+      padding: 24px;
+      text-align: center;
+      z-index: 10;
+      background: rgba(10, 26, 4, 0.82);
+      backdrop-filter: blur(2px);
+      -webkit-backdrop-filter: blur(2px);
+      overflow-y: auto;
+    }
+    .overlay.hidden { display: none; }
+    .overlay-view { display: flex; flex-direction: column; align-items: center; gap: 18px; width: 100%; max-width: 320px; }
+    .overlay-view.hidden { display: none; }
+    .title {
+      font-size: 26px;
+      letter-spacing: 2px;
+      color: #ffec27;
+      text-shadow:
+        3px 3px 0 #234b09,
+        -1px -1px 0 #4c8926,
+        0 0 24px rgba(76, 137, 38, 0.75);
+      text-transform: uppercase;
+      font-weight: 900;
+      line-height: 1.05;
+    }
+    .subtitle {
+      font-size: 12px;
+      color: #d4e8b8;
+      max-width: 280px;
+      line-height: 1.7;
+      letter-spacing: 0.5px;
+    }
+    .stats {
+      font-size: 11px;
+      color: #ffec27;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+    }
+    .btn {
+      background: #4c8926;
+      color: #fff;
+      border: 4px solid #fff;
+      padding: 14px 30px;
+      font-family: inherit;
+      font-size: 15px;
+      font-weight: 900;
+      cursor: pointer;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      box-shadow: 6px 6px 0 #234b09;
+      transition: transform 60ms, box-shadow 60ms;
+    }
+    .btn:active {
+      transform: translate(3px, 3px);
+      box-shadow: 3px 3px 0 #234b09;
+    }
+    .btn.btn-yellow {
+      background: #ffec27;
+      color: #234b09;
+      box-shadow: 6px 6px 0 #7a7013;
+    }
+    .btn.btn-yellow:active { box-shadow: 3px 3px 0 #7a7013; }
+    .btn.btn-small {
+      padding: 10px 22px;
+      font-size: 12px;
+      box-shadow: 4px 4px 0 #234b09;
+    }
+    .btn.btn-small:active { box-shadow: 2px 2px 0 #234b09; }
+    .platform-list {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      width: 100%;
+    }
+    .plat-btn {
+      display: block;
+      width: 100%;
+      padding: 12px 14px;
+      font-family: inherit;
+      font-size: 13px;
+      font-weight: 900;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      text-decoration: none;
+      text-align: center;
+      color: #1a0a2a;
+      border: 3px solid #fff;
+      transition: transform 60ms, box-shadow 60ms;
+    }
+    .plat-btn:active { transform: translate(2px, 2px); }
+    .plat-spotify  { background: #00e436; box-shadow: 4px 4px 0 #006e1a; }
+    .plat-spotify:active  { box-shadow: 2px 2px 0 #006e1a; }
+    .plat-apple    { background: #ff77a8; box-shadow: 4px 4px 0 #7a3852; }
+    .plat-apple:active    { box-shadow: 2px 2px 0 #7a3852; }
+    .plat-itunes   { background: #a070ff; box-shadow: 4px 4px 0 #3a1f7a; color: #fff; }
+    .plat-itunes:active   { box-shadow: 2px 2px 0 #3a1f7a; }
+    .plat-tidal    { background: #29adff; box-shadow: 4px 4px 0 #0e527a; }
+    .plat-tidal:active    { box-shadow: 2px 2px 0 #0e527a; }
+    .plat-deezer   { background: #ffa300; box-shadow: 4px 4px 0 #7a4f00; }
+    .plat-deezer:active   { box-shadow: 2px 2px 0 #7a4f00; }
+    .plat-ytmusic  { background: #ff004d; box-shadow: 4px 4px 0 #7a0024; color: #fff; }
+    .plat-ytmusic:active  { box-shadow: 2px 2px 0 #7a0024; }
+    .plat-youtube  { background: #ffec27; box-shadow: 4px 4px 0 #7a7013; }
+    .plat-youtube:active  { box-shadow: 2px 2px 0 #7a7013; }
+    .back-link {
+      position: fixed;
+      top: 10px;
+      left: 12px;
+      z-index: 20;
+      color: #d4e8b8;
+      text-decoration: none;
+      font-size: 11px;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      padding: 6px 10px;
+      border: 2px solid #4c8926;
+      background: rgba(10, 26, 4, 0.7);
+    }
+    .back-link:hover { color: #fff; border-color: #fff; }
+    @media (min-width: 600px) {
+      .title { font-size: 42px; }
+      .subtitle { font-size: 14px; max-width: 380px; }
+      .btn { font-size: 17px; padding: 16px 36px; }
+    }
+  </style>
+</head>
+<body>
+  <a href="index.html" class="back-link">&larr; Silver Omen</a>
+  <div id="stage">
+    <canvas id="cv"></canvas>
+  </div>
+  <div class="overlay" id="overlay">
+    <div class="overlay-view" id="overlayMain">
+      <h1 class="title" id="title">Fill Your<br>Prescription</h1>
+      <p class="subtitle" id="subtitle">
+        Pills fall from the pipe. Tap the day in the pillbox that matches the pill's color to flick it into place.
+        <br><br>
+        5 lives. 50 pills. Don't drop the dose.
+      </p>
+      <div class="stats" id="stats"></div>
+      <button class="btn" id="startBtn">Start</button>
+      <button class="btn btn-yellow hidden" id="listenBtn" style="display:none">Listen to Prescription</button>
+    </div>
+    <div class="overlay-view hidden" id="overlayPlatforms">
+      <h1 class="title">Prescription</h1>
+      <p class="subtitle">Stream or download Silver Omen's single.</p>
+      <div class="platform-list">
+        <a class="plat-btn plat-spotify" href="https://open.spotify.com/album/0vC5X5USvoPubHB7KYfnYq" target="_blank" rel="noopener noreferrer">Spotify</a>
+        <a class="plat-btn plat-apple" href="https://music.apple.com/us/album/prescription-single/1890070827" target="_blank" rel="noopener noreferrer">Apple Music</a>
+        <a class="plat-btn plat-itunes" href="https://music.apple.com/us/album/prescription-single/1890070827" target="_blank" rel="noopener noreferrer">iTunes</a>
+        <a class="plat-btn plat-tidal" href="https://tidal.com/album/511734858" target="_blank" rel="noopener noreferrer">Tidal</a>
+        <a class="plat-btn plat-deezer" href="https://www.deezer.com/de/album/951472511" target="_blank" rel="noopener noreferrer">Deezer</a>
+        <a class="plat-btn plat-ytmusic" href="https://music.youtube.com/watch?v=0Dk4tu0wGFA" target="_blank" rel="noopener noreferrer">YouTube Music</a>
+        <a class="plat-btn plat-youtube" href="https://www.youtube.com/watch?v=0Dk4tu0wGFA" target="_blank" rel="noopener noreferrer">YouTube</a>
+      </div>
+      <button class="btn btn-small" id="backToEnd">&larr; Back</button>
+    </div>
+  </div>
+  <audio id="bgm" src="assets/masters/prescription-master.wav" loop preload="auto"></audio>
+
+  <script>
+  (function () {
+    'use strict';
+
+    // ---------- Configuration ----------
+    var BASE_W = 224;
+    var BASE_H = 320;
+    var TOTAL_PILLS = 50;
+    var START_LIVES = 5;
+
+    // 7 days, 7 unique colors, 7 unique pill shapes.
+    var COLORS = [
+      { name: 'MON', fill: '#ff004d', dark: '#7a0024', hl: '#ff8aa6', shape: 'capsule'  },
+      { name: 'TUE', fill: '#ffa300', dark: '#7a4f00', hl: '#ffd680', shape: 'round'    },
+      { name: 'WED', fill: '#ffec27', dark: '#7a7013', hl: '#fff8a0', shape: 'oval'     },
+      { name: 'THU', fill: '#00e436', dark: '#006e1a', hl: '#7ff09f', shape: 'square'   },
+      { name: 'FRI', fill: '#29adff', dark: '#0e527a', hl: '#9bd9ff', shape: 'diamond'  },
+      { name: 'SAT', fill: '#a070ff', dark: '#3a1f7a', hl: '#d6c0ff', shape: 'triangle' },
+      { name: 'SUN', fill: '#ff77a8', dark: '#7a3852', hl: '#ffc8d8', shape: 'star'     }
+    ];
+
+    // ---------- Canvas / scaling ----------
+    var cv = document.getElementById('cv');
+    var ctx = cv.getContext('2d');
+    cv.width = BASE_W;
+    cv.height = BASE_H;
+    ctx.imageSmoothingEnabled = false;
+
+    var displayScale = 1;
+
+    function resize() {
+      var W = window.innerWidth;
+      var H = window.innerHeight;
+      var aspect = BASE_W / BASE_H;
+      var dispW, dispH;
+      if (W / H > aspect) {
+        dispH = H;
+        dispW = H * aspect;
+      } else {
+        dispW = W;
+        dispH = W / aspect;
+      }
+      cv.style.width = Math.floor(dispW) + 'px';
+      cv.style.height = Math.floor(dispH) + 'px';
+      displayScale = dispW / BASE_W;
+      ctx.imageSmoothingEnabled = false;
+    }
+    window.addEventListener('resize', resize);
+    window.addEventListener('orientationchange', resize);
+    resize();
+
+    // ---------- Layout ----------
+    var PB_PAD = 3;
+    var PB_LEFT = 6;
+    var PB_RIGHT = BASE_W - 6;
+    var PB_W = PB_RIGHT - PB_LEFT;
+    var SLOT_GAP = 2;
+    var SLOT_W = (PB_W - SLOT_GAP * 8) / 7;
+    var PB_H = 52;
+    var PB_Y = BASE_H - PB_H - 6;
+
+    function slotX(i) { return PB_LEFT + SLOT_GAP + i * (SLOT_W + SLOT_GAP); }
+    function slotCenterX(i) { return slotX(i) + SLOT_W / 2; }
+
+    var PIPE_W = 26;
+    var PIPE_X = BASE_W / 2;
+    var PIPE_TOP = 14;
+    var PIPE_BOTTOM = 70;
+    var PADDLE_Y = PIPE_BOTTOM + 14;
+    var PADDLE_LEN = 38;
+
+    // ---------- State ----------
+    var state = 'idle'; // 'idle' | 'playing' | 'gameover' | 'win'
+    var lives = START_LIVES;
+    var score = 0;
+    var pillsSpawned = 0;
+    var activePill = null;   // pill currently in the pipe (flickable)
+    var flyingPills = [];    // pills past the pipe (locked in, falling to slot)
+    var baseSpeed = 0.44;
+    var speedRamp = 0.0176;
+    var paddleTargetDay = -1;
+    var paddleAnim = 0;
+    var particles = [];
+    var screenShake = 0;
+    var flashTime = 0;
+    var flashColor = '#ffffff';
+    var bgPhase = 0;
+
+    var bgm = document.getElementById('bgm');
+
+    // ---------- Game flow ----------
+    function startGame() {
+      var firstStart = bgm.paused && bgm.currentTime === 0;
+      state = 'playing';
+      lives = START_LIVES;
+      score = 0;
+      pillsSpawned = 0;
+      activePill = null;
+      flyingPills = [];
+      particles = [];
+      screenShake = 0;
+      try {
+        if (firstStart) bgm.currentTime = 0;
+        var p = bgm.play();
+        if (p && p.catch) p.catch(function () {});
+      } catch (e) {}
+      spawnPill();
+    }
+
+    function spawnPill() {
+      if (pillsSpawned >= TOTAL_PILLS || state !== 'playing') return;
+      pillsSpawned++;
+      var idx = Math.floor(Math.random() * 7);
+      var sp = baseSpeed + (pillsSpawned - 1) * speedRamp;
+      activePill = {
+        x: PIPE_X,
+        y: PIPE_TOP + 6,
+        vx: 0,
+        vy: sp,
+        rot: 0,
+        rotSpeed: 0,
+        colorIdx: idx,
+        struck: false,
+        targetDay: -1
+      };
+      paddleTargetDay = -1;
+      paddleAnim = 0;
+    }
+
+    function endGame(win) {
+      state = win ? 'win' : 'gameover';
+      // Keep the music playing through the end-of-game overlay.
+      var ov = document.getElementById('overlay');
+      var title = document.getElementById('title');
+      var sub = document.getElementById('subtitle');
+      var stats = document.getElementById('stats');
+      var btn = document.getElementById('startBtn');
+      var listen = document.getElementById('listenBtn');
+      if (win) {
+        title.innerHTML = 'Prescription<br>Filled';
+        sub.innerHTML = 'You sorted every pill. Silver is medicated.';
+      } else {
+        title.innerHTML = 'Bottle<br>Empty';
+        sub.innerHTML = 'You ran out of lives. The doses got mixed.';
+      }
+      stats.textContent = 'Score ' + score + ' / ' + TOTAL_PILLS;
+      btn.textContent = 'Play Again';
+      // Reveal the streaming CTA only on end screens.
+      listen.style.display = '';
+      listen.classList.remove('hidden');
+      // Make sure the main view is visible (in case user was on platforms view from a prior round).
+      document.getElementById('overlayMain').classList.remove('hidden');
+      document.getElementById('overlayPlatforms').classList.add('hidden');
+      ov.classList.remove('hidden');
+    }
+
+    // ---------- Input ----------
+    function pickDayAtPoint(px, py) {
+      // Generous hit zone: anywhere in the pillbox vertical band, plus a margin above.
+      if (py < PB_Y - 12) return -1;
+      for (var i = 0; i < 7; i++) {
+        var sx = slotX(i);
+        if (px >= sx - SLOT_GAP && px <= sx + SLOT_W + SLOT_GAP) return i;
+      }
+      return -1;
+    }
+
+    function eventToCanvas(e) {
+      var rect = cv.getBoundingClientRect();
+      var clientX, clientY;
+      if (e.touches && e.touches.length) {
+        clientX = e.touches[0].clientX;
+        clientY = e.touches[0].clientY;
+      } else if (e.changedTouches && e.changedTouches.length) {
+        clientX = e.changedTouches[0].clientX;
+        clientY = e.changedTouches[0].clientY;
+      } else {
+        clientX = e.clientX;
+        clientY = e.clientY;
+      }
+      return {
+        x: (clientX - rect.left) / displayScale,
+        y: (clientY - rect.top) / displayScale
+      };
+    }
+
+    function handleTap(e) {
+      if (state !== 'playing' || !activePill || activePill.struck) return;
+      e.preventDefault();
+      var p = eventToCanvas(e);
+      var i = pickDayAtPoint(p.x, p.y);
+      if (i < 0) return;
+      flick(i);
+    }
+
+    cv.addEventListener('mousedown', handleTap, false);
+    cv.addEventListener('touchstart', handleTap, { passive: false });
+
+    var FLIGHT_GRAVITY = 0.12;
+
+    function flick(dayIdx) {
+      if (!activePill || activePill.struck) return;
+      // Active pill is by definition still inside the pipe — once it exits,
+      // it's promoted to flyingPills and is no longer flickable.
+      paddleTargetDay = dayIdx;
+      paddleAnim = 1;
+      activePill.struck = true;
+      activePill.targetDay = dayIdx;
+      var targetX = slotCenterX(dayIdx);
+      // Aim at the landing line — the y where deliverPill triggers — so the
+      // ballistic actually arrives at targetX on the same frame it lands.
+      var targetY = PB_Y + 6;
+      var dx = targetX - activePill.x;
+      var dy = targetY - activePill.y;
+      // Flight time grows with horizontal distance so the side slots get the
+      // time they need, and shrinks slightly as the game speeds up.
+      var t = Math.max(16, Math.min(34, 18 + Math.abs(dx) * 0.18 - pillsSpawned * 0.1));
+      // Solve Euler integration: y_T = y0 + T*vy + g*T*(T-1)/2 (gravity is
+      // applied after each position step in update()).
+      activePill.vx = dx / t;
+      activePill.vy = (dy - FLIGHT_GRAVITY * t * (t - 1) / 2) / t;
+      activePill.flightFrames = t;
+      activePill.rotSpeed = activePill.vx * 0.06;
+      // Spark burst at paddle.
+      for (var i = 0; i < 8; i++) {
+        particles.push({
+          x: activePill.x + (Math.random() - 0.5) * 8,
+          y: PADDLE_Y,
+          vx: (Math.random() - 0.5) * 2.4,
+          vy: -Math.random() * 1.5 - 0.3,
+          life: 14 + Math.random() * 8,
+          color: i % 2 ? '#ffec27' : '#ffffff',
+          size: 1
+        });
+      }
+    }
+
+    function deliverPill(p, landedIdx) {
+      var correctIdx = p.colorIdx;
+      var correct = (landedIdx === correctIdx);
+      var px = p.x;
+      var py = p.y;
+
+      if (correct) {
+        score++;
+        flashTime = 6;
+        flashColor = COLORS[correctIdx].fill;
+        for (var i = 0; i < 14; i++) {
+          particles.push({
+            x: px,
+            y: py,
+            vx: (Math.random() - 0.5) * 2.4,
+            vy: -Math.random() * 2 - 0.4,
+            life: 28 + Math.random() * 10,
+            color: i % 2 ? COLORS[correctIdx].fill : COLORS[correctIdx].hl,
+            size: 1
+          });
+        }
+      } else {
+        lives--;
+        screenShake = 6;
+        flashTime = 8;
+        flashColor = '#ff004d';
+        for (var j = 0; j < 12; j++) {
+          particles.push({
+            x: px,
+            y: py,
+            vx: (Math.random() - 0.5) * 2.2,
+            vy: -Math.random() * 1.4 - 0.2,
+            life: 24 + Math.random() * 8,
+            color: '#ff004d',
+            size: 1
+          });
+        }
+      }
+
+      if (lives <= 0) { endGame(false); }
+    }
+
+    // ---------- Update ----------
+    function integratePill(p) {
+      p.x += p.vx;
+      p.y += p.vy;
+      p.rot += p.rotSpeed;
+      if (p.struck) {
+        p.vy += FLIGHT_GRAVITY;
+      } else if (p.y > PIPE_BOTTOM + 8) {
+        p.vy = Math.min(p.vy + 0.012, baseSpeed * 2.2);
+      }
+    }
+
+    function tryLand(p) {
+      if (p.y >= PB_Y + 6) {
+        var landed = -1;
+        if (p.x >= PB_LEFT - 4 && p.x <= PB_RIGHT + 4) {
+          var bestDist = Infinity;
+          for (var i = 0; i < 7; i++) {
+            var d = Math.abs(p.x - slotCenterX(i));
+            if (d < bestDist) { bestDist = d; landed = i; }
+          }
+        }
+        deliverPill(p, landed);
+        return true;
+      }
+      if (p.x < -10 || p.x > BASE_W + 10) {
+        deliverPill(p, -1);
+        return true;
+      }
+      return false;
+    }
+
+    function update() {
+      bgPhase += 0.5;
+
+      // Active pill (flickable). Promotes to flying once it's past the
+      // paddle/flicker — only then is the next pill allowed to spawn. This
+      // avoids a window where the user thinks they're sorting the pill at
+      // the paddle but the click hits a freshly-spawned one above.
+      if (activePill) {
+        integratePill(activePill);
+        if (activePill.y > PADDLE_Y + 4) {
+          var wasStruck = activePill.struck;
+          flyingPills.push(activePill);
+          activePill = null;
+          if (pillsSpawned < TOTAL_PILLS && state === 'playing') {
+            // Unsorted pills get a brief beat before the next one spawns so
+            // the player can register the miss; struck pills spawn the next
+            // pill immediately.
+            if (wasStruck) spawnPill();
+            else setTimeout(function () {
+              if (state === 'playing' && !activePill) spawnPill();
+            }, 300);
+          }
+        }
+      }
+
+      // Flying pills (past pipe — locked in trajectory)
+      for (var i = flyingPills.length - 1; i >= 0; i--) {
+        integratePill(flyingPills[i]);
+        if (tryLand(flyingPills[i])) flyingPills.splice(i, 1);
+      }
+
+      // End-of-game: all spawned, none in pipe, none in flight.
+      if (state === 'playing' && pillsSpawned >= TOTAL_PILLS && !activePill && flyingPills.length === 0 && lives > 0) {
+        endGame(true);
+      }
+
+      // Particles
+      for (var k = particles.length - 1; k >= 0; k--) {
+        var pa = particles[k];
+        pa.x += pa.vx;
+        pa.y += pa.vy;
+        pa.vy += 0.07;
+        pa.life--;
+        if (pa.life <= 0) particles.splice(k, 1);
+      }
+
+      if (paddleAnim > 0) paddleAnim = Math.max(0, paddleAnim - 0.06);
+      if (screenShake > 0) screenShake -= 0.5;
+      if (flashTime > 0) flashTime--;
+    }
+
+    // ---------- Drawing ----------
+    function fillRect(x, y, w, h, color) {
+      ctx.fillStyle = color;
+      ctx.fillRect(x | 0, y | 0, w | 0, h | 0);
+    }
+
+    function drawBackground() {
+      // Base
+      fillRect(0, 0, BASE_W, BASE_H, '#0d2009');
+      // Horizontal scanlines / floor bands
+      for (var y = 0; y < BASE_H; y += 2) {
+        if ((y >> 1) % 2 === 0) {
+          ctx.fillStyle = 'rgba(255,255,255,0.02)';
+          ctx.fillRect(0, y, BASE_W, 1);
+        }
+      }
+      // Stars (deterministic)
+      ctx.fillStyle = '#fff';
+      var stars = [
+        [12, 30], [40, 18], [70, 50], [110, 28], [160, 14],
+        [196, 36], [180, 80], [22, 100], [200, 120], [60, 130],
+        [140, 160], [30, 180], [190, 195], [100, 220]
+      ];
+      for (var s = 0; s < stars.length; s++) {
+        var bright = ((bgPhase + s * 7) % 60) < 30;
+        ctx.fillStyle = bright ? '#fff' : '#4c8926';
+        ctx.fillRect(stars[s][0], stars[s][1], 1, 1);
+      }
+      // Decorative grid lines near top
+      ctx.fillStyle = '#234b09';
+      for (var gx = 0; gx < BASE_W; gx += 8) ctx.fillRect(gx, 0, 1, 1);
+    }
+
+    function drawPipe() {
+      var x = PIPE_X - PIPE_W / 2;
+      var top = PIPE_TOP;
+      var bot = PIPE_BOTTOM;
+      // Outer rim
+      fillRect(x - 4, top - 8, PIPE_W + 8, 8, '#5f574f');
+      fillRect(x - 4, top - 8, PIPE_W + 8, 2, '#a89878');
+      // Body
+      fillRect(x, top, PIPE_W, bot - top, '#3a3a4a');
+      // Inner shadow & highlight
+      fillRect(x + 2, top, 2, bot - top, '#5a5a70');
+      fillRect(x + PIPE_W - 4, top, 2, bot - top, '#1a1a2a');
+      // Lower lip
+      fillRect(x - 4, bot, PIPE_W + 8, 4, '#5f574f');
+      fillRect(x - 4, bot + 4, PIPE_W + 8, 2, '#1a1a2a');
+      // Bolts
+      ctx.fillStyle = '#ffec27';
+      ctx.fillRect(x - 2, bot + 1, 2, 2);
+      ctx.fillRect(x + PIPE_W, bot + 1, 2, 2);
+      // Hint of pill in throat
+      fillRect(x + 2, top, PIPE_W - 4, 4, '#222234');
+    }
+
+    function drawPaddle() {
+      var cx = PIPE_X;
+      var cy = PADDLE_Y;
+      var angle = 0;
+      if (paddleAnim > 0 && paddleTargetDay >= 0) {
+        var dx = slotCenterX(paddleTargetDay) - cx;
+        var maxA = Math.PI / 2.5;
+        var a = Math.max(-maxA, Math.min(maxA, dx / 50));
+        angle = a * paddleAnim;
+      }
+      ctx.save();
+      ctx.translate(cx, cy);
+      ctx.rotate(angle);
+      // Paddle body
+      ctx.fillStyle = '#ffec27';
+      ctx.fillRect(-(PADDLE_LEN >> 1), -3, PADDLE_LEN, 6);
+      ctx.fillStyle = '#ffffff';
+      ctx.fillRect(-(PADDLE_LEN >> 1) + 2, -3, 4, 1);
+      ctx.fillStyle = '#ab5236';
+      ctx.fillRect(-(PADDLE_LEN >> 1), 2, PADDLE_LEN, 1);
+      // End caps
+      ctx.fillStyle = '#ff004d';
+      ctx.fillRect(-(PADDLE_LEN >> 1), -3, 2, 6);
+      ctx.fillRect((PADDLE_LEN >> 1) - 2, -3, 2, 6);
+      ctx.restore();
+      // Pivot
+      fillRect(cx - 3, cy - 3, 6, 6, '#5f574f');
+      fillRect(cx - 2, cy - 2, 4, 4, '#fff');
+      fillRect(cx - 1, cy - 1, 2, 2, '#ab2a4a');
+    }
+
+    function drawPillShape(x, y, color, shape, rot) {
+      ctx.save();
+      ctx.translate(x, y);
+      ctx.rotate(rot);
+      var fill = color.fill, dark = color.dark, hl = color.hl;
+      ctx.fillStyle = fill;
+      var r, c;
+      switch (shape) {
+        case 'capsule': {
+          // 14 wide, 6 tall, two-tone
+          fillRect(-7, -3, 7, 6, fill);
+          fillRect(0, -3, 7, 6, '#ffffff');
+          fillRect(-7, 2, 14, 1, dark);
+          fillRect(-7, -3, 14, 1, hl);
+          // pixel rounded ends
+          fillRect(-7, -3, 1, 1, '#0a0514');
+          fillRect(-7, 2, 1, 1, '#0a0514');
+          fillRect(6, -3, 1, 1, '#0a0514');
+          fillRect(6, 2, 1, 1, '#0a0514');
+          break;
+        }
+        case 'round': {
+          var pat = [
+            '..####..',
+            '.######.',
+            '########',
+            '########',
+            '########',
+            '########',
+            '.######.',
+            '..####..'
+          ];
+          for (r = 0; r < 8; r++) for (c = 0; c < 8; c++)
+            if (pat[r][c] === '#') fillRect(-4 + c, -4 + r, 1, 1, fill);
+          // shading
+          fillRect(-2, -3, 2, 1, hl);
+          fillRect(-3, -2, 1, 1, hl);
+          fillRect(-2, 3, 4, 1, dark);
+          fillRect(2, 1, 1, 2, dark);
+          break;
+        }
+        case 'oval': {
+          var ov = [
+            '..########..',
+            '.##########.',
+            '############',
+            '############',
+            '.##########.',
+            '..########..'
+          ];
+          for (r = 0; r < ov.length; r++) for (c = 0; c < ov[r].length; c++)
+            if (ov[r][c] === '#') fillRect(-6 + c, -3 + r, 1, 1, fill);
+          fillRect(-4, -2, 5, 1, hl);
+          fillRect(-2, 2, 5, 1, dark);
+          break;
+        }
+        case 'square': {
+          fillRect(-5, -5, 10, 10, fill);
+          fillRect(-5, -5, 10, 1, hl);
+          fillRect(-5, -5, 1, 10, hl);
+          fillRect(-5, 4, 10, 1, dark);
+          fillRect(4, -5, 1, 10, dark);
+          // pill score line
+          fillRect(-3, 0, 6, 1, dark);
+          // chamfer corners
+          fillRect(-5, -5, 1, 1, '#0a0514');
+          fillRect(4, -5, 1, 1, '#0a0514');
+          fillRect(-5, 4, 1, 1, '#0a0514');
+          fillRect(4, 4, 1, 1, '#0a0514');
+          break;
+        }
+        case 'diamond': {
+          for (r = -5; r <= 5; r++) {
+            var w = 5 - Math.abs(r);
+            fillRect(-w, r, w * 2 + 1, 1, fill);
+          }
+          fillRect(-1, -3, 2, 1, hl);
+          fillRect(-2, -2, 1, 1, hl);
+          fillRect(0, 3, 2, 1, dark);
+          fillRect(2, 1, 1, 1, dark);
+          break;
+        }
+        case 'triangle': {
+          for (r = 0; r < 8; r++) {
+            var tw = r;
+            fillRect(-tw, r - 4, tw * 2 + 1, 1, fill);
+          }
+          fillRect(-1, -2, 1, 1, hl);
+          fillRect(-3, 3, 7, 1, dark);
+          // base shadow
+          fillRect(2, 2, 1, 1, dark);
+          break;
+        }
+        case 'star': {
+          var sp = [
+            '......##......',
+            '......##......',
+            '.....####.....',
+            '##############',
+            '.############.',
+            '..##########..',
+            '...########...',
+            '...##....##...',
+            '..##......##..',
+            '..#........#..'
+          ];
+          for (r = 0; r < sp.length; r++) for (c = 0; c < sp[r].length; c++)
+            if (sp[r][c] === '#') fillRect(-7 + c, -5 + r, 1, 1, fill);
+          fillRect(-1, -4, 2, 1, hl);
+          fillRect(-3, 0, 2, 1, hl);
+          fillRect(2, 1, 2, 1, dark);
+          break;
+        }
+      }
+      ctx.restore();
+    }
+
+    function drawPillbox() {
+      // Outer frame
+      fillRect(PB_LEFT - 3, PB_Y - 3, PB_W + 6, PB_H + 6, '#5f574f');
+      fillRect(PB_LEFT - 3, PB_Y - 3, PB_W + 6, 2, '#a89878');
+      fillRect(PB_LEFT - 3, PB_Y + PB_H + 1, PB_W + 6, 2, '#1a1a2a');
+      // Inner well
+      fillRect(PB_LEFT, PB_Y, PB_W, PB_H, '#0a3a09');
+
+      ctx.font = '6px monospace';
+      for (var i = 0; i < 7; i++) {
+        var x = slotX(i);
+        var col = COLORS[i];
+        // Slot body
+        fillRect(x, PB_Y + 2, SLOT_W, PB_H - 4, col.dark);
+        // Top color band
+        fillRect(x, PB_Y + 2, SLOT_W, 4, col.fill);
+        fillRect(x, PB_Y + 2, SLOT_W, 1, col.hl);
+        // Inner shadow
+        fillRect(x, PB_Y + PB_H - 4, SLOT_W, 1, '#0a0514');
+        // Day label
+        ctx.fillStyle = '#fff';
+        var tw = ctx.measureText(col.name).width;
+        ctx.fillText(col.name, x + (SLOT_W - tw) / 2, PB_Y + PB_H - 8);
+        // Hint shape (tiny)
+        ctx.save();
+        ctx.translate(x + SLOT_W / 2, PB_Y + 14);
+        ctx.scale(0.55, 0.55);
+        drawPillShapeNoTransform(col, col.shape);
+        ctx.restore();
+      }
+    }
+
+    // Variant that draws into the current ctx transform (used for tiny hints).
+    function drawPillShapeNoTransform(color, shape) {
+      // Reuse drawPillShape's switch by drawing at 0,0 with rot=0
+      drawPillShape(0, 0, color, shape, 0);
+    }
+
+    function drawHUD() {
+      ctx.fillStyle = '#fff';
+      ctx.font = '8px monospace';
+      ctx.fillText('SCORE ' + score, 6, 11);
+      // Lives as little pill icons
+      for (var i = 0; i < START_LIVES; i++) {
+        var hx = BASE_W - 8 - (i + 1) * 12;
+        var alive = i < lives;
+        ctx.fillStyle = alive ? '#ff004d' : '#234b09';
+        var heart = ['.##.##.', '#######', '#######', '.#####.', '..###..', '...#...'];
+        for (var r = 0; r < heart.length; r++)
+          for (var c = 0; c < heart[r].length; c++)
+            if (heart[r][c] === '#') ctx.fillRect(hx + c, 5 + r, 1, 1);
+      }
+      // Pill counter
+      ctx.fillStyle = '#d4e8b8';
+      ctx.fillText('PILL ' + pillsSpawned + '/' + TOTAL_PILLS, 6, BASE_H - PB_H - 10);
+    }
+
+    function drawParticles() {
+      for (var i = 0; i < particles.length; i++) {
+        var p = particles[i];
+        ctx.fillStyle = p.color;
+        ctx.fillRect(p.x | 0, p.y | 0, p.size || 1, p.size || 1);
+      }
+    }
+
+    function render() {
+      ctx.save();
+      var sx = 0, sy = 0;
+      if (screenShake > 0) {
+        sx = (Math.random() - 0.5) * screenShake;
+        sy = (Math.random() - 0.5) * screenShake;
+        ctx.translate(sx, sy);
+      }
+      drawBackground();
+      drawPillbox();
+      // Flying pills first so the pipe overlaps any pill straddling its mouth
+      for (var f = 0; f < flyingPills.length; f++) {
+        var fp = flyingPills[f];
+        var fc = COLORS[fp.colorIdx];
+        drawPillShape(fp.x, fp.y, fc, fc.shape, fp.rot);
+      }
+      drawPipe();
+      drawPaddle();
+      if (activePill) {
+        var c = COLORS[activePill.colorIdx];
+        drawPillShape(activePill.x, activePill.y, c, c.shape, activePill.rot);
+      }
+      drawParticles();
+      drawHUD();
+      ctx.restore();
+
+      if (flashTime > 0) {
+        ctx.fillStyle = flashColor;
+        ctx.globalAlpha = (flashTime / 8) * 0.25;
+        ctx.fillRect(0, 0, BASE_W, BASE_H);
+        ctx.globalAlpha = 1;
+      }
+    }
+
+    function loop() {
+      if (state === 'playing') update();
+      render();
+      requestAnimationFrame(loop);
+    }
+    loop();
+
+    // ---------- Start / restart ----------
+    var overlay = document.getElementById('overlay');
+    var startBtn = document.getElementById('startBtn');
+    var listenBtn = document.getElementById('listenBtn');
+    var overlayMain = document.getElementById('overlayMain');
+    var overlayPlatforms = document.getElementById('overlayPlatforms');
+    var backToEnd = document.getElementById('backToEnd');
+
+    startBtn.addEventListener('click', function () {
+      overlay.classList.add('hidden');
+      // Reset overlay default text for next time it appears.
+      document.getElementById('title').innerHTML = 'Fill Your<br>Prescription';
+      document.getElementById('subtitle').innerHTML =
+        "Pills fall from the pipe. Tap the day in the pillbox that matches the pill's color to flick it into place.<br><br>5 lives. 50 pills. Don't drop the dose.";
+      document.getElementById('stats').textContent = '';
+      startBtn.textContent = 'Start';
+      // Hide the streaming CTA on the next initial-style overlay (until next end).
+      listenBtn.style.display = 'none';
+      listenBtn.classList.add('hidden');
+      overlayMain.classList.remove('hidden');
+      overlayPlatforms.classList.add('hidden');
+      startGame();
+    });
+
+    listenBtn.addEventListener('click', function () {
+      overlayMain.classList.add('hidden');
+      overlayPlatforms.classList.remove('hidden');
+      overlay.scrollTop = 0;
+    });
+
+    backToEnd.addEventListener('click', function () {
+      overlayPlatforms.classList.add('hidden');
+      overlayMain.classList.remove('hidden');
+      overlay.scrollTop = 0;
+    });
+
+    // Pause music when tab hidden, resume on return (only while playing).
+    document.addEventListener('visibilitychange', function () {
+      if (state !== 'playing') return;
+      if (document.hidden) {
+        try { bgm.pause(); } catch (e) {}
+      } else {
+        try { bgm.play().catch(function () {}); } catch (e) {}
+      }
+    });
+  })();
+  </script>
+</body>
+</html>
