@@ -270,7 +270,7 @@
     var PIPE_W = 26;
     var PIPE_X = BASE_W / 2;
     var PIPE_TOP = 14;
-    var PIPE_BOTTOM = 70;
+    var PIPE_BOTTOM = 104; // 60% longer than the original 56-pixel pipe
     var PADDLE_Y = PIPE_BOTTOM + 14;
     var PADDLE_LEN = 38;
 
@@ -449,7 +449,7 @@
       if (correct) {
         score++;
         flashTime = 6;
-        flashColor = COLORS[correctIdx].fill;
+        flashColor = '#00e436';
         for (var i = 0; i < 14; i++) {
           particles.push({
             x: px,
