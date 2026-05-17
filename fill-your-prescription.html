@@ -111,6 +111,118 @@
       box-shadow: 4px 4px 0 #234b09;
     }
     .btn.btn-small:active { box-shadow: 2px 2px 0 #234b09; }
+    .btn.btn-pink {
+      background: #ff77a8;
+      color: #234b09;
+      box-shadow: 6px 6px 0 #7a3852;
+    }
+    .btn.btn-pink:active { box-shadow: 3px 3px 0 #7a3852; }
+    /* CD Modal form */
+    .cd-form {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      text-align: left;
+      background: rgba(35, 75, 9, 0.55);
+      border: 3px solid #4c8926;
+      padding: 16px;
+      box-shadow: 4px 4px 0 #234b09;
+    }
+    .cd-form h2 {
+      font-size: 16px;
+      letter-spacing: 2px;
+      color: #ffec27;
+      text-transform: uppercase;
+      text-align: center;
+      text-shadow: 2px 2px 0 #234b09;
+    }
+    .cd-form .indicates-required {
+      font-size: 10px;
+      color: #d4e8b8;
+      letter-spacing: 1px;
+      text-align: right;
+    }
+    .cd-form .asterisk { color: #ffec27; }
+    .cd-form .mc-field-group { display: flex; flex-direction: column; gap: 4px; }
+    .cd-form label {
+      font-size: 10px;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: #d4e8b8;
+    }
+    .cd-form input[type=email],
+    .cd-form input[type=text] {
+      font-family: inherit;
+      font-size: 14px;
+      padding: 10px 12px;
+      background: #0a1a04;
+      color: #fff;
+      border: 3px solid #4c8926;
+      outline: none;
+      letter-spacing: 1px;
+      width: 100%;
+    }
+    .cd-form input[type=email]:focus,
+    .cd-form input[type=text]:focus {
+      border-color: #ffec27;
+    }
+    .cd-form #mergeRow-gdpr {
+      font-size: 11px;
+      color: #d4e8b8;
+      letter-spacing: 0.5px;
+      line-height: 1.55;
+      background: rgba(10, 26, 4, 0.55);
+      border: 2px solid #4c8926;
+      padding: 10px;
+      margin-top: 4px;
+    }
+    .cd-form #mergeRow-gdpr label { display: block; margin-bottom: 4px; color: #ffec27; }
+    .cd-form #mergeRow-gdpr p { margin: 4px 0; }
+    .cd-form #mergeRow-gdpr fieldset { border: none; padding: 0; min-height: 0; margin: 6px 0; }
+    .cd-form #mergeRow-gdpr label.checkbox {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 11px;
+      color: #d4e8b8;
+      margin: 0;
+      text-transform: none;
+      letter-spacing: 0.5px;
+      cursor: pointer;
+    }
+    .cd-form #mergeRow-gdpr input[type=checkbox] {
+      width: 16px;
+      height: 16px;
+      accent-color: #4c8926;
+      flex-shrink: 0;
+    }
+    .cd-form .responses .response {
+      color: #ffec27;
+      font-size: 12px;
+      padding: 6px 0;
+    }
+    .cd-form .submit-btn {
+      background: #ffec27;
+      color: #234b09;
+      border: 4px solid #fff;
+      padding: 14px 20px;
+      font-family: inherit;
+      font-size: 14px;
+      font-weight: 900;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      cursor: pointer;
+      box-shadow: 6px 6px 0 #7a7013;
+      transition: transform 60ms, box-shadow 60ms;
+      width: 100%;
+      margin-top: 4px;
+    }
+    .cd-form .submit-btn:active {
+      transform: translate(3px, 3px);
+      box-shadow: 3px 3px 0 #7a7013;
+    }
+    .cd-honey { position: absolute; left: -5000px; }
     .platform-list {
       display: flex;
       flex-direction: column;
@@ -185,6 +297,69 @@
       <div class="stats" id="stats"></div>
       <button class="btn" id="startBtn">Start</button>
       <button class="btn btn-yellow hidden" id="listenBtn" style="display:none">Listen to Prescription</button>
+      <button class="btn btn-pink hidden" id="cdBtn" style="display:none">Win a Free CD</button>
+    </div>
+    <div class="overlay-view hidden" id="overlayCd">
+      <h1 class="title">Win a<br>Free CD</h1>
+      <p class="subtitle">Sign up to Silver's mailing list to enter the draw.</p>
+      <div id="mc_embed_signup">
+        <form
+          action="https://silveromen.us6.list-manage.com/subscribe/post?u=7482966efbe5eb135b80f0bce&amp;id=e2326bd25c&amp;v_id=30&amp;f_id=006ae5e1f0"
+          method="post"
+          id="mc-embedded-subscribe-form"
+          name="mc-embedded-subscribe-form"
+          class="validate cd-form"
+          target="_blank"
+        >
+          <div id="mc_embed_signup_scroll">
+            <h2>Sign Up!</h2>
+            <div class="indicates-required"><span class="asterisk">*</span> indicates required</div>
+            <div class="mc-field-group">
+              <label for="mce-EMAIL">Email Address <span class="asterisk">*</span></label>
+              <input type="email" name="EMAIL" class="required email" id="mce-EMAIL" required value="" />
+            </div>
+            <div class="mc-field-group">
+              <label for="mce-FNAME">First Name</label>
+              <input type="text" name="FNAME" class="text" id="mce-FNAME" value="" />
+            </div>
+            <div class="mc-field-group">
+              <label for="mce-CITY">City</label>
+              <input type="text" name="CITY" class="text" id="mce-CITY" value="" />
+            </div>
+            <div id="mergeRow-gdpr" class="mergeRow gdpr-mergeRow content__gdprBlock mc-field-group">
+              <div class="content__gdpr">
+                <label>GDPR</label>
+                <!-- <p>Sign up!</p> -->
+                <fieldset class="mc_fieldset gdprRequired mc-field-group" name="interestgroup_field">
+                  <label class="checkbox subfield" for="gdpr_16468">
+                    <input type="checkbox" id="gdpr_16468" name="gdpr[16468]" class="gdpr" value="Y" />
+                    <span>Do not subscribe to Silver's newsletter</span>
+                  </label>
+                  <label class="checkbox subfield" for="gdpr_16469">
+                    <input type="checkbox" id="gdpr_16469" name="gdpr[16469]" class="gdpr" value="Y" />
+                    <span>Subscribe to Silver's newsletter</span>
+                  </label>
+                </fieldset>
+                <p>You can unsubscribe to Silver's newsletter at any time with one click.</p>
+              </div>
+            </div>
+            <div hidden><input type="hidden" name="tags" value="699138" /></div>
+            <div id="mce-responses" class="clear foot responses">
+              <div class="response" id="mce-error-response" style="display: none;"></div>
+              <div class="response" id="mce-success-response" style="display: none;"></div>
+            </div>
+            <div aria-hidden="true" class="cd-honey">
+              <input type="text" name="b_7482966efbe5eb135b80f0bce_e2326bd25c" tabindex="-1" value="" />
+            </div>
+            <div class="optionalParent">
+              <div class="clear foot">
+                <input type="submit" name="subscribe" id="mc-embedded-subscribe" class="button submit-btn" value="Subscribe" />
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+      <button class="btn btn-small" id="backFromCd">&larr; Back</button>
     </div>
     <div class="overlay-view hidden" id="overlayPlatforms">
       <h1 class="title">Prescription</h1>
@@ -341,6 +516,7 @@
       var stats = document.getElementById('stats');
       var btn = document.getElementById('startBtn');
       var listen = document.getElementById('listenBtn');
+      var cd = document.getElementById('cdBtn');
       if (win) {
         title.innerHTML = 'Prescription<br>Filled';
         sub.innerHTML = 'You sorted every pill. Silver is medicated.';
@@ -350,12 +526,20 @@
       }
       stats.textContent = 'Score ' + score + ' / ' + TOTAL_PILLS;
       btn.textContent = 'Play Again';
-      // Reveal the streaming CTA only on end screens.
+      // Reveal the streaming CTA on every end screen, and the CD CTA only on wins.
       listen.style.display = '';
       listen.classList.remove('hidden');
-      // Make sure the main view is visible (in case user was on platforms view from a prior round).
+      if (win) {
+        cd.style.display = '';
+        cd.classList.remove('hidden');
+      } else {
+        cd.style.display = 'none';
+        cd.classList.add('hidden');
+      }
+      // Make sure the main view is visible (in case user was on platforms/cd view from a prior round).
       document.getElementById('overlayMain').classList.remove('hidden');
       document.getElementById('overlayPlatforms').classList.add('hidden');
+      document.getElementById('overlayCd').classList.add('hidden');
       ov.classList.remove('hidden');
     }
 
@@ -879,9 +1063,12 @@
     var overlay = document.getElementById('overlay');
     var startBtn = document.getElementById('startBtn');
     var listenBtn = document.getElementById('listenBtn');
+    var cdBtn = document.getElementById('cdBtn');
     var overlayMain = document.getElementById('overlayMain');
     var overlayPlatforms = document.getElementById('overlayPlatforms');
+    var overlayCd = document.getElementById('overlayCd');
     var backToEnd = document.getElementById('backToEnd');
+    var backFromCd = document.getElementById('backFromCd');
 
     startBtn.addEventListener('click', function () {
       overlay.classList.add('hidden');
@@ -891,11 +1078,14 @@
         "Pills fall from the pipe. Tap the day in the pillbox that matches the pill's color to flick it into place.<br><br>5 lives. 50 pills. Don't drop the dose.";
       document.getElementById('stats').textContent = '';
       startBtn.textContent = 'Start';
-      // Hide the streaming CTA on the next initial-style overlay (until next end).
+      // Hide the end-screen CTAs until the next endGame fires.
       listenBtn.style.display = 'none';
       listenBtn.classList.add('hidden');
+      cdBtn.style.display = 'none';
+      cdBtn.classList.add('hidden');
       overlayMain.classList.remove('hidden');
       overlayPlatforms.classList.add('hidden');
+      overlayCd.classList.add('hidden');
       startGame();
     });
 
@@ -911,6 +1101,18 @@
       overlay.scrollTop = 0;
     });
 
+    cdBtn.addEventListener('click', function () {
+      overlayMain.classList.add('hidden');
+      overlayCd.classList.remove('hidden');
+      overlay.scrollTop = 0;
+    });
+
+    backFromCd.addEventListener('click', function () {
+      overlayCd.classList.add('hidden');
+      overlayMain.classList.remove('hidden');
+      overlay.scrollTop = 0;
+    });
+
     // Pause music when tab hidden, resume on return (only while playing).
     document.addEventListener('visibilitychange', function () {
       if (state !== 'playing') return;
@@ -921,6 +1123,18 @@
       }
     });
   })();
+  </script>
+  <!-- Mailchimp validation for the "Win a Free CD" mailing list form -->
+  <script type="text/javascript" src="//s3.amazonaws.com/downloads.mailchimp.com/js/mc-validate.js"></script>
+  <script type="text/javascript">
+    (function ($) {
+      window.fnames = new Array();
+      window.ftypes = new Array();
+      fnames[0] = 'EMAIL'; ftypes[0] = 'email';
+      fnames[1] = 'FNAME'; ftypes[1] = 'text';
+      fnames[2] = 'CITY';  ftypes[2] = 'text';
+    }(jQuery));
+    var $mcj = jQuery.noConflict(true);
   </script>
 </body>
 </html>
