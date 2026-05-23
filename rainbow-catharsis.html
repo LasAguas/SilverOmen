@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Rainbow Catharsis — Silver Omen</title>
+  <meta name="description" content="Listen to Rainbow Catharsis EP by Silver Omen — out now on all platforms." />
+
+  <meta property="og:type" content="music.album" />
+  <meta property="og:url" content="https://www.silveromen.com/ffm-rainbow-catharsis" />
+  <meta property="og:title" content="Rainbow Catharsis — Silver Omen" />
+  <meta property="og:description" content="Listen to Rainbow Catharsis EP by Silver Omen — out now on all platforms." />
+  <meta property="og:image" content="https://www.silveromen.com/assets/images/Music/Rainbow%20Catharsis%20Cover%20Art.webp" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="1200" />
+  <meta property="og:image:alt" content="Rainbow Catharsis EP by Silver Omen" />
+  <meta property="og:site_name" content="Silver Omen" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Rainbow Catharsis — Silver Omen" />
+  <meta name="twitter:description" content="Listen to Rainbow Catharsis EP by Silver Omen — out now on all platforms." />
+  <meta name="twitter:image" content="https://www.silveromen.com/assets/images/Music/Rainbow%20Catharsis%20Cover%20Art.webp" />
+
+  <link rel="stylesheet" href="assets/css/styles.css" />
+  <link rel="stylesheet" href="assets/css/theme-green.css" />
+  <style>
+    body {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      padding: 3.5rem 1.5rem 4rem;
+      position: relative;
+      overflow-x: hidden;
+    }
+    .links-bg {
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+    }
+    .links-bg-image {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center;
+      filter: blur(24px);
+      transform: scale(1.06);
+    }
+    .links-bg-overlay {
+      position: absolute;
+      inset: 0;
+      background: rgba(4, 6, 18, 0.72);
+    }
+    .links-bg-overlay-green {
+      position: absolute;
+      inset: 0;
+      background: rgba(76, 137, 38, 0.10);
+    }
+    .links-page {
+      position: relative;
+      z-index: 1;
+      width: 100%;
+      max-width: 420px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    .links-cover {
+      width: 120px;
+      height: 120px;
+      border-radius: 8px;
+      overflow: hidden;
+      margin-bottom: 1.5rem;
+      flex-shrink: 0;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.55);
+    }
+    .links-cover img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+    .links-name {
+      font-family: 'Protagonist', sans-serif;
+      font-size: clamp(2rem, 8vw, 3rem);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      text-align: center;
+      margin-bottom: 0.4rem;
+    }
+    .links-release-title {
+      font-family: 'Brans', sans-serif;
+      font-size: 0.72rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: rgba(248, 248, 248, 0.5);
+      text-align: center;
+      margin-bottom: 2rem;
+    }
+    .links-release-title strong {
+      color: rgba(248, 248, 248, 0.85);
+    }
+    .links-buttons {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      gap: 0.85rem;
+      margin-bottom: 3rem;
+    }
+    .links-btn {
+      display: block;
+      width: 100%;
+      padding: 1rem 1.5rem;
+      text-align: center;
+      font-family: 'Brans', sans-serif;
+      font-size: 0.82rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: #f8f8f8;
+      border: 1px solid rgba(248, 248, 248, 0.25);
+      border-radius: 4px;
+      background: rgba(248, 248, 248, 0.05);
+      transition: background 0.25s ease, border-color 0.25s ease, color 0.25s ease;
+    }
+    .links-btn:hover {
+      background: rgba(157, 86, 218, 0.18);
+      border-color: #9d56da;
+      color: #f8f8f8;
+    }
+    .links-btn.links-btn-primary {
+      background: #9d56da;
+      border-color: #9d56da;
+    }
+    .links-btn.links-btn-primary:hover {
+      background: #7a3fb8;
+      border-color: #7a3fb8;
+    }
+    .links-expand-btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      cursor: pointer;
+    }
+    .links-expand-btn .expand-arrow {
+      display: inline-block;
+      font-size: 0.6rem;
+      transition: transform 0.25s ease;
+      line-height: 1;
+    }
+    .links-expand-btn[aria-expanded="true"] .expand-arrow {
+      transform: rotate(180deg);
+    }
+    .links-sub-buttons {
+      display: none;
+      flex-direction: column;
+      gap: 0.6rem;
+      width: 100%;
+      margin-top: 0.6rem;
+      padding-left: 0.75rem;
+    }
+    .links-sub-buttons.open { display: flex; }
+    .links-sub-btn {
+      display: flex;
+      align-items: center;
+      gap: 0.65rem;
+      width: 100%;
+      padding: 0.7rem 1.25rem;
+      font-family: 'Brans', sans-serif;
+      font-size: 0.78rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: #f8f8f8;
+      border: 1px solid rgba(248, 248, 248, 0.15);
+      border-radius: 4px;
+      background: rgba(248, 248, 248, 0.03);
+      transition: background 0.2s ease, border-color 0.2s ease;
+    }
+    .links-sub-btn:hover {
+      background: rgba(157, 86, 218, 0.14);
+      border-color: rgba(157, 86, 218, 0.5);
+      color: #f8f8f8;
+    }
+    .links-sub-btn img {
+      width: 18px;
+      height: 18px;
+      object-fit: contain;
+      flex-shrink: 0;
+    }
+    .links-socials {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 1.25rem;
+      flex-wrap: wrap;
+    }
+    .links-social-link {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 32px;
+      height: 32px;
+      opacity: 0.6;
+      transition: opacity 0.25s ease, transform 0.25s ease;
+    }
+    .links-social-link:hover {
+      opacity: 1;
+      transform: scale(1.15);
+    }
+    .links-social-link img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      display: block;
+    }
+    @media (max-width: 768px) {
+      body { justify-content: center; }
+      .links-bg-image { height: 100vh; }
+    }
+  </style>
+  <!-- Meta Pixel Code -->
+  <script>
+  !function(f,b,e,v,n,t,s)
+  {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+  n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+  if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+  n.queue=[];t=b.createElement(e);t.async=!0;
+  t.src=v;s=b.getElementsByTagName(e)[0];
+  s.parentNode.insertBefore(t,s)}(window, document,'script',
+  'https://connect.facebook.net/en_US/fbevents.js');
+  fbq('init', '2133013080603789');
+  fbq('track', 'PageView');
+  </script>
+  <noscript><img height="1" width="1" style="display:none"
+  src="https://www.facebook.com/tr?id=2133013080603789&ev=PageView&noscript=1"
+  /></noscript>
+  <!-- End Meta Pixel Code -->
+  <!-- Meta Pixel Code -->
+  <script>
+  !function(f,b,e,v,n,t,s)
+  {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+  n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+  if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+  n.queue=[];t=b.createElement(e);t.async=!0;
+  t.src=v;s=b.getElementsByTagName(e)[0];
+  s.parentNode.insertBefore(t,s)}(window, document,'script',
+  'https://connect.facebook.net/en_US/fbevents.js');
+  fbq('init', '1711090719685800');
+  fbq('track', 'PageView');
+  </script>
+  <noscript><img height="1" width="1" style="display:none"
+  src="https://www.facebook.com/tr?id=1711090719685800&ev=PageView&noscript=1"
+  /></noscript>
+  <!-- End Meta Pixel Code -->
+</head>
+<body>
+  <div class="links-bg">
+    <img src="assets/images/Music/Rainbow Catharsis Cover Art.webp" alt="" class="links-bg-image" />
+    <div class="links-bg-overlay"></div>
+    <div class="links-bg-overlay-green"></div>
+  </div>
+
+  <div class="links-page">
+    <div class="links-cover">
+      <img src="assets/images/Music/Rainbow Catharsis Cover Art.webp" alt="Rainbow Catharsis" />
+    </div>
+    <span class="links-name">Silver Omen</span>
+    <p class="links-release-title"><strong>Rainbow Catharsis</strong> &middot; EP &middot; 15 August 2025</p>
+
+    <div class="links-buttons">
+      <button class="links-btn links-btn-primary links-expand-btn" aria-expanded="false" onclick="toggleStreaming(this)"
+        data-track-type="streaming" data-track-label="Listen to Rainbow Catharsis" data-track-platform="multi" data-track-category="streaming">
+        Listen to Rainbow Catharsis <span class="expand-arrow">&#9660;</span>
+      </button>
+      <div class="links-sub-buttons" id="streaming-platforms">
+        <a href="https://open.spotify.com/album/5KE3AaFks3D82lkcIOYfE0" class="links-sub-btn" target="_blank" rel="noopener noreferrer"
+          data-track-type="streaming" data-track-label="Spotify" data-track-platform="spotify" data-track-category="streaming">
+          <img src="assets/images/Socials Logos/Spotify Logo.png" alt="" /> Spotify
+        </a>
+        <a href="https://music.apple.com/gb/album/rainbow-catharsis-ep/1821045577" class="links-sub-btn" target="_blank" rel="noopener noreferrer"
+          data-track-type="streaming" data-track-label="Apple Music" data-track-platform="apple_music" data-track-category="streaming">
+          <img src="assets/images/Socials Logos/Apple Music Logo.png" alt="" /> Apple Music
+        </a>
+        <a href="https://tidal.com/album/442520268/u" class="links-sub-btn" target="_blank" rel="noopener noreferrer"
+          data-track-type="streaming" data-track-label="Tidal" data-track-platform="tidal" data-track-category="streaming">
+          <img src="assets/images/Socials Logos/Tidal Logo.png" alt="" /> Tidal
+        </a>
+        <a href="https://link.deezer.com/s/3345sIeBcxU6PuLeUwwcc" class="links-sub-btn" target="_blank" rel="noopener noreferrer"
+          data-track-type="streaming" data-track-label="Deezer" data-track-platform="deezer" data-track-category="streaming">
+          <img src="assets/images/Socials Logos/Deezer Logo.png" alt="" /> Deezer
+        </a>
+        <a href="https://music.youtube.com/watch?v=cKOuUqBKP5g&list=OLAK5uy_ny53prujBFcPmjUtTrS-kOoIYAIeEEF4c" class="links-sub-btn" target="_blank" rel="noopener noreferrer"
+          data-track-type="streaming" data-track-label="YouTube Music" data-track-platform="youtube_music" data-track-category="streaming">
+          <img src="assets/images/Socials Logos/YouTube Logo.png" alt="" /> YouTube Music
+        </a>
+        <a href="https://www.youtube.com/watch?v=cKOuUqBKP5g&list=OLAK5uy_ny53prujBFcPmjUtTrS-kOoIYAIeEEF4c" class="links-sub-btn" target="_blank" rel="noopener noreferrer"
+          data-track-type="streaming" data-track-label="YouTube" data-track-platform="youtube" data-track-category="streaming">
+          <img src="assets/images/Socials Logos/YouTube Logo.png" alt="" /> YouTube
+        </a>
+      </div>
+      <a href="https://www.youtube.com/watch?v=cKOuUqBKP5g&list=OLAK5uy_ny53prujBFcPmjUtTrS-kOoIYAIeEEF4c" class="links-btn" target="_blank" rel="noopener noreferrer"
+        data-track-type="streaming" data-track-label="Watch on YouTube" data-track-platform="youtube" data-track-category="streaming">
+        Watch on YouTube
+      </a>
+      <a href="index.html" class="links-btn"
+        data-track-type="other" data-track-label="Website" data-track-platform="silveromen" data-track-category="navigation">
+        Silver Omen Website
+      </a>
+    </div>
+
+    <div class="links-socials">
+      <a href="https://open.spotify.com/artist/04PVbCwPl3UEsNnVJUZbUl" class="links-social-link" aria-label="Spotify" target="_blank" rel="noopener noreferrer"
+        data-track-type="social" data-track-label="Spotify" data-track-platform="spotify" data-track-category="streaming">
+        <img src="assets/images/Socials Logos/Spotify Logo.png" alt="Spotify" />
+      </a>
+      <a href="https://music.apple.com/gb/artist/silver-omen/1820988833" class="links-social-link" aria-label="Apple Music" target="_blank" rel="noopener noreferrer"
+        data-track-type="social" data-track-label="Apple Music" data-track-platform="apple_music" data-track-category="streaming">
+        <img src="assets/images/Socials Logos/Apple Music Logo.png" alt="Apple Music" />
+      </a>
+      <a href="https://www.youtube.com/@silveromen.mp4" class="links-social-link" aria-label="YouTube" target="_blank" rel="noopener noreferrer"
+        data-track-type="social" data-track-label="YouTube" data-track-platform="youtube" data-track-category="social">
+        <img src="assets/images/Socials Logos/YouTube Logo.png" alt="YouTube" />
+      </a>
+      <a href="https://www.instagram.com/silver.omen" class="links-social-link" aria-label="Instagram" target="_blank" rel="noopener noreferrer"
+        data-track-type="social" data-track-label="Instagram" data-track-platform="instagram" data-track-category="social">
+        <img src="assets/images/Socials Logos/Instagram Logo.png" alt="Instagram" />
+      </a>
+      <a href="https://www.facebook.com/silveromenmusic" class="links-social-link" aria-label="Facebook" target="_blank" rel="noopener noreferrer"
+        data-track-type="social" data-track-label="Facebook" data-track-platform="facebook" data-track-category="social">
+        <img src="assets/images/Socials Logos/Facebook Logo.png" alt="Facebook" />
+      </a>
+      <a href="https://silveromen.bandcamp.com" class="links-social-link" aria-label="Bandcamp" target="_blank" rel="noopener noreferrer"
+        data-track-type="streaming" data-track-label="Bandcamp" data-track-platform="bandcamp" data-track-category="streaming">
+        <img src="assets/images/Socials Logos/Bandcamp Logo.png" alt="Bandcamp" />
+      </a>
+      <a href="https://tidal.com/artist/57012046/u" class="links-social-link" aria-label="Tidal" target="_blank" rel="noopener noreferrer"
+        data-track-type="social" data-track-label="Tidal" data-track-platform="tidal" data-track-category="streaming">
+        <img src="assets/images/Socials Logos/Tidal Logo.png" alt="Tidal" />
+      </a>
+      <a href="https://www.deezer.com/en/track/3849458051" class="links-social-link" aria-label="Deezer" target="_blank" rel="noopener noreferrer"
+        data-track-type="social" data-track-label="Deezer" data-track-platform="deezer" data-track-category="streaming">
+        <img src="assets/images/Socials Logos/Deezer Logo.png" alt="Deezer" />
+      </a>
+    </div>
+  </div>
+
+  <script>
+    function toggleStreaming(btn) {
+      var panel = document.getElementById('streaming-platforms');
+      var expanded = btn.getAttribute('aria-expanded') === 'true';
+      btn.setAttribute('aria-expanded', String(!expanded));
+      panel.classList.toggle('open', !expanded);
+    }
+  </script>
+  <script src="assets/js/tracker.js"></script>
+</body>
+</html>
