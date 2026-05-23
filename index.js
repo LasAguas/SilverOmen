@@ -62,3 +62,17 @@ function render() {
 }
 
 render();
+
+// Newsletter conversion tracking — fires when the Mailchimp form is submitted
+document.addEventListener('submit', function (e) {
+  var form = e.target;
+  if (form && form.id === 'mc-embedded-subscribe-form') {
+    if (typeof window.SilverOmenTrack === 'function') {
+      window.SilverOmenTrack('conversion_newsletter', {
+        link_label:    'Newsletter Signup',
+        link_platform: 'mailchimp',
+        link_category: 'newsletter',
+      });
+    }
+  }
+});
