@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Pre-save — Silver Omen</title>
+  <meta name="description" content="Pre-save the next Silver Omen release — the song saves directly to your library on release day." />
+
+  <!--
+    ╔══════════════════════════════════════════════════════════════════╗
+    ║  PRESAVE CONFIG — fill these in before launching the campaign     ║
+    ║  1. Insert a row in `presave_releases` (Supabase) and put the     ║
+    ║     id below at PRESAVE_RELEASE_ID.                                ║
+    ║  2. Update release title, cover image, release date copy.          ║
+    ║  3. Spotify app dashboard must list these Redirect URIs:           ║
+    ║     https://www.silveromen.com/api/auth/spotify/callback           ║
+    ║     http://localhost:3000/api/auth/spotify/callback (local dev)    ║
+    ╚══════════════════════════════════════════════════════════════════╝
+  -->
+  <script>
+    // TODO: replace with the actual id from presave_releases after inserting the row.
+    window.PRESAVE_RELEASE_ID = 1;
+  </script>
+
+  <meta property="og:type" content="music.album" />
+  <meta property="og:url" content="https://www.silveromen.com/presave" />
+  <meta property="og:title" content="Pre-save the next Silver Omen release" />
+  <meta property="og:description" content="One click — the song saves to your library the moment it drops." />
+  <meta property="og:image" content="https://www.silveromen.com/assets/images/Hero/silver-omen-prescription.jpg" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="1200" />
+  <meta property="og:site_name" content="Silver Omen" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Pre-save the next Silver Omen release" />
+  <meta name="twitter:description" content="One click — the song saves to your library the moment it drops." />
+  <meta name="twitter:image" content="https://www.silveromen.com/assets/images/Hero/silver-omen-prescription.jpg" />
+
+  <link rel="stylesheet" href="assets/css/styles.css" />
+  <link rel="stylesheet" href="assets/css/theme-green.css" />
+  <style>
+    body {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      padding: 3.5rem 1.5rem 4rem;
+      position: relative;
+      overflow-x: hidden;
+    }
+    .links-bg { position: fixed; inset: 0; z-index: 0; }
+    .links-bg-image { width: 100%; height: 100%; object-fit: cover; object-position: center; filter: blur(24px); transform: scale(1.06); }
+    .links-bg-overlay { position: absolute; inset: 0; background: rgba(4, 6, 18, 0.72); }
+    .links-bg-overlay-green { position: absolute; inset: 0; background: rgba(76, 137, 38, 0.10); }
+    .links-page { position: relative; z-index: 1; width: 100%; max-width: 420px; display: flex; flex-direction: column; align-items: center; }
+    .links-cover { width: 200px; height: 200px; border-radius: 8px; overflow: hidden; margin-bottom: 1.5rem; flex-shrink: 0; box-shadow: 0 8px 32px rgba(0,0,0,0.55); }
+    .links-cover img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .links-name { font-family: 'Protagonist', sans-serif; font-size: clamp(2rem, 8vw, 3rem); text-transform: uppercase; letter-spacing: 0.1em; text-align: center; margin-bottom: 0.4rem; }
+    .links-release-title { font-family: 'Brans', sans-serif; font-size: 0.72rem; letter-spacing: 0.14em; text-transform: uppercase; color: rgba(248, 248, 248, 0.5); text-align: center; margin-bottom: 2rem; }
+    .links-release-title strong { color: rgba(248, 248, 248, 0.85); }
+    .presave-lead { font-family: 'Brans', sans-serif; font-size: 0.78rem; line-height: 1.6; letter-spacing: 0.05em; text-align: center; color: rgba(248, 248, 248, 0.7); margin-bottom: 2rem; max-width: 360px; }
+    .links-buttons { width: 100%; display: flex; flex-direction: column; gap: 0.85rem; margin-bottom: 3rem; }
+    .links-btn {
+      display: flex; align-items: center; justify-content: center; gap: 0.6rem;
+      width: 100%; padding: 1rem 1.5rem;
+      text-align: center; font-family: 'Brans', sans-serif; font-size: 0.82rem;
+      letter-spacing: 0.14em; text-transform: uppercase; color: #f8f8f8;
+      border: 1px solid rgba(248, 248, 248, 0.25); border-radius: 4px;
+      background: rgba(248, 248, 248, 0.05);
+      transition: background 0.25s ease, border-color 0.25s ease, color 0.25s ease;
+      cursor: pointer;
+    }
+    .links-btn:hover { background: rgba(157, 86, 218, 0.18); border-color: #9d56da; color: #f8f8f8; }
+    .links-btn img { width: 20px; height: 20px; object-fit: contain; flex-shrink: 0; }
+    .links-btn[disabled] { opacity: 0.45; cursor: not-allowed; }
+    .links-btn[disabled]:hover { background: rgba(248, 248, 248, 0.05); border-color: rgba(248, 248, 248, 0.25); }
+    .presave-soon { font-size: 0.6rem; opacity: 0.65; margin-left: 0.4rem; letter-spacing: 0.12em; }
+    .presave-fineprint { font-family: 'Brans', sans-serif; font-size: 0.65rem; line-height: 1.6; letter-spacing: 0.08em; text-align: center; color: rgba(248, 248, 248, 0.45); max-width: 360px; margin-top: -1.5rem; margin-bottom: 2.5rem; }
+    @media (max-width: 768px) {
+      body { justify-content: center; }
+      .links-bg-image { height: 100vh; }
+    }
+  </style>
+</head>
+<body>
+  <div class="links-bg">
+    <!-- TODO: replace with next release cover art -->
+    <img src="assets/images/Hero/silver-omen-prescription.jpg" alt="" class="links-bg-image" />
+    <div class="links-bg-overlay"></div>
+    <div class="links-bg-overlay-green"></div>
+  </div>
+
+  <div class="links-page">
+    <div class="links-cover">
+      <!-- TODO: replace with next release cover art -->
+      <img src="assets/images/Hero/silver-omen-prescription.jpg" alt="Next release" />
+    </div>
+    <span class="links-name">Silver Omen</span>
+    <!-- TODO: update title + date -->
+    <p class="links-release-title"><strong>New Single</strong> &middot; Coming soon</p>
+
+    <p class="presave-lead">
+      Click your platform &mdash; the song saves to your library the moment it drops. No reminders, no missed releases.
+    </p>
+
+    <div class="links-buttons">
+      <a id="presave-spotify-btn" href="#" class="links-btn"
+         data-track-type="presave" data-track-label="Presave Spotify" data-track-platform="spotify" data-track-category="conversion">
+        <img src="assets/images/Socials Logos/Spotify Logo.png" alt="" />
+        Pre-save on Spotify
+      </a>
+
+      <button class="links-btn" disabled
+        data-track-type="presave" data-track-label="Presave Apple Music" data-track-platform="apple_music" data-track-category="conversion">
+        <img src="assets/images/Socials Logos/Apple Music Logo.png" alt="" />
+        Pre-save on Apple Music <span class="presave-soon">soon</span>
+      </button>
+
+      <!--
+        YouTube Music — wiring is built (see /api/auth/youtube/*).
+        Button stays disabled until Google's OAuth verification clears,
+        otherwise fans see a scary "this app isn't verified" warning.
+        To enable: replace the button below with the commented <a> version.
+      -->
+      <button class="links-btn" disabled
+        data-track-type="presave" data-track-label="Presave YouTube Music" data-track-platform="youtube_music" data-track-category="conversion">
+        <img src="assets/images/Socials Logos/YouTube Logo.png" alt="" />
+        Pre-save on YouTube Music <span class="presave-soon">soon</span>
+      </button>
+      <!--
+      <a id="presave-youtube-btn" href="#" class="links-btn"
+         data-track-type="presave" data-track-label="Presave YouTube Music" data-track-platform="youtube_music" data-track-category="conversion">
+        <img src="assets/images/Socials Logos/YouTube Logo.png" alt="" />
+        Pre-save on YouTube Music
+      </a>
+      -->
+
+    </div>
+
+    <p class="presave-fineprint">
+      We only ask for permission to save this one release and follow Silver Omen. You can revoke access any time in your DSP account settings.
+    </p>
+  </div>
+
+  <script>
+    (function () {
+      var releaseId = window.PRESAVE_RELEASE_ID;
+      if (!releaseId) return;
+      var rid = encodeURIComponent(releaseId);
+
+      var sp = document.getElementById('presave-spotify-btn');
+      if (sp) sp.href = '/api/auth/spotify/login?release_id=' + rid;
+
+      var yt = document.getElementById('presave-youtube-btn');
+      if (yt) yt.href = '/api/auth/youtube/login?release_id=' + rid;
+    })();
+  </script>
+  <script src="assets/js/tracker.js"></script>
+</body>
+</html>

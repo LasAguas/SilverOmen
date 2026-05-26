@@ -3,6 +3,10 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "dev": "npx serve ."
+    "dev": "vercel dev",
+    "serve": "npx serve ."
+  },
+  "dependencies": {
+    "@supabase/supabase-js": "^2.45.0"
   }
 }

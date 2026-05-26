@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>You're in — Silver Omen</title>
+  <meta name="description" content="Your pre-save is locked in. The song will save to your library on release day." />
+  <meta name="robots" content="noindex" />
+
+  <link rel="stylesheet" href="assets/css/styles.css" />
+  <link rel="stylesheet" href="assets/css/theme-green.css" />
+  <style>
+    body { display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 100vh; padding: 3.5rem 1.5rem 4rem; position: relative; overflow-x: hidden; }
+    .links-bg { position: fixed; inset: 0; z-index: 0; }
+    .links-bg-image { width: 100%; height: 100%; object-fit: cover; object-position: center; filter: blur(24px); transform: scale(1.06); }
+    .links-bg-overlay { position: absolute; inset: 0; background: rgba(4, 6, 18, 0.78); }
+    .links-bg-overlay-green { position: absolute; inset: 0; background: rgba(76, 137, 38, 0.10); }
+    .thanks-page { position: relative; z-index: 1; width: 100%; max-width: 460px; display: flex; flex-direction: column; align-items: center; text-align: center; }
+    .thanks-icon { width: 64px; height: 64px; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-bottom: 1.5rem; font-size: 1.8rem; font-family: 'Protagonist', sans-serif; color: #f8f8f8; }
+    .thanks-icon.ok { background: rgba(76, 137, 38, 0.35); border: 1px solid rgba(157, 86, 218, 0.55); }
+    .thanks-icon.warn { background: rgba(248, 70, 70, 0.18); border: 1px solid rgba(248, 70, 70, 0.55); }
+    .thanks-title { font-family: 'Protagonist', sans-serif; font-size: clamp(1.6rem, 6vw, 2.2rem); text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 1rem; }
+    .thanks-copy { font-family: 'Brans', sans-serif; font-size: 0.82rem; line-height: 1.7; letter-spacing: 0.04em; color: rgba(248, 248, 248, 0.75); margin-bottom: 2rem; max-width: 380px; }
+    .links-btn { display: block; width: 100%; max-width: 320px; padding: 1rem 1.5rem; text-align: center; font-family: 'Brans', sans-serif; font-size: 0.82rem; letter-spacing: 0.14em; text-transform: uppercase; color: #f8f8f8; border: 1px solid rgba(248, 248, 248, 0.25); border-radius: 4px; background: rgba(248, 248, 248, 0.05); transition: background 0.25s ease, border-color 0.25s ease; }
+    .links-btn:hover { background: rgba(157, 86, 218, 0.18); border-color: #9d56da; }
+    .links-btn + .links-btn { margin-top: 0.75rem; }
+  </style>
+</head>
+<body>
+  <div class="links-bg">
+    <img src="assets/images/Hero/silver-omen-prescription.jpg" alt="" class="links-bg-image" />
+    <div class="links-bg-overlay"></div>
+    <div class="links-bg-overlay-green"></div>
+  </div>
+
+  <div class="thanks-page">
+    <div id="thanks-icon" class="thanks-icon ok">&#10003;</div>
+    <h1 id="thanks-title" class="thanks-title">You're in.</h1>
+    <p id="thanks-copy" class="thanks-copy">
+      The track will land in your library the moment it drops. Talk soon.
+    </p>
+    <a href="links" class="links-btn">Back to links</a>
+    <a href="index.html" class="links-btn">Silver Omen home</a>
+  </div>
+
+  <script>
+    (function () {
+      var params = new URLSearchParams(window.location.search);
+      var status = params.get('status') || 'ok';
+      var dsp = params.get('dsp') || '';
+      var iconEl = document.getElementById('thanks-icon');
+      var titleEl = document.getElementById('thanks-title');
+      var copyEl = document.getElementById('thanks-copy');
+
+      if (status === 'denied') {
+        iconEl.className = 'thanks-icon warn'; iconEl.innerHTML = '&times;';
+        titleEl.textContent = 'No pre-save.';
+        copyEl.textContent = 'You declined the permission, so nothing was saved. You can try again any time before release day.';
+      } else if (status === 'error') {
+        iconEl.className = 'thanks-icon warn'; iconEl.innerHTML = '!';
+        titleEl.textContent = 'Something went wrong.';
+        copyEl.textContent = 'We couldn’t complete the pre-save. Try again from the pre-save page.';
+      }
+
+      // Fire conversion event (Tier 1, no consent required) — only on success.
+      if (status === 'ok' && window.SilverOmenTrack) {
+        window.SilverOmenTrack('conversion_presave', {
+          platform: dsp || 'unknown',
+          release: params.get('release') || '',
+        });
+      }
+    })();
+  </script>
+  <script src="assets/js/tracker.js"></script>
+</body>
+</html>
