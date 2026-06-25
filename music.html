@@ -272,6 +272,21 @@
 
     var releases = [
       {
+        title: 'club soldier',
+        type: 'Single',
+        date: '26 June 2026',
+        cover: 'Club Soldier Cover Art.JPG',
+        desc: '“club soldier” is Silver Omen&#8217s newest dance pop release. It tells the story of not being able to deal with the end of things, from the perspective and the aesthetic of the end of a party. Silver goes from enjoying the moment, to feeling trapped and trying to hold on to something that must come to an end. The song carries a positive message that, despite everything having to come sometime to an end, there&#8217s always a new opportunity to be happy. There&#8217s always another party for the club soldier who remains strong.',
+        comingSoon: true,
+        links: {
+          spotify:     'https://open.spotify.com/album/0vC5X5USvoPubHB7KYfnYq',
+          appleMusic:  'https://music.apple.com/gb/album/prescription/1890070827?i=1890070829',
+          tidal:       'https://tidal.com/track/511734859/u',
+          deezer:      'https://link.deezer.com/s/3345se832NkDBL539BLDh',
+          youtubeMusic:'https://www.youtube.com/watch?v=0Dk4tu0wGFA&list=OLAK5uy_nEKrqI1-8rk7ndtmvEvKS1gi6JGzkNlyU'
+        }
+      },
+      {
         title: 'Prescription',
         type: 'Single',
         date: '20 April 2026',
@@ -376,7 +391,7 @@
     function buildReleases() {
       return releases.map(function (r, i) {
         var action = r.comingSoon
-          ? '<span class="release-coming-soon">Coming Soon</span>'
+          ? '<span class="release-coming-soon" style="max-width: 110px;">Coming Soon</span>'
           : buildListenButton(i, r.links);
 
         return (
