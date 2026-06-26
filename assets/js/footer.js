@@ -10,8 +10,8 @@ var Footer = (function () {
     { name: 'Instagram', img: 'Instagram Logo.png', href: 'instagram.com/silver.omen' },
     { name: 'Facebook', img: 'Facebook Logo.png', href: 'https://www.facebook.com/silveromenmusic' },
     { name: 'Bandcamp', img: 'Bandcamp Logo.png', href: 'https://silveromen.bandcamp.com/track/welcome-to-the-club' },
-    { name: 'Tidal', img: 'Tidal Logo.png', href: 'https://tidal.com/artist/57012046/u' },
-    { name: 'Deezer', img: 'Deezer Logo.png', href: 'https://www.deezer.com/en/track/3849458051' }
+    { name: 'Tidal', img: 'Tidal Logo.png', href: 'https://tidal.com/track/528763304/u' },
+    { name: 'Deezer', img: 'Deezer Logo.png', href: 'https://www.deezer.com/en/artist/319371991' }
   ];
 
   function buildSocialIcons(base) {
