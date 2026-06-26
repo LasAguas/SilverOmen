@@ -2,7 +2,7 @@
 body { background-color: #4d120f !important; }
 .loader { background: #4d120f !important; }
 .header.scrolled { background: #8C2F3A !important; }
-.hero-overlay { background: #4d120f !important; }
+.hero-overlay { background: rgb(77, 18, 15, 0.3) !important; }
 
 @media (max-width: 768px) {
   .header-nav { background: rgb(77, 18, 15, 0.75) !important; }

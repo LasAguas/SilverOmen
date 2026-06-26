@@ -4,8 +4,8 @@ function render() {
 
   // Hero + Mailchimp form — randomly pick between two hero images on each load
   var heroImages = [
-    'assets/images/Hero/silver-omen-prescription.jpg',
-    'assets/images/Hero/silver-omen-torso.jpg'
+    'assets/images/Hero/Silver Omen Hero Image Club Soldier.jpg',
+    'assets/images/Hero/Silver Omen Hero Image Club Soldier.jpg'
   ];
   var heroImage = heroImages[Math.floor(Math.random() * heroImages.length)];
 
