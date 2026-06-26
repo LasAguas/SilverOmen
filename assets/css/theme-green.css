@@ -1,11 +1,11 @@
 /* Green theme override for hero variant pages */
-body { background-color: #234b09 !important; }
-.loader { background: #234b09 !important; }
-.header.scrolled { background: rgba(35, 75, 9, 0.95) !important; }
-.hero-overlay { background: rgba(76, 137, 38, 0.15) !important; }
+body { background-color: #4d120f !important; }
+.loader { background: #4d120f !important; }
+.header.scrolled { background: #8C2F3A !important; }
+.hero-overlay { background: #4d120f !important; }
 
 @media (max-width: 768px) {
-  .header-nav { background: rgba(35, 75, 9, 0.97) !important; }
+  .header-nav { background: rgb(77, 18, 15, 0.75) !important; }
 }
 
 /* Hide the hero overlay entirely when opted out */

@@ -323,7 +323,7 @@ img {
   width: 100%;
   padding: 0.85rem;
   margin-top: 0.5rem;
-  background: #9d56da;
+  background: #BF4F05;
   border: none;
   border-radius: 4px;
   color: #f8f8f8;
@@ -336,7 +336,7 @@ img {
 }
 
 #mc_embed_signup .button:hover {
-  background: #7a3fb8;
+  background: #CB5901;
 }
 
 #mc_embed_signup .indicates-required,
@@ -362,8 +362,8 @@ img {
 /* ===== Footer ===== */
 .footer {
   padding: 2.5rem 3rem 2rem;
-  border-top: 1px solid rgba(248, 248, 248, 0.08);
-  background: rgba(1, 15, 40, 0.6);
+  border-top: 1px solid #411326;
+  background: #6F2141;
 }
 
 .footer-inner {
