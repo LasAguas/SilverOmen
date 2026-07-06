@@ -1,6 +1,6 @@
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
 
-const ALLOWED_ARTIST_IDS = new Set([11]); // Silver Omen — add more as needed
+const ALLOWED_ARTIST_IDS = new Set([5, 11]); // Lemon Eye, Silver Omen — add more as needed
 const MAX_EVENTS_PER_SESSION = 200;       // guard against runaway beacons
 
 const CORS_HEADERS = {
@@ -12,8 +12,6 @@ const CORS_HEADERS = {
 // ── User-Agent parsing ──────────────────────────────────────────────────────
 
 function parseUA(ua: string): { device_type: string; os_family: string; browser_family: string } {
-  const s = ua.toLowerCase();
-
   let device_type = 'desktop';
   if (/mobile|android(?!.*tablet)|iphone|ipod|blackberry|windows phone/i.test(ua)) {
     device_type = 'mobile';
@@ -84,6 +82,63 @@ const COUNTRY_NAMES: Record<string, string> = {
   MX:'Mexico', JP:'Japan', KR:'South Korea', IN:'India', SG:'Singapore',
 };
 
+// ── Geo fallback via IP lookup ──────────────────────────────────────────────
+// Supabase stopped forwarding the Cloudflare `cf-ipcountry` header to edge
+// functions (geo went blank on 2026-06-02), so when no proxy geo header is
+// present we resolve the country from the client IP. The IP is read transiently
+// for the lookup and never stored.
+
+function getClientIp(req: Request): string | null {
+  const xff = req.headers.get('x-forwarded-for');
+  if (xff) {
+    const first = xff.split(',')[0].trim();
+    if (first) return first;
+  }
+  const real = req.headers.get('x-real-ip');
+  return real ? real.trim() : null;
+}
+
+function isPublicIp(ip: string): boolean {
+  if (!ip) return false;
+  if (
+    ip === '::1' ||
+    ip.startsWith('127.') ||
+    ip.startsWith('10.') ||
+    ip.startsWith('192.168.') ||
+    ip.startsWith('169.254.') ||
+    ip.startsWith('fe80:') ||
+    ip.startsWith('fc') ||
+    ip.startsWith('fd')
+  ) {
+    return false;
+  }
+  const m = ip.match(/^172\.(\d+)\./);
+  if (m && Number(m[1]) >= 16 && Number(m[1]) <= 31) return false;
+  return true;
+}
+
+async function lookupGeo(
+  ip: string,
+): Promise<{ country_code: string | null; country_name: string | null; city: string | null }> {
+  const empty = { country_code: null, country_name: null, city: null };
+  try {
+    const res = await fetch(
+      `https://ipwho.is/${encodeURIComponent(ip)}?fields=success,country_code,country,city`,
+      { signal: AbortSignal.timeout(1500) },
+    );
+    if (!res.ok) return empty;
+    const data = await res.json();
+    if (!data || data.success === false) return empty;
+    return {
+      country_code: typeof data.country_code === 'string' ? data.country_code.slice(0, 2).toUpperCase() : null,
+      country_name: typeof data.country === 'string' ? data.country.slice(0, 100) : null,
+      city:         typeof data.city === 'string' ? data.city.slice(0, 100) : null,
+    };
+  } catch {
+    return empty;
+  }
+}
+
 // ── Main handler ────────────────────────────────────────────────────────────
 
 Deno.serve(async (req: Request) => {
@@ -122,20 +177,21 @@ Deno.serve(async (req: Request) => {
     });
   }
 
-  // Geo from Vercel/Cloudflare edge headers (IP never reaches this function's storage)
-  const country_code = (
+  // Geo: prefer Vercel/Cloudflare edge headers when present; otherwise fall back
+  // to an IP lookup when a new session is created (below). IP is never stored.
+  let country_code = (
     req.headers.get('x-vercel-ip-country') ||
     req.headers.get('cf-ipcountry') ||
     null
   )?.slice(0, 2).toUpperCase() || null;
 
-  const city = (
+  let city = (
     req.headers.get('x-vercel-ip-city') ||
     req.headers.get('cf-ipcity') ||
     null
   )?.slice(0, 100) || null;
 
-  const country_name = country_code ? (COUNTRY_NAMES[country_code] ?? country_code) : null;
+  let country_name = country_code ? (COUNTRY_NAMES[country_code] ?? country_code) : null;
 
   // Device from User-Agent (raw UA discarded after parsing)
   const rawUA = req.headers.get('user-agent') ?? '';
@@ -182,6 +238,18 @@ Deno.serve(async (req: Request) => {
       })
       .eq('id', session_id);
   } else {
+    // No proxy geo header (current Supabase default) — derive geo from the
+    // client IP. Only done on session creation, so at most one lookup per visit.
+    if (!country_code) {
+      const ip = getClientIp(req);
+      if (ip && isPublicIp(ip)) {
+        const geo = await lookupGeo(ip);
+        country_code = geo.country_code;
+        country_name = geo.country_name ?? (geo.country_code ? (COUNTRY_NAMES[geo.country_code] ?? geo.country_code) : null);
+        if (!city) city = geo.city;
+      }
+    }
+
     // Create new session
     const { data: newSession, error: sessionError } = await supabase
       .from('website_sessions')
