@@ -33,7 +33,7 @@ var Footer = (function () {
             buildSocialIcons(base) +
           '</div>' +
           '<div class="footer-bottom">' +
-            '<span class="footer-copy">&copy; ' + new Date().getFullYear() + ' Silver Omen. All rights reserved.</span>' +
+            '<span class="footer-copy">&copy; ' + new Date().getFullYear() + ' Silver Omen. All rights reserved. &nbsp;&middot;&nbsp; <a href="' + base + 'privacy" style="text-decoration:underline">Privacy Policy</a></span>' +
           '</div>' +
         '</div>' +
       '</footer>';
