@@ -39,7 +39,7 @@ html {
 
 body {
   font-family: 'DIN Condensed', Georgia, sans-serif;
-  background-color: #011f52;
+  background-color: #0B1B28;
   color: #f8f8f8;
   overflow-x: hidden;
   -webkit-font-smoothing: antialiased;
@@ -60,7 +60,7 @@ img {
   position: fixed;
   inset: 0;
   z-index: 9999;
-  background: #011f52;
+  background: #0B1B28;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -98,7 +98,7 @@ img {
 }
 
 .header.scrolled {
-  background: rgba(1, 31, 82, 0.95);
+  background: rgba(11, 27, 40, 0.95);
   backdrop-filter: blur(14px);
   padding: 0.85rem 3rem;
   box-shadow: 0 1px 20px rgba(0, 0, 0, 0.25);
@@ -154,7 +154,7 @@ img {
   left: 0;
   width: 0;
   height: 1px;
-  background: #9d56da;
+  background: #2C89D3;
   transition: width 0.3s ease;
 }
 
@@ -215,7 +215,7 @@ img {
 .hero-overlay {
   position: absolute;
   inset: 0;
-  background: rgba(1, 31, 82, 0.55);
+  background: rgba(11, 27, 40, 0.55);
 }
 
 .hero-content {
@@ -257,7 +257,7 @@ img {
   font-family: 'DIN Condensed', Georgia, sans-serif;
   font-size: clamp(1rem, 2.5vw, 1.5rem);
   margin-top: 1.25rem;
-  color: #f4e1cd;
+  color: #D7E7F4;
   letter-spacing: 0.15em;
   opacity: 0;
   animation: fadeIn 1s ease 0.6s forwards;
@@ -315,7 +315,7 @@ img {
 
 #mc_embed_signup input[type="email"]:focus,
 #mc_embed_signup input[type="text"]:focus {
-  border-color: #9d56da;
+  border-color: #2C89D3;
   background: rgba(248, 248, 248, 0.12);
 }
 
@@ -323,7 +323,7 @@ img {
   width: 100%;
   padding: 0.85rem;
   margin-top: 0.5rem;
-  background: #BF4F05;
+  background: #2C89D3;
   border: none;
   border-radius: 4px;
   color: #f8f8f8;
@@ -336,7 +336,7 @@ img {
 }
 
 #mc_embed_signup .button:hover {
-  background: #CB5901;
+  background: #1F69A2;
 }
 
 #mc_embed_signup .indicates-required,
@@ -346,7 +346,7 @@ img {
 }
 
 #mc_embed_signup div.response {
-  color: #f4e1cd;
+  color: #D7E7F4;
   font-family: 'Brans', sans-serif;
   font-size: 0.8rem;
 }
@@ -362,8 +362,8 @@ img {
 /* ===== Footer ===== */
 .footer {
   padding: 2.5rem 3rem 2rem;
-  border-top: 1px solid #411326;
-  background: #6F2141;
+  border-top: 1px solid #1C364A;
+  background: #112332;
 }
 
 .footer-inner {
@@ -465,7 +465,7 @@ img {
 }
 
 .about-page-text em {
-  color: #f4e1cd;
+  color: #D7E7F4;
   font-style: italic;
 }
 
@@ -526,7 +526,7 @@ img {
 
 .press-item-arrow {
   font-size: 1.1rem;
-  color: #9d56da;
+  color: #2C89D3;
   opacity: 0;
   transform: translateX(-6px);
   transition: opacity 0.3s ease, transform 0.3s ease;
@@ -593,7 +593,7 @@ img {
   .header-nav {
     position: fixed;
     inset: 0;
-    background: rgba(1, 31, 82, 0.97);
+    background: rgba(11, 27, 40, 0.97);
     backdrop-filter: blur(20px);
     flex-direction: column;
     align-items: center;

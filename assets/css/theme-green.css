@@ -1,11 +1,11 @@
-/* Green theme override for hero variant pages */
-body { background-color: #4d120f !important; }
-.loader { background: #4d120f !important; }
-.header.scrolled { background: #8C2F3A !important; }
-.hero-overlay { background: rgb(77, 18, 15, 0.3) !important; }
+/* Site-wide dark theme override (My City palette) */
+body { background-color: #0B1B28 !important; }
+.loader { background: #0B1B28 !important; }
+.header.scrolled { background: #142B3D !important; }
+.hero-overlay { background: rgb(11, 27, 40, 0.3) !important; }
 
 @media (max-width: 768px) {
-  .header-nav { background: rgb(77, 18, 15, 0.75) !important; }
+  .header-nav { background: rgb(11, 27, 40, 0.75) !important; }
 }
 
 /* Hide the hero overlay entirely when opted out */
