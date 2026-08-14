@@ -4,32 +4,27 @@
   <link rel="icon" type="image/jpeg" href="assets/images/Gallery/Silver Omen PFP Orange.jpeg" />
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Silver Omen | Links</title>
-  <meta name="description" content="Silver Omen — links, music, and updates." />
-  <link rel="canonical" href="https://www.silveromen.com/links" />
+  <title>My City</title>
+  <meta name="description" content="Listen to My City by Silver Omen" />
+  <link rel="canonical" href="https://www.silveromen.com/my-city" />
 
-  <!-- Open Graph -->
-  <meta property="og:type" content="website" />
-  <meta property="og:url" content="https://www.silveromen.com/links" />
-  <meta property="og:title" content="Silver Omen | Links" />
-  <meta property="og:description" content="Silver Omen — links, music, and updates." />
-  <meta property="og:image" content="https://www.silveromen.com/assets/images/Hero/Silver Omen Hero Image Club Soldier.jpg" />
-  <meta property="og:image:secure_url" content="https://www.silveromen.com/assets/images/Hero/Silver Omen Hero Image Club Soldier.jpg" />
+  <meta property="og:type" content="music.song" />
+  <meta property="og:url" content="https://www.silveromen.com/my-city" />
+  <meta property="og:title" content="My City — Silver Omen" />
+  <meta property="og:description" content="Listen to My City by Silver Omen — out now on all platforms." />
+  <meta property="og:image" content="https://www.silveromen.com/assets/images/Music/My%20City%20Cover%20Art.jpg" />
   <meta property="og:image:width" content="1200" />
-  <meta property="og:image:height" content="630" />
-  <meta property="og:image:alt" content="Silver Omen" />
+  <meta property="og:image:height" content="1200" />
+  <meta property="og:image:alt" content="My City by Silver Omen" />
   <meta property="og:site_name" content="Silver Omen" />
-
-  <!-- Twitter -->
   <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="Silver Omen | Links" />
-  <meta name="twitter:description" content="Silver Omen — links, music, and updates." />
-  <meta name="twitter:image" content="https://www.silveromen.com/assets/images/Hero/Silver Omen Hero Image Club Soldier.jpg" />
+  <meta name="twitter:title" content="My City — Silver Omen" />
+  <meta name="twitter:description" content="Listen to My City by Silver Omen — out now on all platforms." />
+  <meta name="twitter:image" content="https://www.silveromen.com/assets/images/Music/My%20City%20Cover%20Art.jpg" />
 
   <link rel="stylesheet" href="assets/css/styles.css" />
   <link rel="stylesheet" href="assets/css/theme-green.css" />
   <style>
-    /* ===== Links Page ===== */
     body {
       display: flex;
       flex-direction: column;
@@ -40,68 +35,73 @@
       position: relative;
       overflow-x: hidden;
     }
-
     .links-bg {
       position: fixed;
       inset: 0;
       z-index: 0;
     }
-
     .links-bg-image {
       width: 100%;
       height: 100%;
       object-fit: cover;
-      object-position: center top;
+      object-position: center;
+      filter: blur(24px);
+      transform: scale(1.06);
     }
-
+    .links-bg-overlay {
+      position: absolute;
+      inset: 0;
+      background: rgba(4, 6, 18, 0.72);
+    }
     .links-bg-overlay-green {
       position: absolute;
       inset: 0;
-      background: rgba(76, 137, 38, 0.15);
+      background: rgba(76, 137, 38, 0.10);
     }
-
     .links-page {
       position: relative;
       z-index: 1;
-    }
-
-    .links-page {
       width: 100%;
       max-width: 420px;
       display: flex;
       flex-direction: column;
       align-items: center;
-      gap: 0;
     }
-
-    /* Artist name */
-    .links-name {
-      font-family: 'Protagonist', sans-serif;
-      font-size: clamp(2rem, 8vw, 3rem);
-      text-transform: uppercase;
-      letter-spacing: 0.1em;
-      text-align: center;
-      margin-bottom: 1.75rem;
-    }
-
-    /* Cover art */
     .links-cover {
       width: 120px;
       height: 120px;
       border-radius: 8px;
       overflow: hidden;
-      margin-bottom: 2.5rem;
+      margin-bottom: 1.5rem;
       flex-shrink: 0;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.55);
     }
-
     .links-cover img {
       width: 100%;
       height: 100%;
       object-fit: cover;
       display: block;
     }
-
-    /* Link buttons */
+    .links-name {
+      font-family: 'Protagonist', sans-serif;
+      font-size: clamp(2rem, 8vw, 3rem);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      text-align: center;
+      margin-bottom: 0.4rem;
+    }
+    .links-release-title {
+      font-family: 'Brans', sans-serif;
+      font-size: 0.72rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: rgba(248, 248, 248, 0.5);
+      text-align: center;
+      margin-bottom: 2rem;
+    }
+    .links-release-title strong {
+      color: rgba(248, 248, 248, 0.85);
+    }
     .links-buttons {
       width: 100%;
       display: flex;
@@ -109,14 +109,13 @@
       gap: 0.85rem;
       margin-bottom: 3rem;
     }
-
     .links-btn {
       display: block;
       width: 100%;
       padding: 1rem 1.5rem;
       text-align: center;
       font-family: 'Brans', sans-serif;
-      font-size: 1rem;
+      font-size: 0.82rem;
       letter-spacing: 0.14em;
       text-transform: uppercase;
       color: #f8f8f8;
@@ -125,24 +124,19 @@
       background: rgba(248, 248, 248, 0.05);
       transition: background 0.25s ease, border-color 0.25s ease, color 0.25s ease;
     }
-
     .links-btn:hover {
       background: rgba(157, 86, 218, 0.18);
       border-color: #9d56da;
       color: #f8f8f8;
     }
-
     .links-btn.links-btn-primary {
       background: #9d56da;
       border-color: #9d56da;
     }
-
     .links-btn.links-btn-primary:hover {
       background: #7a3fb8;
       border-color: #7a3fb8;
     }
-
-    /* Expandable streaming panel */
     .links-expand-btn {
       display: flex;
       align-items: center;
@@ -150,18 +144,15 @@
       gap: 0.5rem;
       cursor: pointer;
     }
-
     .links-expand-btn .expand-arrow {
       display: inline-block;
       font-size: 0.6rem;
       transition: transform 0.25s ease;
       line-height: 1;
     }
-
     .links-expand-btn[aria-expanded="true"] .expand-arrow {
       transform: rotate(180deg);
     }
-
     .links-sub-buttons {
       display: none;
       flex-direction: column;
@@ -170,20 +161,15 @@
       margin-top: 0.6rem;
       padding-left: 0.75rem;
     }
-
-    .links-sub-buttons.open {
-      display: flex;
-    }
-
+    .links-sub-buttons.open { display: flex; }
     .links-sub-btn {
       display: flex;
       align-items: center;
       gap: 0.65rem;
       width: 100%;
       padding: 0.7rem 1.25rem;
-      text-align: left;
       font-family: 'Brans', sans-serif;
-      font-size: 0.92rem;
+      font-size: 0.78rem;
       letter-spacing: 0.12em;
       text-transform: uppercase;
       color: #f8f8f8;
@@ -192,21 +178,17 @@
       background: rgba(248, 248, 248, 0.03);
       transition: background 0.2s ease, border-color 0.2s ease;
     }
-
     .links-sub-btn:hover {
       background: rgba(157, 86, 218, 0.14);
       border-color: rgba(157, 86, 218, 0.5);
       color: #f8f8f8;
     }
-
     .links-sub-btn img {
       width: 18px;
       height: 18px;
       object-fit: contain;
       flex-shrink: 0;
     }
-
-    /* Social icons */
     .links-socials {
       display: flex;
       justify-content: center;
@@ -214,7 +196,6 @@
       gap: 1.25rem;
       flex-wrap: wrap;
     }
-
     .links-social-link {
       display: flex;
       align-items: center;
@@ -224,28 +205,19 @@
       opacity: 0.6;
       transition: opacity 0.25s ease, transform 0.25s ease;
     }
-
     .links-social-link:hover {
       opacity: 1;
       transform: scale(1.15);
     }
-
     .links-social-link img {
       width: 100%;
       height: 100%;
       object-fit: contain;
       display: block;
     }
-
     @media (max-width: 768px) {
-      body {
-        justify-content: center;
-      }
-
-      .links-bg-image {
-        height: 100vh;
-        object-position: 20% top;
-      }
+      body { justify-content: center; }
+      .links-bg-image { height: 100vh; }
     }
   </style>
   <!-- Meta Pixel Code -->
@@ -285,17 +257,20 @@
 </head>
 <body>
   <div class="links-bg">
-    <img src="assets/images/Hero/Silver Omen Hero Image Club Soldier.jpg" alt="" class="links-bg-image" />
+    <img src="assets/images/Music/My City Cover Art.jpg" alt="" class="links-bg-image" />
     <div class="links-bg-overlay"></div>
     <div class="links-bg-overlay-green"></div>
   </div>
 
   <div class="links-page">
-
+    <div class="links-cover">
+      <img src="assets/images/Music/My City Cover Art.jpg" alt="My City" />
+    </div>
     <span class="links-name">Silver Omen</span>
+    <p class="links-release-title"><strong>My City</strong> &middot; Single</p>
 
-<div class="links-buttons">
-      <button class="links-btn links-expand-btn" aria-expanded="true" onclick="toggleStreaming(this)"
+    <div class="links-buttons">
+      <button class="links-btn links-btn-primary links-expand-btn" aria-expanded="true" onclick="toggleStreaming(this)"
         data-track-type="streaming" data-track-label="Listen to My City" data-track-platform="multi" data-track-category="streaming">
         Listen to My City <span class="expand-arrow">&#9660;</span>
       </button>
@@ -321,18 +296,6 @@
           <img src="assets/images/Socials Logos/YouTube Logo.png" alt="" /> YouTube
         </a>
       </div>
-      <!-- <a href="https://ffm.to/clubsoldier" class="links-btn" target="_blank" rel="noopener noreferrer"
-        data-track-type="other" data-track-label="Inner Child Interview" data-track-platform="spotify" data-track-category="Pre-save">
-        PRESAVE CLUB SOLDIER
-      </a> --> 
-      <a href="https://youtu.be/i4kYIWzq07Y" class="links-btn" target="_blank" rel="noopener noreferrer"
-        data-track-type="streaming" data-track-label="Watch on YouTube" data-track-platform="youtube" data-track-category="streaming">
-        Club Soldier Music Video
-      </a>
-      <a href="https://earmilk.com/2026/06/26/silver-omen-tries-to-keep-the-party-scene-going-with-club-soldier/" class="links-btn" target="_blank" rel="noopener noreferrer"
-        data-track-type="press" data-track-label="Earmilk" data-track-platform="earmilk" data-track-category="press">
-        Earmilk Article
-      </a>
       <a href="index.html" class="links-btn"
         data-track-type="other" data-track-label="Website" data-track-platform="silveromen" data-track-category="navigation">
         Website
@@ -360,7 +323,7 @@
         data-track-type="social" data-track-label="Facebook" data-track-platform="facebook" data-track-category="social">
         <img src="assets/images/Socials Logos/Facebook Logo.png" alt="Facebook" />
       </a>
-      <a href="https://silveromen.bandcamp.com/track/welcome-to-the-club" class="links-social-link" aria-label="Bandcamp" target="_blank" rel="noopener noreferrer"
+      <a href="https://silveromen.bandcamp.com" class="links-social-link" aria-label="Bandcamp" target="_blank" rel="noopener noreferrer"
         data-track-type="streaming" data-track-label="Bandcamp" data-track-platform="bandcamp" data-track-category="streaming">
         <img src="assets/images/Socials Logos/Bandcamp Logo.png" alt="Bandcamp" />
       </a>
@@ -373,8 +336,8 @@
         <img src="assets/images/Socials Logos/Deezer Logo.png" alt="Deezer" />
       </a>
     </div>
-
   </div>
+
   <script>
     function toggleStreaming(btn) {
       var panel = document.getElementById('streaming-platforms');
