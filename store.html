@@ -1,0 +1,1033 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <link rel="icon" type="image/jpeg" href="assets/images/Gallery/Silver Omen PFP Orange.jpeg" />
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Store | Silver Omen</title>
+  <link rel="canonical" href="https://www.silveromen.com/store" />
+  <link rel="stylesheet" href="assets/css/styles.css" />
+  <link rel="stylesheet" href="assets/css/theme-green.css" />
+  <style>
+    /* ===== Store Page ===== */
+    .store-page {
+      min-height: 100vh;
+      padding: 10rem 3rem 6rem;
+    }
+
+    .store-page-inner {
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+
+    .store-page-header {
+      margin-bottom: 4rem;
+    }
+
+    .store-page-title {
+      font-family: 'Protagonist', sans-serif;
+      font-size: clamp(2rem, 4vw, 3.2rem);
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      line-height: 1.05;
+    }
+
+    .store-page-sub {
+      font-family: 'Brans', sans-serif;
+      font-size: 0.72rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: rgba(248, 248, 248, 0.38);
+      margin-top: 0.9rem;
+    }
+
+    /* ===== Status / message states ===== */
+    .store-state {
+      font-family: 'DIN Condensed', Georgia, sans-serif;
+      font-size: 1.05rem;
+      color: rgba(248, 248, 248, 0.5);
+      padding: 3rem 0;
+      border-top: 1px solid rgba(248, 248, 248, 0.08);
+    }
+
+    .store-msg {
+      font-family: 'Brans', sans-serif;
+      font-size: 0.76rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: #f8f8f8;
+      background: rgba(211, 74, 74, 0.12);
+      border: 1px solid rgba(211, 74, 74, 0.45);
+      border-radius: 3px;
+      padding: 0.85rem 1.1rem;
+      margin-bottom: 2rem;
+      line-height: 1.5;
+    }
+
+    /* ===== Featured (single product) ===== */
+    .store-featured {
+      display: grid;
+      grid-template-columns: 1.05fr 1fr;
+      gap: 4rem;
+      align-items: start;
+      padding: 3rem 0;
+      border-top: 1px solid rgba(248, 248, 248, 0.08);
+      border-bottom: 1px solid rgba(248, 248, 248, 0.08);
+    }
+
+    .store-gallery-main {
+      aspect-ratio: 3 / 2;
+      overflow: hidden;
+      border-radius: 4px;
+      /* No panel colour: cut-out product shots have a transparent
+         background and should float on the page. */
+    }
+
+    .store-gallery-main img {
+      width: 100%;
+      height: 100%;
+      /* contain, not cover — never crop the product, and never fill
+         transparent edges. */
+      object-fit: contain;
+      display: block;
+      transition: transform 0.5s ease;
+    }
+
+    .store-gallery-main:hover img {
+      transform: scale(1.03);
+    }
+
+    .store-thumbs {
+      display: flex;
+      gap: 0.6rem;
+      margin-top: 0.75rem;
+    }
+
+    .store-thumb {
+      width: 74px;
+      aspect-ratio: 3 / 2;
+      overflow: hidden;
+      border-radius: 3px;
+      border: 1px solid rgba(248, 248, 248, 0.12);
+      background: rgba(248, 248, 248, 0.05);
+      cursor: pointer;
+      padding: 0;
+      opacity: 0.5;
+      transition: opacity 0.3s ease, border-color 0.3s ease;
+    }
+
+    .store-thumb img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      display: block;
+    }
+
+    .store-thumb:hover { opacity: 0.85; }
+
+    .store-thumb.active {
+      opacity: 1;
+      border-color: #2C89D3;
+    }
+
+    .store-info {
+      display: flex;
+      flex-direction: column;
+      padding-top: 0.5rem;
+    }
+
+    .store-meta {
+      display: flex;
+      align-items: center;
+      gap: 0.85rem;
+      margin-bottom: 0.75rem;
+      flex-wrap: wrap;
+    }
+
+    .store-tag {
+      font-family: 'Brans', sans-serif;
+      font-size: 0.68rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: #2C89D3;
+      border: 1px solid rgba(44, 137, 211, 0.45);
+      padding: 0.2rem 0.6rem;
+      border-radius: 2px;
+    }
+
+    .store-stock {
+      font-family: 'Brans', sans-serif;
+      font-size: 0.68rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: rgba(248, 248, 248, 0.38);
+    }
+
+    .store-stock.low { color: #E2A03F; }
+    .store-stock.out { color: rgba(211, 74, 74, 0.9); }
+
+    .store-name {
+      font-family: 'Protagonist', sans-serif;
+      font-size: clamp(1.8rem, 3vw, 2.8rem);
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      line-height: 1;
+      margin-bottom: 1rem;
+    }
+
+    .store-desc {
+      font-family: 'DIN Condensed', Georgia, sans-serif;
+      font-size: 1.05rem;
+      line-height: 1.75;
+      color: rgba(248, 248, 248, 0.62);
+      margin-bottom: 1.5rem;
+      max-width: 480px;
+    }
+
+    .store-price {
+      font-family: 'Protagonist', sans-serif;
+      font-size: 1.9rem;
+      letter-spacing: 0.03em;
+      margin-bottom: 0.35rem;
+    }
+
+    .store-shipping {
+      font-family: 'Brans', sans-serif;
+      font-size: 0.68rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: rgba(248, 248, 248, 0.38);
+      margin-bottom: 1.75rem;
+    }
+
+    /* Controls */
+    .store-controls {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      flex-wrap: wrap;
+    }
+
+    .store-select,
+    .store-qty {
+      font-family: 'Brans', sans-serif;
+      font-size: 0.78rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: #f8f8f8;
+      background: transparent;
+      border: 1px solid rgba(248, 248, 248, 0.35);
+      padding: 0.7rem 0.9rem;
+      border-radius: 3px;
+      cursor: pointer;
+      transition: border-color 0.3s ease;
+    }
+
+    .store-select:focus,
+    .store-qty:focus {
+      outline: none;
+      border-color: #2C89D3;
+    }
+
+    .store-select option {
+      background: #142B3D;
+      color: #f8f8f8;
+    }
+
+    .store-qty { width: 78px; cursor: text; }
+
+    .store-btn {
+      font-family: 'Brans', sans-serif;
+      font-size: 0.78rem;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: #f8f8f8;
+      background: transparent;
+      border: 1px solid rgba(248, 248, 248, 0.35);
+      padding: 0.7rem 1.6rem;
+      border-radius: 3px;
+      cursor: pointer;
+      transition: border-color 0.3s ease, color 0.3s ease, background 0.3s ease;
+    }
+
+    .store-btn:hover:not(:disabled) {
+      border-color: #2C89D3;
+      color: #2C89D3;
+    }
+
+    .store-btn:disabled {
+      color: rgba(248, 248, 248, 0.3);
+      border-color: rgba(248, 248, 248, 0.15);
+      cursor: not-allowed;
+    }
+
+    .store-btn--primary {
+      background: #2C89D3;
+      border-color: #2C89D3;
+      color: #0B1B28;
+    }
+
+    .store-btn--primary:hover:not(:disabled) {
+      background: #f8f8f8;
+      border-color: #f8f8f8;
+      color: #0B1B28;
+    }
+
+    /* ===== Grid fallback (2+ products) ===== */
+    .store-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 3rem 2.5rem;
+      padding: 3rem 0;
+      border-top: 1px solid rgba(248, 248, 248, 0.08);
+      border-bottom: 1px solid rgba(248, 248, 248, 0.08);
+    }
+
+    .store-card-img {
+      aspect-ratio: 3 / 2;
+      overflow: hidden;
+      border-radius: 4px;
+      margin-bottom: 1.25rem;
+    }
+
+    .store-card-img img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      display: block;
+      transition: transform 0.5s ease;
+    }
+
+    .store-card-img:hover img { transform: scale(1.04); }
+
+    .store-card .store-name { font-size: 1.4rem; margin-bottom: 0.6rem; }
+    .store-card .store-desc { font-size: 0.98rem; margin-bottom: 1rem; }
+    .store-card .store-price { font-size: 1.4rem; }
+
+    /* ===== Cart ===== */
+    .store-cart {
+      margin-top: 3rem;
+      border: 1px solid rgba(248, 248, 248, 0.12);
+      border-radius: 5px;
+      padding: 1.75rem;
+      background: rgba(20, 43, 61, 0.4);
+    }
+
+    .store-cart-title {
+      font-family: 'Brans', sans-serif;
+      font-size: 0.72rem;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: rgba(248, 248, 248, 0.55);
+      margin-bottom: 1.25rem;
+    }
+
+    .store-line {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: 1rem;
+      padding: 0.6rem 0;
+      border-bottom: 1px solid rgba(248, 248, 248, 0.06);
+      font-family: 'DIN Condensed', Georgia, sans-serif;
+      font-size: 1.02rem;
+      color: rgba(248, 248, 248, 0.8);
+    }
+
+    .store-line-remove {
+      font-family: 'Brans', sans-serif;
+      font-size: 0.64rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: rgba(248, 248, 248, 0.35);
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 0 0 0 0.75rem;
+      transition: color 0.3s ease;
+    }
+
+    .store-line-remove:hover { color: #2C89D3; }
+
+    .store-totals {
+      display: flex;
+      justify-content: space-between;
+      font-family: 'DIN Condensed', Georgia, sans-serif;
+      font-size: 0.98rem;
+      color: rgba(248, 248, 248, 0.55);
+      padding: 0.4rem 0;
+    }
+
+    .store-totals.grand {
+      font-family: 'Protagonist', sans-serif;
+      font-size: 1.3rem;
+      letter-spacing: 0.03em;
+      color: #f8f8f8;
+      padding-top: 0.9rem;
+      margin-top: 0.5rem;
+      border-top: 1px solid rgba(248, 248, 248, 0.12);
+    }
+
+    .store-optin {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.6rem;
+      margin: 1.5rem 0;
+      font-family: 'DIN Condensed', Georgia, sans-serif;
+      font-size: 0.95rem;
+      line-height: 1.5;
+      color: rgba(248, 248, 248, 0.6);
+      cursor: pointer;
+    }
+
+    .store-optin input {
+      appearance: none;
+      -webkit-appearance: none;
+      width: 15px;
+      height: 15px;
+      flex-shrink: 0;
+      margin-top: 3px;
+      border: 1px solid rgba(248, 248, 248, 0.35);
+      border-radius: 2px;
+      background: transparent;
+      cursor: pointer;
+      position: relative;
+      transition: border-color 0.3s ease, background 0.3s ease;
+    }
+
+    .store-optin input:checked {
+      background: #2C89D3;
+      border-color: #2C89D3;
+    }
+
+    .store-optin input:checked::after {
+      content: '';
+      position: absolute;
+      left: 4px;
+      top: 0.5px;
+      width: 4px;
+      height: 8px;
+      border: solid #0B1B28;
+      border-width: 0 2px 2px 0;
+      transform: rotate(45deg);
+    }
+
+    .store-cart-actions {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      flex-wrap: wrap;
+    }
+
+    .store-secure {
+      font-family: 'Brans', sans-serif;
+      font-size: 0.64rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: rgba(248, 248, 248, 0.3);
+      margin-top: 1.1rem;
+      line-height: 1.6;
+    }
+
+    /* ===== Receipt ===== */
+    .store-receipt {
+      border: 1px solid rgba(44, 137, 211, 0.4);
+      border-radius: 5px;
+      padding: 2.5rem;
+      background: rgba(44, 137, 211, 0.07);
+      max-width: 620px;
+    }
+
+    .store-receipt-title {
+      font-family: 'Protagonist', sans-serif;
+      font-size: clamp(1.5rem, 2.6vw, 2.2rem);
+      text-transform: uppercase;
+      letter-spacing: 0.03em;
+      line-height: 1.1;
+      margin-bottom: 1.25rem;
+    }
+
+    .store-receipt-code {
+      font-family: 'Brans', sans-serif;
+      font-size: 0.72rem;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: #2C89D3;
+      border: 1px solid rgba(44, 137, 211, 0.45);
+      border-radius: 3px;
+      padding: 0.5rem 0.9rem;
+      display: inline-block;
+      margin-bottom: 1.5rem;
+    }
+
+    .store-receipt p {
+      font-family: 'DIN Condensed', Georgia, sans-serif;
+      font-size: 1.02rem;
+      line-height: 1.75;
+      color: rgba(248, 248, 248, 0.7);
+      margin-bottom: 0.75rem;
+    }
+
+    @media (max-width: 768px) {
+      .store-page { padding: 7rem 1.5rem 4rem; }
+      .store-featured { grid-template-columns: 1fr; gap: 2rem; }
+      .store-cart { padding: 1.25rem; }
+      .store-receipt { padding: 1.75rem; }
+    }
+  </style>
+  <!-- Meta Pixel Code -->
+  <script>
+  !function(f,b,e,v,n,t,s)
+  {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+  n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+  if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+  n.queue=[];t=b.createElement(e);t.async=!0;
+  t.src=v;s=b.getElementsByTagName(e)[0];
+  s.parentNode.insertBefore(t,s)}(window, document,'script',
+  'https://connect.facebook.net/en_US/fbevents.js');
+  fbq('init', '2133013080603789');
+  fbq('track', 'PageView');
+  </script>
+  <noscript><img height="1" width="1" style="display:none"
+  src="https://www.facebook.com/tr?id=2133013080603789&ev=PageView&noscript=1"
+  /></noscript>
+  <!-- End Meta Pixel Code -->
+</head>
+<body>
+  <div id="root"></div>
+  <script src="assets/js/header.js"></script>
+  <script src="assets/js/footer.js"></script>
+  <script>
+    Header.render('#root', '');
+
+    var page =
+      '<main class="store-page">' +
+        '<div class="store-page-inner">' +
+          '<div class="store-page-header">' +
+            '<h1 class="store-page-title">Store</h1>' +
+          '</div>' +
+          '<div id="store-root">' +
+            '<div class="store-state">Loading store&hellip;</div>' +
+          '</div>' +
+        '</div>' +
+      '</main>';
+
+    document.getElementById('root').insertAdjacentHTML('beforeend', page);
+
+    Footer.render('#root', '');
+    Header.init();
+  </script>
+
+  <!-- ===== Las Aguas webstore ==========================================
+       Products, prices, shipping and stock all come from the Las Aguas
+       dashboard (Admin > Webstore). Nothing is priced in this file — the
+       server re-prices every checkout. Stripe Checkout collects the card,
+       email and shipping address, so there is deliberately no address form
+       here.
+       ================================================================== -->
+  <script>
+  (function () {
+    // ── Config ────────────────────────────────────────────────────────────
+    var API_BASE = 'https://lasaguasproductions.com'; // dashboard origin
+    var SLUG     = 'silver-omen-store';               // store.slug from the dashboard
+
+    // Product photos served from this site, keyed by the dashboard product
+    // name (lowercased). Delete an entry to fall back to the images uploaded
+    // in the dashboard.
+    var LOCAL_IMAGES = {
+      'cd - singles': [
+        'assets/images/Store/cd-product.webp',
+        'assets/images/Store/cd-front.jpg',
+        'assets/images/Store/cd-back.jpg'
+      ]
+    };
+
+    // ── State ─────────────────────────────────────────────────────────────
+    var root     = document.getElementById('store-root');
+    var CART_KEY = 'la_cart_' + SLUG;
+
+    var state = {
+      products: [],
+      availability: {},
+      cart: loadCart(),
+      picks: {},     // productId -> { variant, qty }
+      gallery: {},   // productId -> active image index
+      msg: '',
+      optIn: false,
+      busy: false
+    };
+
+    // ── Helpers ───────────────────────────────────────────────────────────
+    function loadCart() {
+      try { return JSON.parse(localStorage.getItem(CART_KEY)) || []; } catch (e) { return []; }
+    }
+
+    function saveCart() {
+      try { localStorage.setItem(CART_KEY, JSON.stringify(state.cart)); } catch (e) {}
+    }
+
+    function euro(cents) {
+      return '€' + ((cents || 0) / 100).toFixed(2);
+    }
+
+    function esc(str) {
+      return String(str == null ? '' : str)
+        .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+    }
+
+    function track(event, props) {
+      if (typeof window.SilverOmenTrack === 'function') {
+        try { window.SilverOmenTrack(event, props); } catch (e) {}
+      }
+    }
+
+    // Canonical URL for this page. The site serves clean URLs, and a
+    // .html -> /clean redirect can drop Stripe's ?session_id= on the way
+    // back, so always hand Stripe the clean path.
+    function returnUrl() {
+      return location.origin + location.pathname.replace(/\.html$/, '');
+    }
+
+    function hasVariants(p) {
+      return !!(p.has_variants || (p.variants && p.variants.length));
+    }
+
+    function imagesFor(p) {
+      var local = LOCAL_IMAGES[String(p.name || '').trim().toLowerCase()];
+      if (local && local.length) return local;
+      return (p.images && p.images.length) ? p.images : [];
+    }
+
+    // null = unlimited stock
+    function stockLeft(productId, variant) {
+      var a = state.availability[productId];
+      if (!a) return null;
+      return variant ? (a.variants || {})[variant] : a.remaining;
+    }
+
+    function productById(id) {
+      for (var i = 0; i < state.products.length; i++) {
+        if (state.products[i].id === id) return state.products[i];
+      }
+      return null;
+    }
+
+    function pickFor(p) {
+      var pick = state.picks[p.id] || {};
+      return {
+        variant: hasVariants(p) ? (pick.variant || p.variants[0].name) : null,
+        qty: Math.max(1, Math.min(10, pick.qty || 1))
+      };
+    }
+
+    // ── Cart maths ────────────────────────────────────────────────────────
+    function subtotalCents() {
+      return state.cart.reduce(function (sum, l) {
+        var p = productById(l.productId);
+        return p ? sum + p.price_cents * l.qty : sum;
+      }, 0);
+    }
+
+    function shippingCents() {
+      return state.cart.reduce(function (sum, l) {
+        var p = productById(l.productId);
+        return p ? sum + (p.shipping_cents || 0) * l.qty : sum;
+      }, 0);
+    }
+
+    function addToCart(p) {
+      var pick = pickFor(p);
+      var left = stockLeft(p.id, pick.variant);
+      state.msg = '';
+
+      var line = null;
+      for (var i = 0; i < state.cart.length; i++) {
+        if (state.cart[i].productId === p.id && state.cart[i].variant === pick.variant) {
+          line = state.cart[i];
+          break;
+        }
+      }
+
+      var wanted = (line ? line.qty : 0) + pick.qty;
+      var capped = Math.min(10, left == null ? wanted : Math.min(wanted, left));
+
+      if (capped === 0) {
+        state.msg = 'That one just sold out.';
+      } else if (capped < wanted) {
+        state.msg = 'Only ' + capped + ' left of ' + p.name +
+          (pick.variant ? ' (' + pick.variant + ')' : '') + ' — cart updated.';
+      }
+
+      if (capped > 0) {
+        if (line) line.qty = capped;
+        else state.cart.push({ productId: p.id, variant: pick.variant, qty: capped });
+        saveCart();
+        track('store_add_to_cart', {
+          product: p.name, variant: pick.variant, qty: pick.qty, price_cents: p.price_cents
+        });
+      }
+
+      render();
+    }
+
+    function removeLine(index) {
+      state.cart.splice(index, 1);
+      saveCart();
+      render();
+    }
+
+    // ── API ───────────────────────────────────────────────────────────────
+    function readJson(r) {
+      return r.json()
+        .then(function (d) { return { ok: r.ok, data: d }; })
+        .catch(function () { return { ok: false, data: {} }; });
+    }
+
+    function load() {
+      return fetch(API_BASE + '/api/store-public/resolve?slug=' + encodeURIComponent(SLUG))
+        .then(readJson)
+        .then(function (res) {
+          if (!res.ok) { renderUnavailable(); return; }
+          state.products = (res.data.products || []).filter(function (p) {
+            return p.active !== false;
+          });
+          state.availability = res.data.availability || {};
+
+          // Drop cart lines for products that no longer exist.
+          var before = state.cart.length;
+          state.cart = state.cart.filter(function (l) { return !!productById(l.productId); });
+          if (state.cart.length !== before) saveCart();
+
+          if (!state.products.length) { renderEmpty(); return; }
+          render();
+        })
+        .catch(function () { renderUnavailable(); });
+    }
+
+    function checkout() {
+      if (!state.cart.length || state.busy) return;
+      state.busy = true;
+      state.msg = '';
+      render();
+
+      track('store_checkout_start', {
+        items: state.cart.length,
+        total_cents: subtotalCents() + shippingCents()
+      });
+
+      fetch(API_BASE + '/api/store-public/checkout', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          slug: SLUG,
+          items: state.cart.map(function (l) {
+            var item = { productId: l.productId, qty: l.qty };
+            if (l.variant) item.variant = l.variant;
+            return item;
+          }),
+          newsletterOptIn: state.optIn,
+          returnUrl: returnUrl()
+        })
+      })
+        .then(readJson)
+        .then(function (res) {
+          if (!res.ok) {
+            // 409 = someone bought the last one first. Show it, refresh stock.
+            state.msg = res.data.error || 'Checkout failed — please try again.';
+            state.busy = false;
+            return load();
+          }
+          location.href = res.data.url; // off to Stripe
+        })
+        .catch(function () {
+          state.msg = 'Checkout failed — please try again.';
+          state.busy = false;
+          render();
+        });
+    }
+
+    function confirmPayment(sessionId) {
+      root.innerHTML = '<div class="store-state">Confirming your order&hellip;</div>';
+
+      fetch(API_BASE + '/api/store-public/confirm', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ session_id: sessionId })
+      })
+        .then(readJson)
+        .then(function (res) {
+          if (!res.ok) {
+            state.msg = res.data.error || 'We couldn’t confirm that payment.';
+            return load();
+          }
+          state.cart = [];
+          saveCart();
+          track('store_purchase', {
+            order_code: res.data.orderCode,
+            total_cents: res.data.totalCents
+          });
+          if (typeof fbq === 'function') {
+            fbq('track', 'Purchase', {
+              value: (res.data.totalCents || 0) / 100,
+              currency: 'EUR'
+            });
+          }
+          renderReceipt(res.data);
+        })
+        .catch(function () { load(); });
+    }
+
+    // ── Rendering ─────────────────────────────────────────────────────────
+    function renderUnavailable() {
+      root.innerHTML =
+        '<div class="store-state">The store isn’t available right now. ' +
+        'Please check back soon.</div>';
+    }
+
+    function renderEmpty() {
+      root.innerHTML =
+        '<div class="store-state">New merch is on the way — check back soon.</div>';
+    }
+
+    function stockLabel(p, variant) {
+      var left = stockLeft(p.id, variant);
+      if (left == null) return '';
+      if (left === 0) return '<span class="store-stock out">Sold out</span>';
+      if (left <= 5) return '<span class="store-stock low">Only ' + left + ' left</span>';
+      return '<span class="store-stock">In stock</span>';
+    }
+
+    function buildGallery(p) {
+      var imgs = imagesFor(p);
+      if (!imgs.length) return '<div class="store-gallery-main"></div>';
+
+      var active = state.gallery[p.id] || 0;
+      if (active >= imgs.length) active = 0;
+
+      var html =
+        '<div class="store-gallery-main">' +
+          '<img src="' + esc(imgs[active]) + '" alt="' + esc(p.name) + '" />' +
+        '</div>';
+
+      if (imgs.length > 1) {
+        html += '<div class="store-thumbs">' +
+          imgs.map(function (src, i) {
+            return '<button class="store-thumb' + (i === active ? ' active' : '') + '" ' +
+              'data-product="' + esc(p.id) + '" data-index="' + i + '" ' +
+              'aria-label="View image ' + (i + 1) + '">' +
+              '<img src="' + esc(src) + '" alt="" loading="lazy" />' +
+            '</button>';
+          }).join('') +
+        '</div>';
+      }
+
+      return html;
+    }
+
+    function buildControls(p) {
+      var pick = pickFor(p);
+      var left = stockLeft(p.id, pick.variant);
+      var soldOut = left === 0;
+      var html = '<div class="store-controls">';
+
+      if (hasVariants(p)) {
+        html += '<select class="store-select" data-product="' + esc(p.id) + '">' +
+          p.variants.map(function (v) {
+            var vLeft = stockLeft(p.id, v.name);
+            return '<option value="' + esc(v.name) + '"' +
+              (vLeft === 0 ? ' disabled' : '') +
+              (v.name === pick.variant ? ' selected' : '') + '>' +
+              esc(v.name) + (vLeft === 0 ? ' — sold out' : '') +
+            '</option>';
+          }).join('') +
+        '</select>';
+      }
+
+      html +=
+        '<input class="store-qty" type="number" min="1" max="10" value="' + pick.qty + '" ' +
+          'data-product="' + esc(p.id) + '" aria-label="Quantity"' +
+          (soldOut ? ' disabled' : '') + ' />' +
+        '<button class="store-btn store-btn--primary store-add" ' +
+          'data-product="' + esc(p.id) + '"' + (soldOut ? ' disabled' : '') + '>' +
+          (soldOut ? 'Sold out' : 'Add to cart') +
+        '</button>' +
+      '</div>';
+
+      return html;
+    }
+
+    function buildInfo(p) {
+      var pick = pickFor(p);
+      return '<div class="store-info">' +
+        '<div class="store-meta">' +
+          '<span class="store-tag">' + esc(p.product_type === 'physical' ? 'Merch' : p.product_type) + '</span>' +
+          stockLabel(p, pick.variant) +
+        '</div>' +
+        '<h2 class="store-name">' + esc(p.name) + '</h2>' +
+        (p.description ? '<p class="store-desc">' + esc(p.description) + '</p>' : '') +
+        '<p class="store-price">' + euro(p.price_cents) + '</p>' +
+        '<p class="store-shipping">' +
+          (p.shipping_cents ? '+ ' + euro(p.shipping_cents) + ' shipping per item' : 'Free shipping') +
+        '</p>' +
+        buildControls(p) +
+      '</div>';
+    }
+
+    function buildFeatured(p) {
+      return '<div class="store-featured">' +
+        '<div class="store-gallery">' + buildGallery(p) + '</div>' +
+        buildInfo(p) +
+      '</div>';
+    }
+
+    function buildGrid() {
+      return '<div class="store-grid">' +
+        state.products.map(function (p) {
+          var imgs = imagesFor(p);
+          return '<div class="store-card">' +
+            '<div class="store-card-img">' +
+              (imgs.length ? '<img src="' + esc(imgs[0]) + '" alt="' + esc(p.name) + '" loading="lazy" />' : '') +
+            '</div>' +
+            buildInfo(p) +
+          '</div>';
+        }).join('') +
+      '</div>';
+    }
+
+    function buildCart() {
+      if (!state.cart.length) return '';
+
+      var lines = state.cart.map(function (l, i) {
+        var p = productById(l.productId);
+        if (!p) return '';
+        return '<div class="store-line">' +
+          '<span>' + l.qty + '× ' + esc(p.name) +
+            (l.variant ? ' (' + esc(l.variant) + ')' : '') + '</span>' +
+          '<span>' + euro(p.price_cents * l.qty) +
+            '<button class="store-line-remove" data-index="' + i + '">Remove</button>' +
+          '</span>' +
+        '</div>';
+      }).join('');
+
+      return '<div class="store-cart">' +
+        '<p class="store-cart-title">Your cart</p>' +
+        lines +
+        '<div class="store-totals"><span>Subtotal</span><span>' + euro(subtotalCents()) + '</span></div>' +
+        '<div class="store-totals"><span>Shipping</span><span>' + euro(shippingCents()) + '</span></div>' +
+        '<div class="store-totals grand"><span>Total</span><span>' +
+          euro(subtotalCents() + shippingCents()) + '</span></div>' +
+        '<label class="store-optin">' +
+          '<input type="checkbox" id="store-optin"' + (state.optIn ? ' checked' : '') + ' />' +
+          '<span>Keep me posted on new releases, shows and merch from Silver Omen.</span>' +
+        '</label>' +
+        '<div class="store-cart-actions">' +
+          '<button class="store-btn store-btn--primary store-checkout"' +
+            (state.busy ? ' disabled' : '') + '>' +
+            (state.busy ? 'Taking you to checkout…' : 'Checkout') +
+          '</button>' +
+          '<button class="store-btn store-clear"' + (state.busy ? ' disabled' : '') + '>Clear</button>' +
+        '</div>' +
+        '<p class="store-secure">Payment, email and shipping address are handled securely by Stripe.</p>' +
+      '</div>';
+    }
+
+    function render() {
+      var html = '';
+      if (state.msg) html += '<p class="store-msg">' + esc(state.msg) + '</p>';
+      html += state.products.length === 1 ? buildFeatured(state.products[0]) : buildGrid();
+      html += buildCart();
+      root.innerHTML = html;
+      bind();
+    }
+
+    function renderReceipt(r) {
+      var items = (r.items || []).map(function (it) {
+        return it.qty + '× ' + esc(it.name) + (it.variant ? ' (' + esc(it.variant) + ')' : '');
+      }).join('<br />');
+
+      root.innerHTML =
+        '<div class="store-receipt">' +
+          '<h2 class="store-receipt-title">Thanks' + (r.name ? ', ' + esc(r.name) : '') +
+            ' — your order is confirmed</h2>' +
+          '<span class="store-receipt-code">Order ' + esc(r.orderCode) + '</span>' +
+          (items ? '<p>' + items + '</p>' : '') +
+          '<p>Total paid: <strong>' + euro(r.totalCents) + '</strong></p>' +
+          '<p>A receipt is on its way to ' + esc(r.email || 'your email') +
+            '. We’ll email you again when it ships.</p>' +
+        '</div>';
+    }
+
+    // ── Events ────────────────────────────────────────────────────────────
+    function bind() {
+      root.querySelectorAll('.store-thumb').forEach(function (btn) {
+        btn.addEventListener('click', function () {
+          state.gallery[btn.getAttribute('data-product')] =
+            parseInt(btn.getAttribute('data-index'), 10) || 0;
+          render();
+        });
+      });
+
+      root.querySelectorAll('.store-select').forEach(function (sel) {
+        sel.addEventListener('change', function () {
+          var id = sel.getAttribute('data-product');
+          state.picks[id] = state.picks[id] || {};
+          state.picks[id].variant = sel.value;
+          render();
+        });
+      });
+
+      root.querySelectorAll('.store-qty').forEach(function (input) {
+        input.addEventListener('input', function () {
+          var id = input.getAttribute('data-product');
+          state.picks[id] = state.picks[id] || {};
+          state.picks[id].qty = Math.max(1, Math.min(10, parseInt(input.value, 10) || 1));
+        });
+      });
+
+      root.querySelectorAll('.store-add').forEach(function (btn) {
+        btn.addEventListener('click', function () {
+          var p = productById(btn.getAttribute('data-product'));
+          if (p) addToCart(p);
+        });
+      });
+
+      root.querySelectorAll('.store-line-remove').forEach(function (btn) {
+        btn.addEventListener('click', function () {
+          removeLine(parseInt(btn.getAttribute('data-index'), 10));
+        });
+      });
+
+      var optIn = root.querySelector('#store-optin');
+      if (optIn) {
+        optIn.addEventListener('change', function () { state.optIn = optIn.checked; });
+      }
+
+      var co = root.querySelector('.store-checkout');
+      if (co) co.addEventListener('click', checkout);
+
+      var clear = root.querySelector('.store-clear');
+      if (clear) {
+        clear.addEventListener('click', function () {
+          state.cart = [];
+          saveCart();
+          render();
+        });
+      }
+    }
+
+    // ── Boot ──────────────────────────────────────────────────────────────
+    // Coming back from Stripe? Confirm the payment, then show the receipt.
+    // Cancelling returns here with no session_id, so the cart is still intact.
+    var sessionId = new URLSearchParams(location.search).get('session_id');
+    if (sessionId) {
+      history.replaceState(null, '', location.pathname); // a refresh must not re-confirm
+      confirmPayment(sessionId);
+    } else {
+      load();
+    }
+  })();
+  </script>
+  <script src="assets/js/tracker.js"></script>
+</body>
+</html>
