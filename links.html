@@ -214,6 +214,93 @@
       flex-shrink: 0;
     }
 
+    /* Newsletter signup */
+    .links-signup {
+      width: 100%;
+      margin-bottom: 3rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .links-signup-title {
+      font-family: 'Brans', sans-serif;
+      font-size: clamp(1.6rem, 6vw, 2.4rem);
+      line-height: 1.1;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      text-align: center;
+      color: #f8f8f8;
+      margin-bottom: 1.25rem;
+    }
+
+    .links-signup-form {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      gap: 0.7rem;
+    }
+
+    .links-signup-input {
+      width: 100%;
+      padding: 0.85rem 1.1rem;
+      font-family: 'DIN Condensed', Georgia, sans-serif;
+      font-size: 1rem;
+      color: #f8f8f8;
+      background: rgba(248, 248, 248, 0.05);
+      border: 1px solid rgba(248, 248, 248, 0.25);
+      border-radius: 4px;
+      transition: border-color 0.25s ease, background 0.25s ease;
+    }
+
+    .links-signup-input::placeholder {
+      color: rgba(248, 248, 248, 0.45);
+    }
+
+    .links-signup-input:focus {
+      outline: none;
+      border-color: #2C89D3;
+      background: rgba(44, 137, 211, 0.08);
+    }
+
+    .links-signup-consent {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.6rem;
+      cursor: pointer;
+      margin: 0.2rem 0 0.3rem;
+    }
+
+    .links-signup-consent input[type="checkbox"] {
+      flex-shrink: 0;
+      width: 16px;
+      height: 16px;
+      margin-top: 0.15rem;
+      accent-color: #2C89D3;
+      cursor: pointer;
+    }
+
+    .links-signup-consent span {
+      font-family: 'DIN Condensed', Georgia, sans-serif;
+      font-size: 0.85rem;
+      line-height: 1.45;
+      color: rgba(248, 248, 248, 0.65);
+      text-align: left;
+    }
+
+    .links-signup-consent a {
+      color: #2C89D3;
+      text-decoration: underline;
+    }
+
+    .links-signup-msg {
+      font-family: 'DIN Condensed', Georgia, sans-serif;
+      font-size: 0.9rem;
+      text-align: center;
+      min-height: 1.2em;
+      margin: 0;
+    }
+
     /* Social icons */
     .links-socials {
       display: flex;
@@ -301,12 +388,32 @@
 
     <span class="links-name">Silver Omen</span>
 
+    <div class="links-signup">
+      <span class="links-signup-title">Join the Mailing List</span>
+      <form id="la-signup" class="links-signup-form" novalidate>
+        <input type="text" name="website" tabindex="-1" autocomplete="off" aria-hidden="true"
+          style="position:absolute;left:-9999px" />
+
+        <input type="text" name="name" placeholder="Name" class="links-signup-input" />
+        <input type="email" name="email" required placeholder="Email address" class="links-signup-input" />
+
+        <label class="links-signup-consent">
+          <input type="checkbox" id="la-signup-consent" />
+          <span>I agree to receive email updates from Silver Omen. See the
+            <a href="privacy.html" target="_blank" rel="noopener noreferrer">Privacy Policy</a>.</span>
+        </label>
+
+        <button type="submit" class="links-btn links-btn-primary">Sign Up</button>
+        <p class="links-signup-msg" role="status" aria-live="polite"></p>
+      </form>
+    </div>
+
 <div class="links-buttons">
-      <button class="links-btn links-expand-btn" aria-expanded="true" onclick="toggleStreaming(this)"
+      <button class="links-btn links-expand-btn" aria-expanded="false" onclick="toggleStreaming(this)"
         data-track-type="streaming" data-track-label="Listen to My City" data-track-platform="multi" data-track-category="streaming">
         Listen to My City <span class="expand-arrow">&#9660;</span>
       </button>
-      <div class="links-sub-buttons open" id="streaming-platforms">
+      <div class="links-sub-buttons" id="streaming-platforms">
         <a href="https://open.spotify.com/album/7zGzg1RygVBqqUxmRuraEq" class="links-sub-btn" target="_blank" rel="noopener noreferrer"
           data-track-type="streaming" data-track-label="Spotify" data-track-platform="spotify" data-track-category="streaming">
           <img src="assets/images/Socials Logos/Spotify Logo.png" alt="" /> Spotify
@@ -389,6 +496,89 @@
       btn.setAttribute('aria-expanded', String(!expanded));
       panel.classList.toggle('open', !expanded);
     }
+  </script>
+  <script>
+  (function () {
+    // Las Aguas mailing-list signup — writes into the dashboard's Silver Omen customer list.
+    var API_BASE = "https://lasaguasproductions.com";
+    var SLUG = "newsletter-sign-up-eyf4";
+    var FORM_ID = "3cfde81d-ffdd-487d-8a79-9987756bcf3f";
+    var FIELDS = ["email", "name"];
+
+    function sessionToken() {
+      try {
+        var t = localStorage.getItem("laf_sid");
+        if (!t) {
+          t = (window.crypto && crypto.randomUUID && crypto.randomUUID())
+            || (Date.now() + "-" + Math.random().toString(36).slice(2));
+          localStorage.setItem("laf_sid", t);
+        }
+        return t;
+      } catch (e) { return Date.now() + "-" + Math.random().toString(36).slice(2); }
+    }
+    function readUTM() {
+      var p = new URLSearchParams(location.search);
+      return {
+        source: p.get("utm_source") || undefined, medium: p.get("utm_medium") || undefined,
+        campaign: p.get("utm_campaign") || undefined, content: p.get("utm_content") || undefined,
+        term: p.get("utm_term") || undefined,
+      };
+    }
+    var TOKEN = sessionToken();
+
+    // Record the pageview for source/referrer/UTM attribution (fire-and-forget).
+    fetch(API_BASE + "/api/forms-public/track", {
+      method: "POST", headers: { "Content-Type": "application/json" }, keepalive: true,
+      body: JSON.stringify({
+        formId: FORM_ID, sessionToken: TOKEN, referrer: document.referrer,
+        utm: readUTM(), language: navigator.language,
+      }),
+    }).catch(function () {});
+
+    var form = document.getElementById("la-signup");
+    var msg = form.querySelector(".links-signup-msg");
+    var btn = form.querySelector('button[type="submit"]');
+    var consent = document.getElementById("la-signup-consent");
+    var el = form.elements;
+
+    form.addEventListener("submit", async function (e) {
+      e.preventDefault();
+      if (el.website && el.website.value) return; // honeypot tripped — drop silently
+
+      msg.style.color = "";
+      msg.textContent = "";
+
+      if (!consent.checked) {
+        msg.style.color = "#ff6b6b";
+        msg.textContent = "Please check the box to confirm you'd like to receive emails.";
+        return;
+      }
+
+      btn.disabled = true;
+
+      var payload = { slug: SLUG, source_path: location.pathname, session_token: TOKEN };
+      FIELDS.forEach(function (k) {
+        if (el[k] && el[k].value.trim()) payload[k] = el[k].value.trim();
+      });
+
+      try {
+        var res = await fetch(API_BASE + "/api/forms-public/submit", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(payload),
+        });
+        var data = await res.json();
+        if (!res.ok) throw new Error(data.error || "Something went wrong.");
+        form.reset();
+        msg.style.color = "#6fcf97";
+        msg.textContent = data.message || "Thanks — you're signed up!";
+      } catch (err) {
+        msg.style.color = "#ff6b6b";
+        msg.textContent = err.message;
+        btn.disabled = false;
+      }
+    });
+  })();
   </script>
   <script src="assets/js/tracker.js"></script>
 </body>

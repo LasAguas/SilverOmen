@@ -225,6 +225,31 @@
       box-shadow: 3px 3px 0 #7a7013;
     }
     .cd-honey { position: absolute; left: -5000px; }
+    .cd-form .cd-consent {
+      display: flex;
+      align-items: flex-start;
+      gap: 8px;
+      font-size: 11px;
+      color: #d4e8b8;
+      letter-spacing: 0.5px;
+      line-height: 1.5;
+      cursor: pointer;
+    }
+    .cd-form .cd-consent input[type=checkbox] {
+      width: 16px;
+      height: 16px;
+      accent-color: #4c8926;
+      flex-shrink: 0;
+      margin-top: 2px;
+      cursor: pointer;
+    }
+    .cd-form .cd-consent a { color: #ffec27; }
+    .cd-form .cd-msg {
+      font-size: 12px;
+      color: #ffec27;
+      min-height: 1.2em;
+      margin: 0;
+    }
     .platform-list {
       display: flex;
       flex-direction: column;
@@ -305,57 +330,26 @@
       <h1 class="title">Win a<br>Free CD</h1>
       <p class="subtitle">Sign up to Silver's mailing list to enter the draw.</p>
       <div id="mc_embed_signup">
-        <form
-          action="https://silveromen.us6.list-manage.com/subscribe/post?u=7482966efbe5eb135b80f0bce&amp;id=e2326bd25c&amp;v_id=30&amp;f_id=006ae5e1f0"
-          method="post"
-          id="mc-embedded-subscribe-form"
-          name="mc-embedded-subscribe-form"
-          class="validate cd-form"
-          target="_blank"
-        >
+        <form id="mc-embedded-subscribe-form" class="cd-form" novalidate>
           <div id="mc_embed_signup_scroll">
             <h2>Sign Up!</h2>
-            <div class="indicates-required"><span class="asterisk">*</span> indicates required</div>
             <div class="mc-field-group">
-              <label for="mce-EMAIL">Email Address <span class="asterisk">*</span></label>
-              <input type="email" name="EMAIL" class="required email" id="mce-EMAIL" required value="" />
+              <input type="text" name="name" class="text" placeholder="Name" />
             </div>
             <div class="mc-field-group">
-              <label for="mce-FNAME">First Name</label>
-              <input type="text" name="FNAME" class="text" id="mce-FNAME" value="" />
-            </div>
-            <div class="mc-field-group">
-              <label for="mce-CITY">City</label>
-              <input type="text" name="CITY" class="text" id="mce-CITY" value="" />
-            </div>
-            <div id="mergeRow-gdpr" class="mergeRow gdpr-mergeRow content__gdprBlock mc-field-group">
-              <div class="content__gdpr">
-                <label>GDPR</label>
-                <!-- <p>Sign up!</p> -->
-                <fieldset class="mc_fieldset gdprRequired mc-field-group" name="interestgroup_field">
-                  <label class="checkbox subfield" for="gdpr_16468">
-                    <input type="checkbox" id="gdpr_16468" name="gdpr[16468]" class="gdpr" value="Y" />
-                    <span>Do not subscribe to Silver's newsletter</span>
-                  </label>
-                  <label class="checkbox subfield" for="gdpr_16469">
-                    <input type="checkbox" id="gdpr_16469" name="gdpr[16469]" class="gdpr" value="Y" />
-                    <span>Subscribe to Silver's newsletter</span>
-                  </label>
-                </fieldset>
-                <p>You can unsubscribe to Silver's newsletter at any time with one click.</p>
-              </div>
-            </div>
-            <div hidden><input type="hidden" name="tags" value="699138" /></div>
-            <div id="mce-responses" class="clear foot responses">
-              <div class="response" id="mce-error-response" style="display: none;"></div>
-              <div class="response" id="mce-success-response" style="display: none;"></div>
+              <input type="email" name="email" class="required email" required placeholder="Email Address" />
             </div>
             <div aria-hidden="true" class="cd-honey">
-              <input type="text" name="b_7482966efbe5eb135b80f0bce_e2326bd25c" tabindex="-1" value="" />
+              <input type="text" name="website" tabindex="-1" autocomplete="off" />
             </div>
+            <div class="cd-consent">
+              <input type="checkbox" id="cd-consent" />
+              <span>I agree to receive email updates from Silver Omen. See the <a href="privacy.html" target="_blank" rel="noopener noreferrer">Privacy Policy</a>.</span>
+            </div>
+            <p class="cd-msg" id="cd-signup-msg" role="status" aria-live="polite"></p>
             <div class="optionalParent">
               <div class="clear foot">
-                <input type="submit" name="subscribe" id="mc-embedded-subscribe" class="button submit-btn" value="Subscribe" />
+                <button type="submit" class="button submit-btn">Subscribe</button>
               </div>
             </div>
           </div>
@@ -1126,17 +1120,15 @@
     });
   })();
   </script>
-  <!-- Mailchimp validation for the "Win a Free CD" mailing list form -->
-  <script type="text/javascript" src="//s3.amazonaws.com/downloads.mailchimp.com/js/mc-validate.js"></script>
-  <script type="text/javascript">
-    (function ($) {
-      window.fnames = new Array();
-      window.ftypes = new Array();
-      fnames[0] = 'EMAIL'; ftypes[0] = 'email';
-      fnames[1] = 'FNAME'; ftypes[1] = 'text';
-      fnames[2] = 'CITY';  ftypes[2] = 'text';
-    }(jQuery));
-    var $mcj = jQuery.noConflict(true);
+  <script src="assets/js/mailing-signup.js"></script>
+  <script>
+    SilverOmenMailingSignup({
+      form: 'mc-embedded-subscribe-form',
+      slug: 'newsletter-sign-up-htuw',
+      formId: 'd7a4d029-6735-418c-878c-861f4cc53c06',
+      msg: 'cd-signup-msg',
+      consent: 'cd-consent',
+    });
   </script>
   <script src="assets/js/tracker.js"></script>
 </body>

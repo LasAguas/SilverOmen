@@ -16,27 +16,25 @@ function render() {
         '</h1>' +
         '<div id="mc_embed_shell">' +
           '<div id="mc_embed_signup">' +
-            '<form action="https://silveromen.us6.list-manage.com/subscribe/post?u=7482966efbe5eb135b80f0bce&amp;id=e2326bd25c&amp;f_id=006be5e1f0" method="post" id="mc-embedded-subscribe-form" name="mc-embedded-subscribe-form" class="validate" target="_blank">' +
+            '<form id="mc-embedded-subscribe-form" novalidate>' +
               '<div id="mc_embed_signup_scroll">' +
                 '<div class="mc-field-group">' +
-                  '<input type="email" name="EMAIL" class="required email" id="mce-EMAIL" required placeholder="Email Address *" />' +
+                  '<input type="text" name="name" class="text" placeholder="Name" />' +
                 '</div>' +
                 '<div class="mc-field-group">' +
-                  '<input type="text" name="FNAME" class="text" id="mce-FNAME" placeholder="First Name" />' +
-                '</div>' +
-                '<div class="mc-field-group">' +
-                  '<input type="text" name="CITY" class="text" id="mce-CITY" placeholder="City" />' +
-                '</div>' +
-                '<div id="mce-responses" class="clear foot">' +
-                  '<div class="response" id="mce-error-response" style="display:none;"></div>' +
-                  '<div class="response" id="mce-success-response" style="display:none;"></div>' +
+                  '<input type="email" name="email" class="required email" required placeholder="Email Address" />' +
                 '</div>' +
                 '<div aria-hidden="true" style="position:absolute;left:-5000px;">' +
-                  '<input type="text" name="b_7482966efbe5eb135b80f0bce_e2326bd25c" tabindex="-1" value="" />' +
+                  '<input type="text" name="website" tabindex="-1" autocomplete="off" />' +
                 '</div>' +
+                '<div class="mc-consent">' +
+                  '<input type="checkbox" id="mc-consent-scrollable" />' +
+                  '<span>I agree to receive email updates from Silver Omen. See the <a href="privacy.html" target="_blank" rel="noopener noreferrer">Privacy Policy</a>.</span>' +
+                '</div>' +
+                '<p class="mc-msg" id="mc-signup-msg" role="status" aria-live="polite"></p>' +
                 '<div class="optionalParent">' +
                   '<div class="clear foot">' +
-                    '<input type="submit" name="subscribe" id="mc-embedded-subscribe" class="button" value="Subscribe to My Newsletter" />' +
+                    '<button type="submit" class="button">Subscribe to My Newsletter</button>' +
                   '</div>' +
                 '</div>' +
               '</div>' +
@@ -50,6 +48,14 @@ function render() {
 
   Footer.render('#root', '');
   Header.init();
+
+  SilverOmenMailingSignup({
+    form: 'mc-embedded-subscribe-form',
+    slug: 'newsletter-sign-up-htuw',
+    formId: 'd7a4d029-6735-418c-878c-861f4cc53c06',
+    msg: 'mc-signup-msg',
+    consent: 'mc-consent-scrollable',
+  });
 }
 
 render();

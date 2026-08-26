@@ -359,6 +359,44 @@ img {
   display: none;
 }
 
+#mc_embed_signup .mc-consent {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.6rem;
+  margin: 0.4rem 0;
+  cursor: pointer;
+}
+
+#mc_embed_signup .mc-consent input[type="checkbox"] {
+  flex-shrink: 0;
+  width: 16px;
+  height: 16px;
+  margin-top: 0.15rem;
+  accent-color: #2C89D3;
+  cursor: pointer;
+}
+
+#mc_embed_signup .mc-consent span {
+  font-family: 'DIN Condensed', Georgia, sans-serif;
+  font-size: 0.8rem;
+  line-height: 1.4;
+  color: rgba(248, 248, 248, 0.65);
+  text-align: left;
+}
+
+#mc_embed_signup .mc-consent a {
+  color: #2C89D3;
+  text-decoration: underline;
+}
+
+#mc_embed_signup .mc-msg {
+  font-family: 'Brans', sans-serif;
+  font-size: 0.8rem;
+  text-align: center;
+  min-height: 1.1em;
+  margin: 0.3rem 0 0;
+}
+
 /* ===== Footer ===== */
 .footer {
   padding: 2.5rem 3rem 2rem;
