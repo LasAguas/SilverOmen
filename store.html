@@ -185,7 +185,7 @@
     }
 
     .store-price {
-      font-family: 'Protagonist', sans-serif;
+      font-family: 'Brans', sans-serif;
       font-size: 1.9rem;
       letter-spacing: 0.03em;
       margin-bottom: 0.35rem;
@@ -304,13 +304,108 @@
     .store-card .store-desc { font-size: 0.98rem; margin-bottom: 1rem; }
     .store-card .store-price { font-size: 1.4rem; }
 
-    /* ===== Cart ===== */
+    /* ===== Cart toggle (collapsed) ===== */
+    .store-cart-toggle {
+      position: fixed;
+      right: 2rem;
+      bottom: 2rem;
+      z-index: 500;
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      font-family: 'Brans', sans-serif;
+      font-size: 0.76rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: #0B1B28;
+      background: #2C89D3;
+      border: 1px solid #2C89D3;
+      padding: 0.85rem 1.4rem;
+      border-radius: 999px;
+      cursor: pointer;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
+      transition: transform 0.2s ease, background 0.2s ease;
+      animation: store-cart-pop 0.25s ease;
+    }
+
+    .store-cart-toggle:hover {
+      transform: translateY(-2px);
+      background: #f8f8f8;
+      border-color: #f8f8f8;
+    }
+
+    .store-cart-toggle-count {
+      background: rgba(11, 27, 40, 0.25);
+      border-radius: 999px;
+      padding: 0.1rem 0.55rem;
+      font-size: 0.72rem;
+    }
+
+    @keyframes store-cart-pop {
+      from { opacity: 0; transform: translateY(10px) scale(0.9); }
+      to { opacity: 1; transform: none; }
+    }
+
+    /* ===== Cart panel (expanded) ===== */
+    .store-cart-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(6, 14, 22, 0.65);
+      z-index: 600;
+      animation: store-cart-fade 0.2s ease;
+    }
+
+    @keyframes store-cart-fade {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
     .store-cart {
-      margin-top: 3rem;
-      border: 1px solid rgba(248, 248, 248, 0.12);
-      border-radius: 5px;
-      padding: 1.75rem;
-      background: rgba(20, 43, 61, 0.4);
+      position: fixed;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      z-index: 601;
+      width: min(420px, 100vw);
+      overflow-y: auto;
+      margin-top: 0;
+      border: none;
+      border-left: 1px solid rgba(248, 248, 248, 0.12);
+      border-radius: 0;
+      padding: 2rem 1.75rem 2.5rem;
+      background: #142B3D;
+      animation: store-cart-in 0.25s ease;
+    }
+
+    @keyframes store-cart-in {
+      from { opacity: 0; transform: translateX(24px); }
+      to { opacity: 1; transform: none; }
+    }
+
+    .store-cart-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 1.25rem;
+    }
+
+    .store-cart-close {
+      font-family: 'Brans', sans-serif;
+      font-size: 0.68rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: rgba(248, 248, 248, 0.5);
+      background: none;
+      border: 1px solid rgba(248, 248, 248, 0.25);
+      border-radius: 3px;
+      padding: 0.35rem 0.7rem;
+      cursor: pointer;
+      transition: color 0.3s ease, border-color 0.3s ease;
+    }
+
+    .store-cart-close:hover {
+      color: #2C89D3;
+      border-color: #2C89D3;
     }
 
     .store-cart-title {
@@ -319,7 +414,7 @@
       letter-spacing: 0.16em;
       text-transform: uppercase;
       color: rgba(248, 248, 248, 0.55);
-      margin-bottom: 1.25rem;
+      margin-bottom: 0;
     }
 
     .store-line {
@@ -471,7 +566,8 @@
     @media (max-width: 768px) {
       .store-page { padding: 7rem 1.5rem 4rem; }
       .store-featured { grid-template-columns: 1fr; gap: 2rem; }
-      .store-cart { padding: 1.25rem; }
+      .store-cart { width: 100vw; padding: 1.75rem 1.25rem 2.25rem; }
+      .store-cart-toggle { right: 1.25rem; bottom: 1.25rem; }
       .store-receipt { padding: 1.75rem; }
     }
   </style>
@@ -549,12 +645,15 @@
     var state = {
       products: [],
       availability: {},
+      shippingOptions: [],
+      shippingOptionId: null,
       cart: loadCart(),
       picks: {},     // productId -> { variant, qty }
       gallery: {},   // productId -> active image index
       msg: '',
       optIn: false,
-      busy: false
+      busy: false,
+      cartOpen: false  // cart only shows totals/shipping/checkout once opened
     };
 
     // ── Helpers ───────────────────────────────────────────────────────────
@@ -613,6 +712,14 @@
       return null;
     }
 
+    function variantByName(p, name) {
+      if (!p || !name) return null;
+      for (var i = 0; i < (p.variants || []).length; i++) {
+        if (p.variants[i].name === name) return p.variants[i];
+      }
+      return null;
+    }
+
     function pickFor(p) {
       var pick = state.picks[p.id] || {};
       return {
@@ -621,19 +728,73 @@
       };
     }
 
+    // A product's own product_type/price_cents only apply when it has no
+    // variants — once it has options, the picked variant decides both.
+    function priceFor(p, variant) {
+      var v = variantByName(p, variant);
+      return v ? v.price_cents : (p ? p.price_cents : 0);
+    }
+
+    function typeFor(p, variant) {
+      var v = variantByName(p, variant);
+      return (v ? v.product_type : (p ? p.product_type : 'physical')) || 'physical';
+    }
+
+    // A dashboard edit (renamed/removed option, deleted product) can leave a
+    // stale localStorage line behind — never let it count toward anything.
+    function lineOk(l) {
+      var p = productById(l.productId);
+      if (!p) return false;
+      return l.variant ? !!variantByName(p, l.variant) : true;
+    }
+
+    function validCart() {
+      return state.cart.filter(lineOk);
+    }
+
+    function cartHasPhysical() {
+      return validCart().some(function (l) {
+        var p = productById(l.productId);
+        return typeFor(p, l.variant) !== 'digital';
+      });
+    }
+
+    // Only show/require the shipping picker when the store has named options
+    // AND the cart actually has something that needs shipping — an
+    // all-digital cart skips it even if options are configured.
+    function needsShippingPicker() {
+      return state.shippingOptions.length > 0 && cartHasPhysical();
+    }
+
+    function shippingOptionCost(optionId) {
+      if (!optionId) return 0;
+      return validCart().reduce(function (sum, l) {
+        var p = productById(l.productId);
+        if (typeFor(p, l.variant) === 'digital') return sum;
+        return sum + ((p.shipping_option_prices || {})[optionId] || 0) * l.qty;
+      }, 0);
+    }
+
     // ── Cart maths ────────────────────────────────────────────────────────
     function subtotalCents() {
-      return state.cart.reduce(function (sum, l) {
+      return validCart().reduce(function (sum, l) {
         var p = productById(l.productId);
-        return p ? sum + p.price_cents * l.qty : sum;
+        return p ? sum + priceFor(p, l.variant) * l.qty : sum;
+      }, 0);
+    }
+
+    // Flat per-unit shipping (used when the store has no named shipping
+    // options). Digital lines never contribute.
+    function flatShippingCents() {
+      return validCart().reduce(function (sum, l) {
+        var p = productById(l.productId);
+        if (!p || typeFor(p, l.variant) === 'digital') return sum;
+        return sum + (p.shipping_cents || 0) * l.qty;
       }, 0);
     }
 
     function shippingCents() {
-      return state.cart.reduce(function (sum, l) {
-        var p = productById(l.productId);
-        return p ? sum + (p.shipping_cents || 0) * l.qty : sum;
-      }, 0);
+      return needsShippingPicker() ? shippingOptionCost(state.shippingOptionId) : flatShippingCents();
     }
 
     function addToCart(p) {
@@ -664,7 +825,8 @@
         else state.cart.push({ productId: p.id, variant: pick.variant, qty: capped });
         saveCart();
         track('store_add_to_cart', {
-          product: p.name, variant: pick.variant, qty: pick.qty, price_cents: p.price_cents
+          product: p.name, variant: pick.variant, qty: pick.qty,
+          price_cents: priceFor(p, pick.variant), product_type: typeFor(p, pick.variant)
         });
       }
 
@@ -693,11 +855,13 @@
             return p.active !== false;
           });
           state.availability = res.data.availability || {};
+          state.shippingOptions = res.data.shippingOptions || [];
 
-          // Drop cart lines for products that no longer exist.
+          // Drop cart lines for products/variants that no longer exist.
           var before = state.cart.length;
-          state.cart = state.cart.filter(function (l) { return !!productById(l.productId); });
+          state.cart = state.cart.filter(lineOk);
           if (state.cart.length !== before) saveCart();
+          if (state.shippingOptionId && !needsShippingPicker()) state.shippingOptionId = null;
 
           if (!state.products.length) { renderEmpty(); return; }
           render();
@@ -706,29 +870,40 @@
     }
 
     function checkout() {
-      if (!state.cart.length || state.busy) return;
+      var cart = validCart();
+      if (!cart.length || state.busy) return;
+
+      if (needsShippingPicker() && !state.shippingOptionId) {
+        state.msg = 'Please choose a shipping option';
+        render();
+        return;
+      }
+
       state.busy = true;
       state.msg = '';
       render();
 
       track('store_checkout_start', {
-        items: state.cart.length,
+        items: cart.length,
         total_cents: subtotalCents() + shippingCents()
       });
+
+      var body = {
+        slug: SLUG,
+        items: cart.map(function (l) {
+          var item = { productId: l.productId, qty: l.qty };
+          if (l.variant) item.variant = l.variant;
+          return item;
+        }),
+        newsletterOptIn: state.optIn,
+        returnUrl: returnUrl()
+      };
+      if (needsShippingPicker()) body.shippingOptionId = state.shippingOptionId;
 
       fetch(API_BASE + '/api/store-public/checkout', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          slug: SLUG,
-          items: state.cart.map(function (l) {
-            var item = { productId: l.productId, qty: l.qty };
-            if (l.variant) item.variant = l.variant;
-            return item;
-          }),
-          newsletterOptIn: state.optIn,
-          returnUrl: returnUrl()
-        })
+        body: JSON.stringify(body)
       })
         .then(readJson)
         .then(function (res) {
@@ -762,6 +937,7 @@
             return load();
           }
           state.cart = [];
+          state.shippingOptionId = null;
           saveCart();
           track('store_purchase', {
             order_code: res.data.orderCode,
@@ -859,16 +1035,20 @@
 
     function buildInfo(p) {
       var pick = pickFor(p);
+      var type = typeFor(p, pick.variant);
+      var isDigital = type === 'digital';
       return '<div class="store-info">' +
         '<div class="store-meta">' +
-          '<span class="store-tag">' + esc(p.product_type === 'physical' ? 'Merch' : p.product_type) + '</span>' +
+          '<span class="store-tag">' + esc(isDigital ? 'Digital Download' : 'Merch') + '</span>' +
           stockLabel(p, pick.variant) +
         '</div>' +
         '<h2 class="store-name">' + esc(p.name) + '</h2>' +
         (p.description ? '<p class="store-desc">' + esc(p.description) + '</p>' : '') +
-        '<p class="store-price">' + euro(p.price_cents) + '</p>' +
+        '<p class="store-price">' + euro(priceFor(p, pick.variant)) + '</p>' +
         '<p class="store-shipping">' +
-          (p.shipping_cents ? '+ ' + euro(p.shipping_cents) + ' shipping per item' : 'Free shipping') +
+          (isDigital
+            ? 'Delivered by email — no shipping'
+            : (p.shipping_cents ? '+ ' + euro(p.shipping_cents) + ' shipping per item' : 'Free shipping')) +
         '</p>' +
         buildControls(p) +
       '</div>';
@@ -895,26 +1075,62 @@
       '</div>';
     }
 
-    function buildCart() {
-      if (!state.cart.length) return '';
+    // Collapsed trigger — the cart (and shipping/checkout) only appear once
+    // the buyer opens it deliberately.
+    function buildCartToggle() {
+      var cart = validCart();
+      if (!cart.length || state.cartOpen) return '';
+      var count = cart.reduce(function (sum, l) { return sum + l.qty; }, 0);
+      return '<button class="store-cart-toggle" aria-label="Open cart, ' + count + ' items">' +
+        'Cart <span class="store-cart-toggle-count">' + count + '</span>' +
+        '<span>' + euro(subtotalCents() + shippingCents()) + '</span>' +
+      '</button>';
+    }
 
-      var lines = state.cart.map(function (l, i) {
+    function buildCartPanel() {
+      var cart = validCart();
+      if (!cart.length || !state.cartOpen) return '';
+
+      var lines = cart.map(function (l) {
+        var i = state.cart.indexOf(l);
         var p = productById(l.productId);
         if (!p) return '';
         return '<div class="store-line">' +
           '<span>' + l.qty + '× ' + esc(p.name) +
             (l.variant ? ' (' + esc(l.variant) + ')' : '') + '</span>' +
-          '<span>' + euro(p.price_cents * l.qty) +
+          '<span>' + euro(priceFor(p, l.variant) * l.qty) +
             '<button class="store-line-remove" data-index="' + i + '">Remove</button>' +
           '</span>' +
         '</div>';
       }).join('');
 
-      return '<div class="store-cart">' +
-        '<p class="store-cart-title">Your cart</p>' +
+      var showPicker = needsShippingPicker();
+      var shipRow = showPicker
+        ? '<div class="store-totals">' +
+            '<span>Shipping</span>' +
+            '<select class="store-select store-shipping-select" aria-label="Shipping option">' +
+              '<option value=""' + (state.shippingOptionId ? '' : ' selected') + ' disabled>Select shipping</option>' +
+              state.shippingOptions.map(function (opt) {
+                var cost = shippingOptionCost(opt.id);
+                return '<option value="' + esc(opt.id) + '"' +
+                  (opt.id === state.shippingOptionId ? ' selected' : '') + '>' +
+                  esc(opt.label) + ' — ' + (cost > 0 ? euro(cost) : 'Free') +
+                '</option>';
+              }).join('') +
+            '</select>' +
+          '</div>'
+        : '<div class="store-totals"><span>Shipping</span><span>' + euro(shippingCents()) + '</span></div>';
+
+      return '<div class="store-cart-backdrop"></div>' +
+        '<div class="store-cart">' +
+        '<div class="store-cart-header">' +
+          '<p class="store-cart-title">Your cart</p>' +
+          '<button class="store-cart-close" aria-label="Close cart">Close</button>' +
+        '</div>' +
+        (state.msg ? '<p class="store-msg">' + esc(state.msg) + '</p>' : '') +
         lines +
         '<div class="store-totals"><span>Subtotal</span><span>' + euro(subtotalCents()) + '</span></div>' +
-        '<div class="store-totals"><span>Shipping</span><span>' + euro(shippingCents()) + '</span></div>' +
+        shipRow +
         '<div class="store-totals grand"><span>Total</span><span>' +
           euro(subtotalCents() + shippingCents()) + '</span></div>' +
         '<label class="store-optin">' +
@@ -923,20 +1139,29 @@
         '</label>' +
         '<div class="store-cart-actions">' +
           '<button class="store-btn store-btn--primary store-checkout"' +
-            (state.busy ? ' disabled' : '') + '>' +
+            (state.busy || (showPicker && !state.shippingOptionId) ? ' disabled' : '') + '>' +
             (state.busy ? 'Taking you to checkout…' : 'Checkout') +
           '</button>' +
           '<button class="store-btn store-clear"' + (state.busy ? ' disabled' : '') + '>Clear</button>' +
         '</div>' +
-        '<p class="store-secure">Payment, email and shipping address are handled securely by Stripe.</p>' +
+        '<p class="store-secure">' +
+          (cartHasPhysical()
+            ? 'Payment, email and shipping address are handled securely by Stripe.'
+            : 'Payment and email are handled securely by Stripe.') +
+          '</p>' +
       '</div>';
     }
 
     function render() {
+      if (!validCart().length) state.cartOpen = false; // nothing left to open
+
       var html = '';
-      if (state.msg) html += '<p class="store-msg">' + esc(state.msg) + '</p>';
+      // The panel shows its own copy of state.msg once open, so it isn't
+      // hidden behind the full-screen backdrop.
+      if (state.msg && !state.cartOpen) html += '<p class="store-msg">' + esc(state.msg) + '</p>';
       html += state.products.length === 1 ? buildFeatured(state.products[0]) : buildGrid();
-      html += buildCart();
+      html += buildCartToggle();
+      html += buildCartPanel();
       root.innerHTML = html;
       bind();
     }
@@ -968,7 +1193,9 @@
         });
       });
 
-      root.querySelectorAll('.store-select').forEach(function (sel) {
+      // :not(...) excludes the shipping-option select, which is bound
+      // separately below and has no data-product to key off of.
+      root.querySelectorAll('.store-select:not(.store-shipping-select)').forEach(function (sel) {
         sel.addEventListener('change', function () {
           var id = sel.getAttribute('data-product');
           state.picks[id] = state.picks[id] || {};
@@ -1010,11 +1237,54 @@
       if (clear) {
         clear.addEventListener('click', function () {
           state.cart = [];
+          state.shippingOptionId = null;
           saveCart();
           render();
         });
       }
+
+      var shipSel = root.querySelector('.store-shipping-select');
+      if (shipSel) {
+        shipSel.addEventListener('change', function () {
+          state.shippingOptionId = shipSel.value;
+          render();
+        });
+      }
+
+      var cartToggle = root.querySelector('.store-cart-toggle');
+      if (cartToggle) {
+        cartToggle.addEventListener('click', function () {
+          state.cartOpen = true;
+          render();
+        });
+      }
+
+      var cartClose = function () {
+        state.cartOpen = false;
+        render();
+      };
+      var closeBtn = root.querySelector('.store-cart-close');
+      if (closeBtn) closeBtn.addEventListener('click', cartClose);
+      var backdrop = root.querySelector('.store-cart-backdrop');
+      if (backdrop) backdrop.addEventListener('click', cartClose);
+
+      adjustCartTogglePosition();
     }
+
+    // The site's cookie-consent banner (assets/js/tracker.js) is a fixed
+    // bottom bar that loads after this script and isn't part of any render()
+    // here, so the cart toggle needs to duck above it manually or first-time
+    // visitors can't click either.
+    function adjustCartTogglePosition() {
+      var toggle = root.querySelector('.store-cart-toggle');
+      if (!toggle) return;
+      var banner = document.getElementById('so-consent-banner');
+      toggle.style.bottom = banner ? (banner.offsetHeight + 24) + 'px' : '';
+    }
+
+    new MutationObserver(function () {
+      adjustCartTogglePosition();
+    }).observe(document.body, { childList: true });
 
     // ── Boot ──────────────────────────────────────────────────────────────
     // Coming back from Stripe? Confirm the payment, then show the receipt.
