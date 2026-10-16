@@ -14,6 +14,22 @@ var Footer = (function () {
     { name: 'Deezer', img: 'Deezer Logo.png', href: 'https://www.deezer.com/en/artist/319371991' }
   ];
 
+  var contactLinks = [
+    { label: 'Press', email: 'jc@lovebymistake.co' },
+    { label: 'General Inquiries', email: 'hi@silveromen.com' }
+  ];
+
+  function buildContacts() {
+    return contactLinks.map(function (c) {
+      return (
+        '<a href="mailto:' + c.email + '" class="footer-contact">' +
+          '<span class="footer-contact-label">' + c.label + '</span>' +
+          '<span class="footer-contact-email">' + c.email + '</span>' +
+        '</a>'
+      );
+    }).join('');
+  }
+
   function buildSocialIcons(base) {
     return socialLinks.map(function (s) {
       return (
@@ -31,6 +47,9 @@ var Footer = (function () {
         '<div class="footer-inner">' +
           '<div class="footer-socials">' +
             buildSocialIcons(base) +
+          '</div>' +
+          '<div class="footer-contacts">' +
+            buildContacts() +
           '</div>' +
           '<div class="footer-bottom">' +
             '<span class="footer-copy">&copy; ' + new Date().getFullYear() + ' Silver Omen. All rights reserved. &nbsp;&middot;&nbsp; <a href="' + base + 'privacy" style="text-decoration:underline">Privacy Policy</a></span>' +

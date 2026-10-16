@@ -442,6 +442,39 @@ img {
   object-fit: contain;
 }
 
+.footer-contacts {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 0.75rem 3rem;
+  margin-bottom: 1.75rem;
+}
+
+.footer-contact {
+  display: flex;
+  align-items: baseline;
+  gap: 0.75rem;
+  font-family: 'Brans', sans-serif;
+  letter-spacing: 0.08em;
+  text-decoration: none;
+}
+
+.footer-contact-label {
+  font-size: 0.65rem;
+  text-transform: uppercase;
+  color: rgba(248, 248, 248, 0.4);
+}
+
+.footer-contact-email {
+  font-size: 0.8rem;
+  color: rgba(248, 248, 248, 0.75);
+  transition: color 0.3s ease;
+}
+
+.footer-contact:hover .footer-contact-email {
+  color: #F8F8F8;
+}
+
 .footer-bottom {
   padding-top: 1.25rem;
   border-top: 1px solid rgba(248, 248, 248, 0.08);
