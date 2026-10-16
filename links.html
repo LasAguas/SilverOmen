@@ -13,8 +13,8 @@
   <meta property="og:url" content="https://www.silveromen.com/links" />
   <meta property="og:title" content="Silver Omen | Links" />
   <meta property="og:description" content="Silver Omen — links, music, and updates." />
-  <meta property="og:image" content="https://www.silveromen.com/assets/images/Music/My%20City%20Cover%20Art.jpg" />
-  <meta property="og:image:secure_url" content="https://www.silveromen.com/assets/images/Music/My%20City%20Cover%20Art.jpg" />
+  <meta property="og:image" content="https://www.silveromen.com/assets/images/Music/MESH%20Cover%20Art.jpg" />
+  <meta property="og:image:secure_url" content="https://www.silveromen.com/assets/images/Music/MESH%20Cover%20Art.jpg" />
   <meta property="og:image:width" content="1200" />
   <meta property="og:image:height" content="630" />
   <meta property="og:image:alt" content="Silver Omen" />
@@ -24,7 +24,7 @@
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="Silver Omen | Links" />
   <meta name="twitter:description" content="Silver Omen — links, music, and updates." />
-  <meta name="twitter:image" content="https://www.silveromen.com/assets/images/Music/My%20City%20Cover%20Art.jpg" />
+  <meta name="twitter:image" content="https://www.silveromen.com/assets/images/Music/MESH%20Cover%20Art.jpg" />
 
   <link rel="stylesheet" href="assets/css/styles.css" />
   <link rel="stylesheet" href="assets/css/theme-green.css" />
@@ -52,7 +52,7 @@
       height: 100%;
       object-fit: cover;
       object-position: center;
-      filter: blur(24px);
+      filter: blur(4px);
       transform: scale(1.06);
     }
 
@@ -379,7 +379,7 @@
 </head>
 <body>
   <div class="links-bg">
-    <img src="assets/images/Music/My City Cover Art.jpg" alt="" class="links-bg-image" />
+    <img src="assets/images/Music/MESH Cover Art.jpg" alt="" class="links-bg-image" />
     <div class="links-bg-overlay"></div>
     <div class="links-bg-overlay-green"></div>
   </div>
@@ -387,6 +387,55 @@
   <div class="links-page">
 
     <span class="links-name">Silver Omen</span>
+
+<div class="links-buttons">
+      <button class="links-btn links-expand-btn" aria-expanded="true" onclick="toggleStreaming(this)"
+        data-track-type="streaming" data-track-label="Listen to Mesh" data-track-platform="multi" data-track-category="streaming">
+        Listen to Mesh <span class="expand-arrow">&#9660;</span>
+      </button>
+      <div class="links-sub-buttons open" id="streaming-platforms">
+        <a href="https://open.spotify.com/album/6j9hSTRIenjU8t4FrEcaCb?si=KOc_LlFkRkCAqXMSq7I7zQ" class="links-sub-btn" target="_blank" rel="noopener noreferrer"
+          data-track-type="streaming" data-track-label="Spotify" data-track-platform="spotify" data-track-category="streaming">
+          <img src="assets/images/Socials Logos/Spotify Logo.png" alt="" /> Spotify
+        </a>
+        <a href="https://music.apple.com/gb/album/mesh-single/6812130923" class="links-sub-btn" target="_blank" rel="noopener noreferrer"
+          data-track-type="streaming" data-track-label="Apple Music" data-track-platform="apple_music" data-track-category="streaming">
+          <img src="assets/images/Socials Logos/Apple Music Logo.png" alt="" /> Apple Music
+        </a>
+        <a href="https://tidal.com/album/561256363/u" class="links-sub-btn" target="_blank" rel="noopener noreferrer"
+          data-track-type="streaming" data-track-label="Tidal" data-track-platform="tidal" data-track-category="streaming">
+          <img src="assets/images/Socials Logos/Tidal Logo.png" alt="" /> Tidal
+        </a>
+        <a href="https://link.deezer.com/s/34GNKmmbQzlCH1UlOYY4H" class="links-sub-btn" target="_blank" rel="noopener noreferrer"
+          data-track-type="streaming" data-track-label="Deezer" data-track-platform="deezer" data-track-category="streaming">
+          <img src="assets/images/Socials Logos/Deezer Logo.png" alt="" /> Deezer
+        </a>
+        <a href="https://youtu.be/1UIXY5MUBaY" class="links-sub-btn" target="_blank" rel="noopener noreferrer"
+          data-track-type="streaming" data-track-label="YouTube" data-track-platform="youtube" data-track-category="streaming">
+          <img src="assets/images/Socials Logos/YouTube Logo.png" alt="" /> YouTube
+        </a>
+      </div>
+      <!-- <a href="https://ffm.to/clubsoldier" class="links-btn" target="_blank" rel="noopener noreferrer"
+        data-track-type="other" data-track-label="Inner Child Interview" data-track-platform="spotify" data-track-category="Pre-save">
+        PRESAVE CLUB SOLDIER
+      </a> --> 
+      <a href="https://youtu.be/i4kYIWzq07Y" class="links-btn" target="_blank" rel="noopener noreferrer"
+        data-track-type="streaming" data-track-label="Watch on YouTube" data-track-platform="youtube" data-track-category="streaming">
+        Club Soldier Music Video
+      </a>
+      <!-- <a href="https://earmilk.com/2026/06/26/silver-omen-tries-to-keep-the-party-scene-going-with-club-soldier/" class="links-btn" target="_blank" rel="noopener noreferrer"
+        data-track-type="press" data-track-label="Earmilk" data-track-platform="earmilk" data-track-category="press">
+        Earmilk Article
+      </a> -->
+      <a href="store.html" class="links-btn"
+        data-track-type="other" data-track-label="Store" data-track-platform="silveromen" data-track-category="navigation">
+        Webstore
+      </a>
+      <!-- <a href="index.html" class="links-btn"
+        data-track-type="other" data-track-label="Website" data-track-platform="silveromen" data-track-category="navigation">
+        Website
+      </a> -->
+    </div>
 
     <div class="links-signup">
       <span class="links-signup-title">Join the Mailing List</span>
@@ -406,55 +455,6 @@
         <button type="submit" class="links-btn links-btn-primary">Sign Up</button>
         <p class="links-signup-msg" role="status" aria-live="polite"></p>
       </form>
-    </div>
-
-<div class="links-buttons">
-      <button class="links-btn links-expand-btn" aria-expanded="false" onclick="toggleStreaming(this)"
-        data-track-type="streaming" data-track-label="Listen to My City" data-track-platform="multi" data-track-category="streaming">
-        Listen to My City <span class="expand-arrow">&#9660;</span>
-      </button>
-      <div class="links-sub-buttons" id="streaming-platforms">
-        <a href="https://open.spotify.com/album/7zGzg1RygVBqqUxmRuraEq" class="links-sub-btn" target="_blank" rel="noopener noreferrer"
-          data-track-type="streaming" data-track-label="Spotify" data-track-platform="spotify" data-track-category="streaming">
-          <img src="assets/images/Socials Logos/Spotify Logo.png" alt="" /> Spotify
-        </a>
-        <a href="https://music.apple.com/gb/album/my-city-single/6793225273" class="links-sub-btn" target="_blank" rel="noopener noreferrer"
-          data-track-type="streaming" data-track-label="Apple Music" data-track-platform="apple_music" data-track-category="streaming">
-          <img src="assets/images/Socials Logos/Apple Music Logo.png" alt="" /> Apple Music
-        </a>
-        <a href="https://tidal.com/album/545171261/u" class="links-sub-btn" target="_blank" rel="noopener noreferrer"
-          data-track-type="streaming" data-track-label="Tidal" data-track-platform="tidal" data-track-category="streaming">
-          <img src="assets/images/Socials Logos/Tidal Logo.png" alt="" /> Tidal
-        </a>
-        <a href="https://link.deezer.com/s/346VmaXLheHVrPtxT8sge" class="links-sub-btn" target="_blank" rel="noopener noreferrer"
-          data-track-type="streaming" data-track-label="Deezer" data-track-platform="deezer" data-track-category="streaming">
-          <img src="assets/images/Socials Logos/Deezer Logo.png" alt="" /> Deezer
-        </a>
-        <a href="https://www.youtube.com/watch?v=9eenYmmZSLU&list=RD9eenYmmZSLU&start_radio=1" class="links-sub-btn" target="_blank" rel="noopener noreferrer"
-          data-track-type="streaming" data-track-label="YouTube" data-track-platform="youtube" data-track-category="streaming">
-          <img src="assets/images/Socials Logos/YouTube Logo.png" alt="" /> YouTube
-        </a>
-      </div>
-      <!-- <a href="https://ffm.to/clubsoldier" class="links-btn" target="_blank" rel="noopener noreferrer"
-        data-track-type="other" data-track-label="Inner Child Interview" data-track-platform="spotify" data-track-category="Pre-save">
-        PRESAVE CLUB SOLDIER
-      </a> --> 
-      <a href="https://youtu.be/i4kYIWzq07Y" class="links-btn" target="_blank" rel="noopener noreferrer"
-        data-track-type="streaming" data-track-label="Watch on YouTube" data-track-platform="youtube" data-track-category="streaming">
-        Club Soldier Music Video
-      </a>
-      <a href="https://earmilk.com/2026/06/26/silver-omen-tries-to-keep-the-party-scene-going-with-club-soldier/" class="links-btn" target="_blank" rel="noopener noreferrer"
-        data-track-type="press" data-track-label="Earmilk" data-track-platform="earmilk" data-track-category="press">
-        Earmilk Article
-      </a>
-      <a href="store.html" class="links-btn"
-        data-track-type="other" data-track-label="Store" data-track-platform="silveromen" data-track-category="navigation">
-        Store
-      </a>
-      <a href="index.html" class="links-btn"
-        data-track-type="other" data-track-label="Website" data-track-platform="silveromen" data-track-category="navigation">
-        Website
-      </a>
     </div>
 
     <div class="links-socials">
