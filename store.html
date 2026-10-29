@@ -269,32 +269,19 @@
       padding: 0.75rem 1.8rem;
     }
 
-    /* ===== Grid fallback (2+ products) ===== */
+    /* ===== Grid (2+ products) — each card mirrors the featured layout ===== */
     .store-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
       gap: 3rem 2.5rem;
       padding: 3rem 0;
       border-top: 1px solid rgba(248, 248, 248, 0.08);
       border-bottom: 1px solid rgba(248, 248, 248, 0.08);
     }
 
-    .store-card-img {
-      aspect-ratio: 3 / 2;
-      overflow: hidden;
-      border-radius: 4px;
-      margin-bottom: 1.25rem;
-    }
+    .store-card { min-width: 0; }
 
-    .store-card-img img {
-      width: 100%;
-      height: 100%;
-      object-fit: contain;
-      display: block;
-      transition: transform 0.5s ease;
-    }
-
-    .store-card-img:hover img { transform: scale(1.04); }
+    .store-card .store-gallery { margin-bottom: 1.25rem; }
 
     .store-card .store-name { font-size: 1.4rem; margin-bottom: 0.6rem; }
     .store-card .store-desc { font-size: 1.12rem; margin-bottom: 1rem; }
@@ -628,17 +615,6 @@
     var API_BASE = 'https://lasaguasproductions.com'; // dashboard origin
     var SLUG     = 'silver-omen-store';               // store.slug from the dashboard
 
-    // Product photos served from this site, keyed by the dashboard product
-    // name (lowercased). Delete an entry to fall back to the images uploaded
-    // in the dashboard.
-    var LOCAL_IMAGES = {
-      'cd - singles': [
-        'assets/images/Store/cd-product.webp',
-        'assets/images/Store/cd-front.jpg',
-        'assets/images/Store/cd-back.jpg'
-      ]
-    };
-
     // ── State ─────────────────────────────────────────────────────────────
     var root     = document.getElementById('store-root');
     var CART_KEY = 'la_cart_' + SLUG;
@@ -694,8 +670,6 @@
     }
 
     function imagesFor(p) {
-      var local = LOCAL_IMAGES[String(p.name || '').trim().toLowerCase()];
-      if (local && local.length) return local;
       return (p.images && p.images.length) ? p.images : [];
     }
 
@@ -739,6 +713,25 @@
     function typeFor(p, variant) {
       var v = variantByName(p, variant);
       return (v ? v.product_type : (p ? p.product_type : 'physical')) || 'physical';
+    }
+
+    // Pre-order info lives on the variant when a product has options,
+    // otherwise on the product itself. null = ships now.
+    function preorderFor(p, variant) {
+      var v = variantByName(p, variant);
+      return (v && v.preorder) || (p && p.preorder) || null;
+    }
+
+    function shipDate(iso) {
+      var m = /^(\d{4})-(\d{2})-(\d{2})/.exec(iso || '');
+      if (!m) return '';
+      return new Date(+m[1], m[2] - 1, +m[3])
+        .toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' });
+    }
+
+    function preorderLabel(po) {
+      var d = shipDate(po.ships_on);
+      return d ? 'Pre-order · ships ' + d : 'Pre-order';
     }
 
     // A dashboard edit (renamed/removed option, deleted product) can leave a
@@ -854,6 +847,8 @@
           if (!res.ok) { renderUnavailable(); return; }
           state.products = (res.data.products || []).filter(function (p) {
             return p.active !== false;
+          }).sort(function (a, b) {
+            return (a.sort_order || 0) - (b.sort_order || 0);
           });
           state.availability = res.data.availability || {};
           state.shippingOptions = res.data.shippingOptions || [];
@@ -1006,6 +1001,7 @@
       var pick = pickFor(p);
       var left = stockLeft(p.id, pick.variant);
       var soldOut = left === 0;
+      var preorder = preorderFor(p, pick.variant);
       var html = '<div class="store-controls">';
 
       if (hasVariants(p)) {
@@ -1027,7 +1023,7 @@
           (soldOut ? ' disabled' : '') + ' />' +
         '<button class="store-btn store-btn--primary store-add" ' +
           'data-product="' + esc(p.id) + '"' + (soldOut ? ' disabled' : '') + '>' +
-          (soldOut ? 'Sold out' : 'Add to cart') +
+          (soldOut ? 'Sold out' : (preorder ? 'Pre-order' : 'Add to cart')) +
         '</button>' +
       '</div>';
 
@@ -1036,8 +1032,10 @@
 
     function buildInfo(p) {
       var pick = pickFor(p);
+      var preorder = preorderFor(p, pick.variant);
       return '<div class="store-info">' +
         '<div class="store-meta">' +
+          (preorder ? '<span class="store-tag">' + esc(preorderLabel(preorder)) + '</span>' : '') +
           stockLabel(p, pick.variant) +
         '</div>' +
         '<h2 class="store-name">' + esc(p.name) + '</h2>' +
@@ -1057,11 +1055,8 @@
     function buildGrid() {
       return '<div class="store-grid">' +
         state.products.map(function (p) {
-          var imgs = imagesFor(p);
           return '<div class="store-card">' +
-            '<div class="store-card-img">' +
-              (imgs.length ? '<img src="' + esc(imgs[0]) + '" alt="' + esc(p.name) + '" loading="lazy" />' : '') +
-            '</div>' +
+            '<div class="store-gallery">' + buildGallery(p) + '</div>' +
             buildInfo(p) +
           '</div>';
         }).join('') +
@@ -1088,9 +1083,11 @@
         var i = state.cart.indexOf(l);
         var p = productById(l.productId);
         if (!p) return '';
+        var po = preorderFor(p, l.variant);
         return '<div class="store-line">' +
           '<span>' + l.qty + '× ' + esc(p.name) +
-            (l.variant ? ' (' + esc(l.variant) + ')' : '') + '</span>' +
+            (l.variant ? ' (' + esc(l.variant) + ')' : '') +
+            (po ? ' <em>— ' + esc(preorderLabel(po)) + '</em>' : '') + '</span>' +
           '<span>' + euro(priceFor(p, l.variant) * l.qty) +
             '<button class="store-line-remove" data-index="' + i + '">Remove</button>' +
           '</span>' +
