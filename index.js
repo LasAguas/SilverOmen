@@ -4,8 +4,8 @@ function render() {
 
   // Hero + Mailchimp form — randomly pick between two hero images on each load
   var heroImages = [
-    'assets/images/Music/A Night at the Party Cover Art.jpg',
-    'assets/images/Music/A Night at the Party Cover Art.jpg'
+    'assets/images/Music/a night at the party Cover Art.jpg',
+    'assets/images/Music/a night at the party Cover Art.jpg'
   ];
   var heroImage = heroImages[Math.floor(Math.random() * heroImages.length)];
 
